@@ -8,7 +8,7 @@ include 'classes/Category.php';
 $database = new Database();
 $user = new User($database);
 $log = new Log($database);
-$category = new Category($dataabse);
+$category = new Category($database);
 
 
 function registerUser($username, $name, $email, $password)
