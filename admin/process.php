@@ -35,6 +35,22 @@ function loginUser($username, $password)
   return $myResp;
 }
 
+function createCategory($category_name)
+{
+  global $category;
+
+  $myResp = $category->create_category($category_name);
+  return $myResp;
+}
+
+function searchQ($queryString)
+{
+  global $category;
+
+  $myResp = $category->search_category($queryString);
+  echo json_encode($myResp);
+}
+
 
 switch ($_POST['action']) {
 
@@ -50,6 +66,16 @@ switch ($_POST['action']) {
 
   case "loginUser": {
       echo loginUser($_POST['username'], $_POST['password']);
+      break;
+    }
+
+    case "createCategory": {
+      echo createCategory($_POST['category_name']);
+      break;
+    }
+
+    case "searchQ": {
+      echo searchQ($_GET['searchQuery']);
       break;
     }
 }

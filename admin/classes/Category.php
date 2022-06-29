@@ -16,7 +16,7 @@ class Category
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $data;
+        return json_encode($data);
     }
 
     public function create_category($category_name)
@@ -27,7 +27,7 @@ class Category
         $stmt->execute();
         $lastInsertId = $this->conn->lastInsertId();
         if ($lastInsertId) {
-            return $lastInsertId;
+            return true;
         } else {
             return false;
         }
@@ -59,4 +59,18 @@ class Category
             return $stmt->rowCount();
         }
     
+        public function search_category($searchText, $start = 0, $limit = 4)
+        {
+            $sql = "SELECT * FROM category WHERE category_name LIKE %:search% ORDER BY id DESC LIMIT {$start},{$limit}";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(':search', $searchText, PDO::PARAM_STR);
+            $stmt->execute();
+            if ($stmt->rowCount() > 0) {
+                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                $results = [];
+            }
+    
+            return $results;
+        }
 }

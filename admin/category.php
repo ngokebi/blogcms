@@ -5,6 +5,11 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
+include 'include/sessions.php';
+include "classes/Database.php";
+$database = new Database();
+$database = $database->getConnection();
+
 if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 10)) {
     session_unset();
     session_destroy();
@@ -78,6 +83,7 @@ if (empty($_SESSION['username'])) {
         <link href="css/lib/bootstrap.min.css" rel="stylesheet">
         <link href="css/lib/helper.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     </head>
 
     <body>
@@ -106,12 +112,12 @@ if (empty($_SESSION['username'])) {
                                     <div class="card-body">
                                         <div style="float: right ;">
                                             <label>Search:
-                                                <input type="search" class="form-control input-sm" placeholder="" aria-controls="bootstrap-data-table-export">
+                                                <input type="text" class="form-control input-sm" placeholder="" id="searchinput" aria-controls="bootstrap-data-table-export">
                                             </label>
                                         </div>
                                         <div class="table-responsive">
 
-                                            <table class="table table-hover ">
+                                            <table class="table table-hover " id="dataTable">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
@@ -121,39 +127,52 @@ if (empty($_SESSION['username'])) {
 
                                                     </tr>
                                                 </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">1</th>
-                                                        <td>Kolor Tea Shirt For Man</td>
-                                                        <td>January 22</td>
-                                                        <td class="color-primary">
-                                                            <span class="m-l-10">
-                                                                <a href="#" title="Edit">
-                                                                    <i class="ti-check color-success"></i>
-                                                                </a>
-                                                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                                                <a href="#" title="Delete">
-                                                                    <i class="ti-close color-danger"></i>
-                                                                </a>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
+                                                <?php
+
+                                                $sql = "SELECT * FROM category Limit 0, 6";
+                                                $stmt = $database->prepare($sql);
+                                                $stmt->execute();
+                                                $data = $stmt->fetchAll(PDO::FETCH_OBJ);
+                                                $cnt = 1;
+                                                if ($stmt->rowCount() > 0) {
+                                                    foreach ($data as $result) {
+                                                ?>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row"><b><?php echo htmlentities($cnt); ?></b></th>
+                                                                <td><?php echo htmlentities($result->category_name); ?></td>
+                                                                <td><?php echo htmlentities($result->created_at); ?></td>
+                                                                <td class="color-primary">
+                                                                    <span class="m-l-10">
+                                                                        <a href="#" title="Edit">
+                                                                            <i class="ti-check color-success"></i>
+                                                                        </a>
+                                                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                                                        <a href="#" title="Delete">
+                                                                            <i class="ti-close color-danger"></i>
+                                                                        </a>
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                    <?php $cnt++;
+                                                    }
+                                                } ?>
+                                                        </tbody>
                                             </table>
 
-                                            <div class="dataTables_paginate paging_simple_numbers" id="row-select_paginate">
+                                            <!-- <div class="dataTables_paginate paging_simple_numbers" id="row-select_paginate">
                                                 <ul class="pagination justify-content-end">
-                                                    <li class="paginate_button  previous disabled" id="row-select_previous"><a href="#" class="page-link" aria-controls="row-select" data-dt-idx="0" tabindex="0">Previous</a></li>
-                                                    <li class="paginate_button  active"><a href="#" class="page-link" aria-controls="row-select" data-dt-idx="1" tabindex="0">1</a></li>
-                                                    <li class="paginate_button  "><a href="#" class="page-link" aria-controls="row-select" data-dt-idx="2" tabindex="0">2</a></li>
-                                                    <li class="paginate_button  "><a href="#" class="page-link" aria-controls="row-select" data-dt-idx="3" tabindex="0">3</a></li>
-                                                    <li class="paginate_button  "><a href="#" class="page-link" aria-controls="row-select" data-dt-idx="4" tabindex="0">4</a></li>
-                                                    <li class="paginate_button  "><a href="#" class="page-link" aria-controls="row-select" data-dt-idx="5" tabindex="0">5</a></li>
-                                                    <li class="paginate_button  "><a href="#" class="page-link" aria-controls="row-select" data-dt-idx="6" tabindex="0">6</a></li>
-                                                    <li class="paginate_button  next" id="row-select_next"><a href="#" class="page-link" aria-controls="row-select" data-dt-idx="7" tabindex="0">Next</a></li>
+                                                    <li class="page-item active" aria-current="page">
+                                                        <span class="page-link">1</span>
+                                                    </li>
+                                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+
                                                 </ul>
 
-                                            </div>
+                                            </div> -->
+                                            <nav id="pagination">
+                                            </nav>
                                         </div>
                                     </div>
                                 </div>
@@ -163,19 +182,18 @@ if (empty($_SESSION['username'])) {
                             <div class="col-lg-4">
                                 <div class="card">
                                     <div class="card-title">
-                                        <h4>Input Style</h4>
-
+                                        <h4>Create Categorty</h4>
                                     </div>
                                     <div class="card-body">
                                         <div class="basic-form">
-                                            <form>
+                                            <form method="POST">
                                                 <div class="form-group col-sm-8">
                                                     <label>Category Name:</label>
                                                     <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Category Name">
                                                 </div>
-                                                <div class="form-group">
-                                                    <button type="button" name="submit" id="submit" class="btn btn-primary btn-rounded m-b-10">Submit</button>
-                                                </div>
+
+                                                <button type="submit" name="add_cat" id="add_cat" class="btn btn-primary btn-rounded m-b-10">Submit</button>
+
                                             </form>
                                         </div>
                                     </div>
@@ -184,18 +202,18 @@ if (empty($_SESSION['username'])) {
                             <!-- /# column -->
                         </div>
                         <!-- /# row -->
-<?php
-include "include/footer.php";
-?>
+                        <?php
+                        include "include/footer.php";
+                        ?>
 
                     </section>
                 </div>
             </div>
         </div>
 
-
-
-
+        <script>
+            $("#year").text(new Date().getFullYear());
+        </script>
         <!-- Common -->
         <script src="js/lib/jquery.min.js"></script>
         <script src="js/lib/jquery.nanoscroller.min.js"></script>
@@ -203,71 +221,51 @@ include "include/footer.php";
         <script src="js/lib/preloader/pace.min.js"></script>
         <script src="js/lib/bootstrap.min.js"></script>
         <script src="js/scripts.js"></script>
-        <script>
-            $("#year").text(new Date().getFullYear());
+
+        <script type="text/javascript">
+            $(document).ready(function($) {
+                // on submit...
+                $("#add_cat").click(function(e) {
+
+                    e.preventDefault();
+
+                    //category name required
+                    var category_name = $("#category_name").val();
+                    if (category_name == "") {
+                        alert("category_name is required");
+                        $("input#category_name").focus();
+                        return false;
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: "process.php",
+                        data: {
+                            action: "createCategory",
+                            category_name: $("#category_name").val(),
+
+                        }, // get all form field value in form
+                        beforeSend: function() {
+                            $("#add_cat").val("Processing...");
+                        },
+                        success: function(response) {
+                            if (response == true) {
+                                alert("Successful. Last Inserted Role is " +
+                                    response);
+                                // $(location).attr('href', 'login.html');
+                                $("#add_cat").val("Submit");
+                                $("#category_name").val("");
+
+                            } else if (response == false) {
+                                alert("Error, Incorrect Details" + response);
+                                $("#add_cat").val("Submit");
+                            }
+                        },
+                    });
+                });
+                return false;
+            });
         </script>
-        <!-- Datatable -->
-        <script src="js/lib/data-table/datatables.min.js"></script>
-        <script src="js/lib/data-table/buttons.dataTables.min.js"></script>
-        <script src="js/lib/data-table/dataTables.buttons.min.js"></script>
-        <script src="js/lib/data-table/buttons.flash.min.js"></script>
-        <script src="js/lib/data-table/jszip.min.js"></script>
-        <script src="js/lib/data-table/pdfmake.min.js"></script>
-        <script src="js/lib/data-table/vfs_fonts.js"></script>
-        <script src="js/lib/data-table/buttons.html5.min.js"></script>
-        <script src="js/lib/data-table/buttons.print.min.js"></script>
-        <script src="js/lib/data-table/datatables-init.js"></script>
-
-        <!-- JS Grid -->
-        <script src="js/lib/jsgrid/db.js"></script>
-        <script src="js/lib/jsgrid/jsgrid.core.js"></script>
-        <script src="js/lib/jsgrid/jsgrid.load-indicator.js"></script>
-        <script src="js/lib/jsgrid/jsgrid.load-strategies.js"></script>
-        <script src="js/lib/jsgrid/jsgrid.sort-strategies.js"></script>
-        <script src="js/lib/jsgrid/jsgrid.field.js"></script>
-        <script src="js/lib/jsgrid/fields/jsgrid.field.text.js"></script>
-        <script src="js/lib/jsgrid/fields/jsgrid.field.number.js"></script>
-        <script src="js/lib/jsgrid/fields/jsgrid.field.select.js"></script>
-        <script src="js/lib/jsgrid/fields/jsgrid.field.checkbox.js"></script>
-        <script src="js/lib/jsgrid/fields/jsgrid.field.control.js"></script>
-        <script src="js/lib/jsgrid/jsgrid-init.js"></script>
-
-        <!--  Datamap -->
-        <script src="js/lib/datamap/d3.min.js"></script>
-        <script src="js/lib/datamap/topojson.js"></script>
-        <script src="js/lib/datamap/datamaps.world.min.js"></script>
-        <script src="js/lib/datamap/datamap-init.js"></script>
-
-        <!--  Nestable -->
-        <script src="js/lib/nestable/jquery.nestable.js"></script>
-        <script src="js/lib/nestable/nestable.init.js"></script>
-
-        <!--ION Range Slider JS-->
-        <script src="js/lib/rangeSlider/ion.rangeSlider.min.js"></script>
-        <script src="js/lib/rangeSlider/moment.js"></script>
-        <script src="js/lib/rangeSlider/moment-with-locales.js"></script>
-        <script src="js/lib/rangeSlider/rangeslider.init.js"></script>
-
-        <!-- Bar Rating-->
-        <script src="js/lib/barRating/jquery.barrating.js"></script>
-        <script src="js/lib/barRating/barRating.init.js"></script>
-
-        <!-- jRate -->
-        <script src="js/lib/rating1/jRate.min.js"></script>
-        <script src="js/lib/rating1/jRate.init.js"></script>
-
-        <!-- Sweet Alert -->
-        <script src="js/lib/sweetalert/sweetalert.min.js"></script>
-        <script src="js/lib/sweetalert/sweetalert.init.js"></script>
-
-        <!-- Toastr -->
-        <script src="js/lib/toastr/toastr.min.js"></script>
-        <script src="js/lib/toastr/toastr.init.js"></script>
-
-        <!--  Dashboard 1 -->
-        <script src="js/dashboard1.js"></script>
-        <script src="js/dashboard2.js"></script>
-
     </body>
 
     </html>
