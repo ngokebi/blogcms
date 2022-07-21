@@ -103,14 +103,14 @@ if (empty($_SESSION['username'])) {
                     <!-- /# row -->
                     <section id="main-content">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-title">
-                                        <h4>All Category</h4>
+                                        <h2>All Images</h2>
 
                                     </div>
                                     <div class="card-body">
-                                        <div style="float: right ;">
+                                        <div style="float: right;">
                                             <label>Search:
                                                 <input type="text" class="form-control input-sm" placeholder="" onkeyup="myFunction()" id="searchinput" aria-controls="bootstrap-data-table-export">
                                             </label>
@@ -121,14 +121,16 @@ if (empty($_SESSION['username'])) {
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Name</th>
+                                                        <th>Post</th>
+                                                        <th>Short Desc.</th>
+                                                        <th width="600">Image</th>
                                                         <th>Created Date</th>
-                                                        <th>Action</th>
+                                                        <th width="100">Action</th>
 
                                                     </tr>
                                                 </thead>
                                                 <?php
-                                                $sql = "SELECT * FROM category WHERE status = 'Active'";
+                                                $sql = "SELECT * FROM image GROUP BY post_id";
                                                 $stmt = $database->prepare($sql);
                                                 $stmt->execute();
                                                 $data = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -139,15 +141,17 @@ if (empty($_SESSION['username'])) {
                                                         <tbody>
                                                             <tr>
                                                                 <th scope="row"><b><?php echo htmlentities($cnt); ?></b></th>
-                                                                <td><?php echo htmlentities($result->category_name); ?></td>
+                                                                <td><?php echo htmlentities($result->post_id); ?></td>
+                                                                <td><?php echo htmlentities($result->short_desc); ?></td>
+                                                                <td><img src="post_images/<?php echo $result->image_url; ?>" alt="" width="300" height="200"></td>
                                                                 <td><?php echo htmlentities($result->created_at); ?></td>
                                                                 <td class="color-primary">
                                                                     <span class="m-l-10">
-                                                                        <a href="edit_category.php?cat_id=<?php echo htmlentities($result->id); ?>" title="Edit" id="edit">
+                                                                        <a href="edit_posts.php?post_id=<?php echo htmlentities($result->id); ?>" title="Edit" id="edit">
                                                                             <i class="ti-check color-success"></i>
                                                                         </a>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                                                        <a href="category.php?cat_id=<?php echo htmlentities($result->id); ?>" cat_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
+                                                                        <a href="posts.php?post_id=<?php echo htmlentities($result->id); ?>" post_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
                                                                             <i class="ti-close color-danger"></i>
                                                                         </a>
                                                                     </span>
@@ -158,47 +162,11 @@ if (empty($_SESSION['username'])) {
                                                 } ?>
                                                         </tbody>
                                             </table>
-
-                                            <!-- <div class="dataTables_paginate paging_simple_numbers" id="row-select_paginate">
-                                                <ul class="pagination justify-content-end">
-                                                    <li class="page-item active" aria-current="page">
-                                                        <span class="page-link">1</span>
-                                                    </li>
-                                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-
-                                                </ul>
-
-                                            </div> -->
-                                            <nav id="pagination">
-                                            </nav>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- /# card -->
                             </div>
-
-                            <div class="col-lg-4">
-                                <div class="card">
-                                    <div class="card-title">
-                                        <h4>Create Categorty</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="basic-form">
-                                            <form method="POST">
-                                                <div class="form-group col-sm-8">
-                                                    <label>Category Name:</label>
-                                                    <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Category Name">
-                                                </div>
-
-                                                <button type="submit" name="add_cat" id="add_cat" class="btn btn-primary btn-rounded m-b-10">Submit</button>
-
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /# column -->
                         </div>
                         <!-- /# row -->
                         <?php
@@ -221,100 +189,6 @@ if (empty($_SESSION['username'])) {
         <script src="js/lib/bootstrap.min.js"></script>
         <script src="js/scripts.js"></script>
 
-        <script type="text/javascript">
-            // Add Category
-            $(document).ready(function($) {
-                // on submit...
-                $("#add_cat").click(function(e) {
-
-                    e.preventDefault();
-
-                    //category name required
-                    var category_name = $("#category_name").val();
-                    if (category_name == "") {
-                        alert("category_name is required");
-                        $("input#category_name").focus();
-                        return false;
-                    }
-
-                    $.ajax({
-                        type: "POST",
-                        url: "process.php",
-                        data: {
-                            action: "createCategory",
-                            category_name: $("#category_name").val(),
-
-                        }, // get all form field value in form
-                        beforeSend: function() {
-                            $("#add_cat").val("Processing...");
-                        },
-                        success: function(response) {
-                            if (response == true) {
-                                alert("Successful. Last Inserted Role is " +
-                                    response);
-                                $(location).attr('href', 'category.php');
-                                $("#add_cat").val("Submit");
-                                $("#category_name").val("");
-
-                            } else if (response == false) {
-                                alert("Error, Incorrect Details" + response);
-                                $("#add_cat").val("Submit");
-                            }
-                        },
-                    });
-                });
-                return false;
-            });
-
-            // Delete Category
-            $(document).ready(function($) {
-
-                $(".delete").click(function(e) {
-                    e.preventDefault();
-                    alert('Delete');
-                    var id = $(this).attr('cat_id');
-                    $.ajax({
-                        type: "GET",
-                        url: "process.php",
-                        data: {
-                            action: "deleteCategory",
-                            id: id
-                        },
-                        success: function(response) {
-                            if (response == true) {
-                                alert("Deleted Successfully");
-                                $(location).attr('href', 'category.php');
-
-                            } else if (response == false) {
-                                alert("Error, Something went Wrong");
-                                $(location).attr('href', 'category.php');
-
-                            }
-                        },
-                    });
-                });
-            });
-
-            // Search Table
-            function myFunction() {
-                var input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("searchinput");
-                filter = input.value.toUpperCase();
-                table = document.getElementById("dataTable");
-                tr = table.getElementsByTagName("tr");
-                for (i = 0; i < tr.length; i++) {
-                    td = tr[i].getElementsByTagName("td")[0];
-                    if (td) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[i].style.display = "";
-                        } else {
-                            tr[i].style.display = "none";
-                        }
-                    }
-                }
-            }
-        </script>
     </body>
 
     </html>

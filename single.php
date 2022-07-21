@@ -1,3 +1,11 @@
+<?php
+error_reporting(0);
+
+include "classes/Database.php";
+$database = new Database();
+$database = $database->getConnection();
+
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -50,25 +58,21 @@
 					<li class="has-children">
 						<a href="categories.php">Categories</a>
 						<ul class="dropdown">
-							<li><a href="#">Travel</a></li>
-							<li><a href="#">Food</a></li>
-							<li><a href="#">Technology</a></li>
-							<li><a href="#">Business</a></li>
-							<li class="has-children">
-								<a href="#">Dropdown</a>
-								<ul class="dropdown">
-									<li><a href="#">Sub Menu One</a></li>
-									<li><a href="#">Sub Menu Two</a></li>
-									<li><a href="#">Sub Menu Three</a></li>
-								</ul>
-							</li>
+							<?php
+							$sql = "SELECT * FROM category WHERE status = 'Active'";
+							$query = $database->prepare($sql);
+							$query->execute();
+							$data = $query->fetchAll(PDO::FETCH_OBJ);
+							$cnt = 1;
+							if ($query->rowCount() > 0) {
+								foreach ($data as $result) {
+							?>
+									<li><a href="categories.php?cat_id=<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->category_name); ?></a></li>
+							<?php $cnt++;
+								}
+							} ?>
 						</ul>
 					</li>
-					<!-- <li><a href="#">Travel</a></li>
-					<li><a href="#">Food</a></li>
-					<li><a href="#">Technology</a></li>
-					<li><a href="#">Business</a></li> -->
-
 				</ul>
 			</div>
 		</div>
@@ -151,7 +155,7 @@
 								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
 								<span class="date">July 2, 2020</span>
 							</div>
-							<h2 class="heading"><a href="single.html">Your most unhappy customers are your greatest source of learning.</a></h2>
+							<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest source of learning.</a></h2>
 							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
 							<a href="#" class="post-author d-flex align-items-center">
 								<div class="author-pic">
@@ -175,7 +179,7 @@
 								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
 								<span class="date">July 2, 2020</span>
 							</div>
-							<h2 class="heading"><a href="single.html">Your most unhappy customers are your greatest source of learning.</a></h2>
+							<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest source of learning.</a></h2>
 							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
 							<a href="#" class="post-author d-flex align-items-center">
 								<div class="author-pic">
@@ -199,7 +203,7 @@
 								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
 								<span class="date">July 2, 2020</span>
 							</div>
-							<h2 class="heading"><a href="single.html">Your most unhappy customers are your greatest source of learning.</a></h2>
+							<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest source of learning.</a></h2>
 							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
 							<a href="#" class="post-author d-flex align-items-center">
 								<div class="author-pic">

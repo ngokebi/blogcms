@@ -103,14 +103,14 @@ if (empty($_SESSION['username'])) {
                     <!-- /# row -->
                     <section id="main-content">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-title">
-                                        <h4>All Category</h4>
+                                        <h4>All Posts</h4>
 
                                     </div>
                                     <div class="card-body">
-                                        <div style="float: right ;">
+                                        <div style="float: right;">
                                             <label>Search:
                                                 <input type="text" class="form-control input-sm" placeholder="" onkeyup="myFunction()" id="searchinput" aria-controls="bootstrap-data-table-export">
                                             </label>
@@ -121,14 +121,18 @@ if (empty($_SESSION['username'])) {
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Name</th>
+                                                        <th>Title</th>
+                                                        <th>Category</th>
+                                                        <th>Author</th>
+                                                        <th width="300">Short Desc.</th>
+                                                        <th width="600">Long Desc.</th>
                                                         <th>Created Date</th>
-                                                        <th>Action</th>
+                                                        <th width="100">Action</th>
 
                                                     </tr>
                                                 </thead>
                                                 <?php
-                                                $sql = "SELECT * FROM category WHERE status = 'Active'";
+                                                $sql = "SELECT * FROM posts WHERE status = 'Active'";
                                                 $stmt = $database->prepare($sql);
                                                 $stmt->execute();
                                                 $data = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -139,15 +143,19 @@ if (empty($_SESSION['username'])) {
                                                         <tbody>
                                                             <tr>
                                                                 <th scope="row"><b><?php echo htmlentities($cnt); ?></b></th>
-                                                                <td><?php echo htmlentities($result->category_name); ?></td>
+                                                                <td><?php echo htmlentities($result->title); ?></td>
+                                                                <td><?php echo htmlentities($result->cat_id); ?></td>
+                                                                <td><?php echo htmlentities($result->author); ?></td>
+                                                                <td><?php echo htmlentities($result->short_desc); ?></td>
+                                                                <td><?php echo htmlentities(substr($result->long_desc, 0, 400) . '...'); ?></td>
                                                                 <td><?php echo htmlentities($result->created_at); ?></td>
                                                                 <td class="color-primary">
                                                                     <span class="m-l-10">
-                                                                        <a href="edit_category.php?cat_id=<?php echo htmlentities($result->id); ?>" title="Edit" id="edit">
+                                                                        <a href="edit_posts.php?post_id=<?php echo htmlentities($result->id); ?>" title="Edit" id="edit">
                                                                             <i class="ti-check color-success"></i>
                                                                         </a>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                                                        <a href="category.php?cat_id=<?php echo htmlentities($result->id); ?>" cat_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
+                                                                        <a href="posts.php?post_id=<?php echo htmlentities($result->id); ?>" post_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
                                                                             <i class="ti-close color-danger"></i>
                                                                         </a>
                                                                     </span>
@@ -177,28 +185,6 @@ if (empty($_SESSION['username'])) {
                                 </div>
                                 <!-- /# card -->
                             </div>
-
-                            <div class="col-lg-4">
-                                <div class="card">
-                                    <div class="card-title">
-                                        <h4>Create Categorty</h4>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="basic-form">
-                                            <form method="POST">
-                                                <div class="form-group col-sm-8">
-                                                    <label>Category Name:</label>
-                                                    <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Category Name">
-                                                </div>
-
-                                                <button type="submit" name="add_cat" id="add_cat" class="btn btn-primary btn-rounded m-b-10">Submit</button>
-
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /# column -->
                         </div>
                         <!-- /# row -->
                         <?php

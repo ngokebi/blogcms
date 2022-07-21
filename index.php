@@ -1,3 +1,11 @@
+<?php
+error_reporting(0);
+
+include "classes/Database.php";
+$database = new Database();
+$database = $database->getConnection();
+
+?>
 <!doctype html>
 <html lang="en">
 
@@ -53,25 +61,21 @@
 					<li class="has-children">
 						<a href="categories.php">Categories</a>
 						<ul class="dropdown">
-							<li><a href="#">Travel</a></li>
-							<li><a href="#">Food</a></li>
-							<li><a href="#">Technology</a></li>
-							<li><a href="#">Business</a></li>
-
-							<li class="has-children">
-								<a href="#">Dropdown</a>
-								<ul class="dropdown">
-									<li><a href="#">Sub Menu One</a></li>
-									<li><a href="#">Sub Menu Two</a></li>
-									<li><a href="#">Sub Menu Three</a></li>
-								</ul>
-							</li>
+							<?php
+							$sql = "SELECT * FROM category WHERE status = 'Active'";
+							$query = $database->prepare($sql);
+							$query->execute();
+							$data = $query->fetchAll(PDO::FETCH_OBJ);
+							$cnt = 1;
+							if ($query->rowCount() > 0) {
+								foreach ($data as $result) {
+							?>
+									<li><a href="categories.php?cat_id=<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->category_name); ?></a></li>
+							<?php $cnt++;
+								}
+							} ?>
 						</ul>
 					</li>
-					<!-- <li><a href="#">Travel</a></li>
-					<li><a href="#">Food</a></li>
-					<li><a href="#">Technology</a></li>
-					<li><a href="#">Business</a></li> -->
 
 				</ul>
 			</div>
@@ -79,7 +83,7 @@
 	</nav>
 	<div class="section pt-5 pb-0">
 		<div class="container">
-			<div class="row justify-content-center mb-5">
+			<div class="row justify-content-center mb-5">     
 				<div class="col-lg-7 text-center">
 					<h2 class="heading">Trending</h2>
 				</div>

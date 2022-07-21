@@ -13,22 +13,31 @@
                         </ul>
                     </li>
 
-                    <li class="label">Apps</li>
+                    <li class="label">Options</li>
                     <li><a class="sidebar-sub-toggle"><i class="ti-bar-chart-alt"></i> Category <span
                                 class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
                             <li><a href="category.php">All Category</a></li>
-                            <!-- <li><a href="chart-morris.html">Morris</a></li>
-                            <li><a href="chartjs.html">Chartjs</a></li>
-                            <li><a href="chartist.html">Chartist</a></li>
-                            <li><a href="chart-peity.html">Peity</a></li>
-                            <li><a href="chart-sparkline.html">Sparkle</a></li>
-                            <li><a href="chart-knob.html">Knob</a></li> -->
                         </ul>
                     </li>
-                    <!-- <li><a href="app-event-calender.html"><i class="ti-calendar"></i> Calender </a></li>
-                    <li><a href="app-email.html"><i class="ti-email"></i> Email</a></li>
-                    <li><a href="profile.php"><i class="ti-user"></i> Profile</a></li>
+
+                    <li><a class="sidebar-sub-toggle"><i class="ti-layout-media-left"></i> Posts <span
+                                class="sidebar-collapse-icon ti-angle-down"></span></a>
+                        <ul>
+                            <li><a href="posts.php">All Posts</a></li>
+                            <li><a href="add_posts.php">Add Posts</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a class="sidebar-sub-toggle"><i class="ti-image"></i> Images <span
+                                class="sidebar-collapse-icon ti-angle-down"></span></a>
+                        <ul>
+                            <li><a href="post_image.php">All Images</a></li>
+                            <li><a href="post_image_upload.php">Add Images</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- <li><a href="profile.php"><i class="ti-user"></i> Profile</a></li>
                     <li><a href="app-widget-card.html"><i class="ti-layout-grid2-alt"></i> Widget</a></li>
                     <li class="label">Features</li>
                     <li><a class="sidebar-sub-toggle"><i class="ti-layout"></i> UI Elements <span
@@ -82,23 +91,9 @@
                             <li><a href="font-themify.html">Themify</a></li>
                         </ul>
                     </li>
-                    <li><a class="sidebar-sub-toggle"><i class="ti-map"></i> Maps <span
-                                class="sidebar-collapse-icon ti-angle-down"></span></a>
-                        <ul>
-                            <li><a href="gmaps.html">Basic</a></li>
-                            <li><a href="vector-map.html">Vector Map</a></li>
-                        </ul>
-                    </li>
                     <li class="label">Form</li>
                     <li><a href="form-basic.html"><i class="ti-view-list-alt"></i> Basic Form </a></li>
                     <li class="label">Extra</li>
-                    <li><a class="sidebar-sub-toggle"><i class="ti-files"></i> Invoice <span
-                                class="sidebar-collapse-icon ti-angle-down"></span></a>
-                        <ul>
-                            <li><a href="invoice.html">Basic</a></li>
-                            <li><a href="invoice-editable.html">Editable</a></li>
-                        </ul>
-                    </li>
                     <li><a class="sidebar-sub-toggle"><i class="ti-target"></i> Pages <span
                                 class="sidebar-collapse-icon ti-angle-down"></span></a>
                         <ul>
@@ -106,8 +101,7 @@
                             <li><a href="page-register.html">Register</a></li>
                             <li><a href="page-reset-password.html">Forgot password</a></li>
                         </ul>
-                    </li>
-                    <li><a href="../documentation/index.html"><i class="ti-file"></i> Documentation</a></li> -->
+                    </li> -->
                     <li><a href="logout.php"><i class="ti-close"></i> Logout</a></li>
                 </ul>
             </div>
