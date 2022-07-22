@@ -10,7 +10,11 @@ class Post
     }
 
 
+<<<<<<< HEAD
     public function all_posts()
+=======
+    public function all_post()
+>>>>>>> cf0da052f53dfbc13f5632682421592692375219
     {
         $sql = "SELECT * FROM posts";
         $stmt = $this->conn->prepare($sql);
@@ -39,7 +43,11 @@ class Post
         }
     }
 
+<<<<<<< HEAD
     public function delete_posts($id)
+=======
+    public function delete_post($id)
+>>>>>>> cf0da052f53dfbc13f5632682421592692375219
     {
         $status = "Deleted";
         $sql = "UPDATE posts SET status = :status WHERE id = :id";
@@ -52,10 +60,17 @@ class Post
         return $stmt->rowCount();
     }
 
+<<<<<<< HEAD
     public function update_posts($title, $short_desc, $long_desc, $author, $cat_id, $user_id, $id)
     {
 
             $sql = "UPDATE posts SET title = :title, short_desc = :short_desc, long_desc = :long_desc, author = :author, cat_id = :cat_id, uploaded_by = :uploaded_by WHERE id = :id";
+=======
+    public function update_category($title, $short_desc, $long_desc, $author, $cat_id, $user_id, $id)
+    {
+
+            $sql = "UPDATE category SET title = :title, short_desc = :short_desc, long_desc = :long_desc, author = :author, cat_id = :cat_id, user_id = :user_id WHERE id = :id";
+>>>>>>> cf0da052f53dfbc13f5632682421592692375219
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(":id", $id, PDO::PARAM_INT);
             $stmt->bindValue(':title', $title, PDO::PARAM_STR);

@@ -45,7 +45,11 @@ function createCategory($category_name, $username)
   return $myResp;
 }
 
+<<<<<<< HEAD
 function deleteCategory($id, $username)
+=======
+function deleteCategory($id,  $username)
+>>>>>>> cf0da052f53dfbc13f5632682421592692375219
 {
   global $category, $log;
   $log->logActivity($username, 'Category with id ' . $id . ' was Deleted');
@@ -67,6 +71,7 @@ function createPost($title, $short_desc, $long_desc, $author, $cat_id, $user_id,
   $log->logActivity($username, 'Post with title ' . $title . ' was Published');
   $myResp = $post->create_posts($title, $short_desc, $long_desc, $author, $cat_id, $user_id);
   return $myResp;
+<<<<<<< HEAD
 }
 
 function updatePost($title, $short_desc, $long_desc, $author, $cat_id, $user_id, $username, $id)
@@ -83,6 +88,8 @@ function deletePost($id, $username)
   $log->logActivity($username, 'Post  with id ' . $id . ' was Deleted');
   $myResp = $post->delete_posts($id);
   return $myResp;
+=======
+>>>>>>> cf0da052f53dfbc13f5632682421592692375219
 }
 
 
@@ -113,11 +120,16 @@ switch ($_POST['action']) {
       break;
     }
 
+<<<<<<< HEAD
   case "updateCategory": {
+=======
+    case "updateCategory": {
+>>>>>>> cf0da052f53dfbc13f5632682421592692375219
       echo updateCategory($_POST['category_name'], $_POST['id'], $_SESSION['username']);
       break;
     }
 
+<<<<<<< HEAD
   case "createPost": {
       echo createPost($_POST['title'], $_POST['short_desc'], $_POST['long_desc'], $_POST['author'], $_POST['cat_id'], $_POST['uploaded_by'], $_SESSION['username']);
       break;
@@ -130,6 +142,10 @@ switch ($_POST['action']) {
 
   case "deletePost": {
       echo deletePost($_POST['id'], $_SESSION['username']);
+=======
+    case "createPost": {
+      echo createPost($_POST['title'], $_POST['short_desc'], $_POST['long_desc'], $_POST['author'], $_POST['cat_id'], $_POST['uploaded_by'], $_SESSION['username']);
+>>>>>>> cf0da052f53dfbc13f5632682421592692375219
       break;
     }
 }

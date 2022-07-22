@@ -58,7 +58,25 @@ $database = $database->getConnection();
 					<li class="active"><a href="index.php">Home</a></li>
 					<li class="has-children">
 						<a href="categories.php">Categories</a>
+<<<<<<< HEAD
 						<?php include "cat_sidebar.php"; ?>
+=======
+						<ul class="dropdown">
+							<?php
+							$sql = "SELECT * FROM category WHERE status = 'Active'";
+							$query = $database->prepare($sql);
+							$query->execute();
+							$data = $query->fetchAll(PDO::FETCH_OBJ);
+							$cnt = 1;
+							if ($query->rowCount() > 0) {
+								foreach ($data as $result) {
+							?>
+									<li><a href="categories.php?cat_id=<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->category_name); ?></a></li>
+							<?php $cnt++;
+								}
+							} ?>
+						</ul>
+>>>>>>> cf0da052f53dfbc13f5632682421592692375219
 					</li>
 				</ul>
 			</div>
