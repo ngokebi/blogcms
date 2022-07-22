@@ -33,7 +33,7 @@ class Category
         }
     }
 
-    public function delete_category( $id)
+    public function delete_category($id)
     {
         $status = "Deleted";
         $sql = "UPDATE category SET status = :status WHERE id = :id";
@@ -58,19 +58,5 @@ class Category
 
             return $stmt->rowCount();
         }
-    
-        public function search_category($searchText, $start = 0, $limit = 4)
-        {
-            $sql = "SELECT * FROM category WHERE category_name LIKE %:search% ORDER BY id DESC LIMIT {$start},{$limit}";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindValue(':search', $searchText, PDO::PARAM_STR);
-            $stmt->execute();
-            if ($stmt->rowCount() > 0) {
-                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            } else {
-                $results = [];
-            }
-    
-            return $results;
-        }
+
 }

@@ -4,11 +4,13 @@ include 'classes/Database.php';
 include 'classes/User.php';
 include 'classes/Log.php';
 include 'classes/Category.php';
+include 'classes/Post.php';
 
 $database = new Database();
 $user = new User($database);
 $log = new Log($database);
 $category = new Category($database);
+$post = new Post($database);
 
 
 function registerUser($username, $name, $email, $password)
@@ -35,20 +37,52 @@ function loginUser($username, $password)
   return $myResp;
 }
 
-function createCategory($category_name)
+function createCategory($category_name, $username)
 {
-  global $category;
-
+  global $category, $log;
+  $log->logActivity($username, 'Category ' . $category_name . ' was Created');
   $myResp = $category->create_category($category_name);
   return $myResp;
 }
 
-function searchQ($queryString)
+function deleteCategory($id, $username)
 {
-  global $category;
+  global $category, $log;
+  $log->logActivity($username, 'Category with id ' . $id . ' was Deleted');
+  $myResp = $category->delete_category($id);
+  return $myResp;
+}
 
-  $myResp = $category->search_category($queryString);
-  echo json_encode($myResp);
+function updateCategory($category_name, $id, $username)
+{
+  global $category, $log;
+  $log->logActivity($username, 'Category with id ' . $id . ' was Updated');
+  $myResp = $category->update_category($category_name, $id);
+  return $myResp;
+}
+
+function createPost($title, $short_desc, $long_desc, $author, $cat_id, $user_id, $username)
+{
+  global $post, $log;
+  $log->logActivity($username, 'Post with title ' . $title . ' was Published');
+  $myResp = $post->create_posts($title, $short_desc, $long_desc, $author, $cat_id, $user_id);
+  return $myResp;
+}
+
+function updatePost($title, $short_desc, $long_desc, $author, $cat_id, $user_id, $username, $id)
+{
+  global $post, $log;
+  $log->logActivity($username, 'Post with title ' . $title . ' was Updated');
+  $myResp = $post->update_posts($title, $short_desc, $long_desc, $author, $cat_id, $user_id, $id);
+  return $myResp;
+}
+
+function deletePost($id, $username)
+{
+  global $post, $log;
+  $log->logActivity($username, 'Post  with id ' . $id . ' was Deleted');
+  $myResp = $post->delete_posts($id);
+  return $myResp;
 }
 
 
@@ -69,13 +103,33 @@ switch ($_POST['action']) {
       break;
     }
 
-    case "createCategory": {
-      echo createCategory($_POST['category_name']);
+  case "createCategory": {
+      echo createCategory($_POST['category_name'], $_SESSION['username']);
       break;
     }
 
-    case "searchQ": {
-      echo searchQ($_GET['searchQuery']);
+  case "deleteCategory": {
+      echo deleteCategory($_POST['id'], $_SESSION['username']);
+      break;
+    }
+
+  case "updateCategory": {
+      echo updateCategory($_POST['category_name'], $_POST['id'], $_SESSION['username']);
+      break;
+    }
+
+  case "createPost": {
+      echo createPost($_POST['title'], $_POST['short_desc'], $_POST['long_desc'], $_POST['author'], $_POST['cat_id'], $_POST['uploaded_by'], $_SESSION['username']);
+      break;
+    }
+
+  case "updatePost": {
+      echo updatePost($_POST['title'], $_POST['short_desc'], $_POST['long_desc'], $_POST['author'], $_POST['cat_id'], $_POST['uploaded_by'], $_SESSION['username'], $_POST['id']);
+      break;
+    }
+
+  case "deletePost": {
+      echo deletePost($_POST['id'], $_SESSION['username']);
       break;
     }
 }

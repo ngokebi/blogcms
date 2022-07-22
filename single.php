@@ -1,5 +1,14 @@
+<?php
+error_reporting(0);
+
+include "classes/Database.php";
+$database = new Database();
+$database = $database->getConnection();
+
+?>
 <!doctype html>
 <html lang="en">
+
 <head>
 
 	<meta charset="utf-8">
@@ -24,7 +33,7 @@
 			<div class="site-navigation">
 				<div class="row">
 					<div class="col-md-6 text-center order-1 order-md-2 mb-3 mb-md-0">
-						<a href="index.html" class="logo m-0 text-uppercase">Crea8t</a>
+						<a href="index.php" class="logo m-0 text-uppercase">Crea8t</a>
 					</div>
 					<div class="col-md-3 order-3 order-md-1">
 						<form action="#" class="search-form">
@@ -46,29 +55,11 @@
 					</div>
 				</div>
 				<ul class="js-clone-nav d-none d-lg-inline-none text-start site-menu float-end">
-					<li class="active"><a href="index.html">Home</a></li>
+					<li class="active"><a href="index.php">Home</a></li>
 					<li class="has-children">
 						<a href="categories.php">Categories</a>
-						<ul class="dropdown">
-							<li><a href="#">Travel</a></li>
-							<li><a href="#">Food</a></li>
-							<li><a href="#">Technology</a></li>
-							<li><a href="#">Business</a></li>
-							<li class="has-children">
-								<a href="#">Dropdown</a>
-								<ul class="dropdown">
-									<li><a href="#">Sub Menu One</a></li>
-									<li><a href="#">Sub Menu Two</a></li>
-									<li><a href="#">Sub Menu Three</a></li>
-								</ul>
-							</li>
-						</ul>
+						<?php include "cat_sidebar.php"; ?>
 					</li>
-					<!-- <li><a href="#">Travel</a></li>
-					<li><a href="#">Food</a></li>
-					<li><a href="#">Technology</a></li>
-					<li><a href="#">Business</a></li> -->
-
 				</ul>
 			</div>
 		</div>
@@ -151,7 +142,7 @@
 								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
 								<span class="date">July 2, 2020</span>
 							</div>
-							<h2 class="heading"><a href="single.html">Your most unhappy customers are your greatest source of learning.</a></h2>
+							<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest source of learning.</a></h2>
 							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
 							<a href="#" class="post-author d-flex align-items-center">
 								<div class="author-pic">
@@ -175,7 +166,7 @@
 								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
 								<span class="date">July 2, 2020</span>
 							</div>
-							<h2 class="heading"><a href="single.html">Your most unhappy customers are your greatest source of learning.</a></h2>
+							<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest source of learning.</a></h2>
 							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
 							<a href="#" class="post-author d-flex align-items-center">
 								<div class="author-pic">
@@ -199,7 +190,7 @@
 								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
 								<span class="date">July 2, 2020</span>
 							</div>
-							<h2 class="heading"><a href="single.html">Your most unhappy customers are your greatest source of learning.</a></h2>
+							<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest source of learning.</a></h2>
 							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
 							<a href="#" class="post-author d-flex align-items-center">
 								<div class="author-pic">
@@ -295,4 +286,5 @@
 		</script>
 		<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"71f592cd69fc7501","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.6.0","si":100}' crossorigin="anonymous"></script>
 </body>
+
 </html>

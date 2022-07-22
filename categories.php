@@ -1,13 +1,25 @@
+<?php
+error_reporting(0);
+
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+include "classes/Database.php";
+$database = new Database();
+$database = $database->getConnection();
+
+?>
 <!doctype html>
 <html lang="en">
+
 <head>
 
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="preconnect" href="https://fonts.gstatic.com/">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet">
-	<link rel="stylesheet"
-		href="A.fonts%2c%2c_icomoon%2c%2c_style.css%2bfonts%2c%2c_flaticon%2c%2c_font%2c%2c_flaticon.css%2bcss%2c%2c_tiny-slider.css%2bcss%2c%2c_glightbox.min.css%2bcss%2c%2c_aos.css%2bcss%2c%2c_style.css%2cMcc.CgyIJPOVwv.css.pagespeed.cf.0" />
+	<link rel="stylesheet" href="A.fonts%2c%2c_icomoon%2c%2c_style.css%2bfonts%2c%2c_flaticon%2c%2c_font%2c%2c_flaticon.css%2bcss%2c%2c_tiny-slider.css%2bcss%2c%2c_glightbox.min.css%2bcss%2c%2c_aos.css%2bcss%2c%2c_style.css%2cMcc.CgyIJPOVwv.css.pagespeed.cf.0" />
 	<title>Crea8t</title>
 </head>
 
@@ -40,8 +52,7 @@
 								<li><a href="#"><span class="icon-facebook"></span></a></li>
 								<li><a href="#"><span class="icon-instagram"></span></a></li>
 							</ul>
-							<a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block"
-								data-toggle="collapse" data-target="#main-navbar">
+							<a href="#" class="burger ms-auto float-end site-menu-toggle js-menu-toggle d-inline-block" data-toggle="collapse" data-target="#main-navbar">
 								<span></span>
 							</a>
 						</div>
@@ -50,26 +61,9 @@
 				<ul class="js-clone-nav d-none d-lg-inline-none text-start site-menu float-end">
 					<li><a href="index.php">Home</a></li>
 					<li class="has-children active">
-						<a href="categories.php">Categories</a>
-						<ul class="dropdown">
-							<li><a href="#">Travel</a></li>
-							<li><a href="#">Food</a></li>
-							<li><a href="#">Technology</a></li>
-							<li><a href="#">Business</a></li>
-							<li class="has-children">
-								<a href="#">Dropdown</a>
-								<ul class="dropdown">
-									<li><a href="#">Sub Menu One</a></li>
-									<li><a href="#">Sub Menu Two</a></li>
-									<li><a href="#">Sub Menu Three</a></li>
-								</ul>
-							</li>
-						</ul>
+						<a>Categories</a>
+						<?php include "cat_sidebar.php"; ?>
 					</li>
-					<!-- <li><a href="#">Travel</a></li>
-					<li><a href="#">Food</a></li>
-					<li><a href="#">Technology</a></li>
-					<li><a href="#">Business</a></li> -->
 
 				</ul>
 			</div>
@@ -80,7 +74,21 @@
 			<div class="row mb-5 justify-content-center">
 				<div class="col-lg-9">
 					<span class="fw-normal text-uppercase d-block mb-1">Categories</span>
-					<h2 class="heading">'Business'</h2>
+
+					<?php
+					$cat_id = intval($_GET['cat_id']);
+					$sql = "SELECT category.id, category.category_name as cat_name, posts.status, posts.id as post_id, title, short_desc, long_desc, author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, users.username as username, users.id as uploaded_by  
+			        FROM posts INNER JOIN users ON posts.uploaded_by = users.id INNER JOIN category ON posts.cat_id = category.id WHERE posts.status = 'Active' and category.id = :cat_id";
+					$query = $database->prepare($sql);
+					$query->bindParam(':cat_id', $cat_id, PDO::PARAM_STR);
+					$query->execute();
+					$data = $query->fetchAll(PDO::FETCH_OBJ);
+					$cnt = 1;
+					if ($query->rowCount() > 0) {
+						foreach ($data as $result) {
+					?>
+
+							<h2 class="heading"><?php echo htmlentities($result->cat_name) ?></h2>
 				</div>
 			</div>
 			<div class="row justify-content-center">
@@ -91,80 +99,94 @@
 						</div>
 						<div class="content">
 							<div class="post-meta mb-3">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
+								<a href="#" class="category"><?php echo htmlentities($result->cat_name) ?></a>
 								&mdash;
-								<span class="date">July 2, 2020</span>
+								<span class="date"><?php echo htmlentities($result->published_date) ?></span>
 							</div>
-							<h2 class="heading"><a href="single.html">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
+							<h2 class="heading"><a href="single.php?post_id=<?php echo htmlentities($result->post_id) ?>"><?php echo htmlentities($result->title) ?></a></h2>
+							<p><?php echo htmlentities($result->short_desc)?></p>
 							<a href="#" class="post-author d-flex align-items-center">
 								<div class="author-pic">
 									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
 								</div>
 								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>Author, 26 published post</span>
+									<strong><?php echo htmlentities($result->author) ?></strong>
+									<?php
+									$author = $result->author;
+									$sql = "SELECT COUNT(*) as total FROM posts WHERE author = :author";
+									$stmt = $database->prepare($sql);
+									$stmt->bindParam(':author', $author, PDO::PARAM_STR);
+									$stmt->execute();
+									$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+									if ($stmt->rowCount() > 0) {
+										foreach ($data as $results) {
+									?>
+											<span>Author, <?php echo htmlentities($results->total) ?> published post</span>
+									<?php
+										}
+									} ?>
 								</div>
 							</a>
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-9">
-					<div class="post-entry d-md-flex small-horizontal mb-5">
-						<div class="me-md-5 thumbnail mb-3 mb-md-0">
-							<img src="images/ximg_3.jpg.pagespeed.ic.MzyTwPvJuu.jpg" alt="Image" class="img-fluid">
-						</div>
-						<div class="content">
-							<div class="post-meta mb-3">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading"><a href="single.html">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>Author, 26 published post</span>
-								</div>
-							</a>
-						</div>
-					</div>
+		<?php $cnt++;
+						}
+					} ?>
+		<!-- <div class="col-lg-9">
+			<div class="post-entry d-md-flex small-horizontal mb-5">
+				<div class="me-md-5 thumbnail mb-3 mb-md-0">
+					<img src="images/ximg_3.jpg.pagespeed.ic.MzyTwPvJuu.jpg" alt="Image" class="img-fluid">
 				</div>
-				<div class="col-lg-9">
-					<div class="post-entry d-md-flex small-horizontal mb-5">
-						<div class="me-md-5 thumbnail mb-3 mb-md-0">
-							<img src="images/ximg_4.jpg.pagespeed.ic.5BNsTZBCHP.jpg" alt="Image" class="img-fluid">
-						</div>
-						<div class="content">
-							<div class="post-meta mb-3">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading"><a href="single.html">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>Author, 26 published post</span>
-								</div>
-							</a>
-						</div>
+				<div class="content">
+					<div class="post-meta mb-3">
+						<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
+						&mdash;
+						<span class="date">July 2, 2020</span>
 					</div>
+					<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest
+							source of learning.</a></h2>
+					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
+						there live the blind texts.</p>
+					<a href="#" class="post-author d-flex align-items-center">
+						<div class="author-pic">
+							<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
+						</div>
+						<div class="text">
+							<strong>Sergy Campbell</strong>
+							<span>Author, 26 published post</span>
+						</div>
+					</a>
 				</div>
+			</div>
+		</div>
+		<div class="col-lg-9">
+			<div class="post-entry d-md-flex small-horizontal mb-5">
+				<div class="me-md-5 thumbnail mb-3 mb-md-0">
+					<img src="images/ximg_4.jpg.pagespeed.ic.5BNsTZBCHP.jpg" alt="Image" class="img-fluid">
+				</div>
+				<div class="content">
+					<div class="post-meta mb-3">
+						<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
+						&mdash;
+						<span class="date">July 2, 2020</span>
+					</div>
+					<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest
+							source of learning.</a></h2>
+					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
+						there live the blind texts.</p>
+					<a href="#" class="post-author d-flex align-items-center">
+						<div class="author-pic">
+							<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
+						</div>
+						<div class="text">
+							<strong>Sergy Campbell</strong>
+							<span>Author, 26 published post</span>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div> -->
 			</div>
 			<div class="row align-items-center justify-content-center py-5">
 				<div class="col-lg-6 text-center">
@@ -257,10 +279,7 @@
 
 			gtag('config', 'UA-23581568-13');
 		</script>
-		<script defer
-			src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194"
-			integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw=="
-			data-cf-beacon='{"rayId":"71f592dacf89407e","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.6.0","si":100}'
-			crossorigin="anonymous"></script>
+		<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"71f592dacf89407e","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.6.0","si":100}' crossorigin="anonymous"></script>
 </body>
+
 </html>

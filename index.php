@@ -1,3 +1,11 @@
+<?php
+error_reporting(0);
+
+include "classes/Database.php";
+$database = new Database();
+$database = $database->getConnection();
+
+?>
 <!doctype html>
 <html lang="en">
 
@@ -52,26 +60,8 @@
 					<li class="active"><a href="index.php">Home</a></li>
 					<li class="has-children">
 						<a href="categories.php">Categories</a>
-						<ul class="dropdown">
-							<li><a href="#">Travel</a></li>
-							<li><a href="#">Food</a></li>
-							<li><a href="#">Technology</a></li>
-							<li><a href="#">Business</a></li>
-
-							<li class="has-children">
-								<a href="#">Dropdown</a>
-								<ul class="dropdown">
-									<li><a href="#">Sub Menu One</a></li>
-									<li><a href="#">Sub Menu Two</a></li>
-									<li><a href="#">Sub Menu Three</a></li>
-								</ul>
-							</li>
-						</ul>
+						<?php include "cat_sidebar.php"; ?>
 					</li>
-					<!-- <li><a href="#">Travel</a></li>
-					<li><a href="#">Food</a></li>
-					<li><a href="#">Technology</a></li>
-					<li><a href="#">Business</a></li> -->
 
 				</ul>
 			</div>
