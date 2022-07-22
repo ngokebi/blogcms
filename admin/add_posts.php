@@ -10,11 +10,8 @@ include "classes/Database.php";
 $database = new Database();
 $database = $database->getConnection();
 
-<<<<<<< HEAD
 if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 30)) {
-=======
-if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 10)) {
->>>>>>> cf0da052f53dfbc13f5632682421592692375219
+
     session_unset();
     session_destroy();
     header('Location: logout.php');

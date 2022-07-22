@@ -10,11 +10,10 @@ include "classes/Database.php";
 $database = new Database();
 $database = $database->getConnection();
 
-<<<<<<< HEAD
+
 if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 30)) {
-=======
-if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 10)) {
->>>>>>> cf0da052f53dfbc13f5632682421592692375219
+
+
     session_unset();
     session_destroy();
     header('Location: logout.php');
@@ -129,11 +128,7 @@ if (empty($_SESSION['username'])) {
                                                 ?>
                                                         <div class="form-group col-sm-8">
                                                             <input type="hidden" name="id" id="cat_id" value="<?php echo $cat_id ?>">
-<<<<<<< HEAD
                                                             <label class="col-form-label">Category Name:</label>
-=======
-                                                            <label>Category Name:</label>
->>>>>>> cf0da052f53dfbc13f5632682421592692375219
                                                             <input type="text" class="form-control" name="category_name" id="category_name" value="<?php echo htmlentities($result->category_name); ?>" placeholder="Category Name">
                                                         </div>
                                                 <?php }

@@ -111,11 +111,7 @@ if (empty($_SESSION['username'])) {
                                     </div>
                                     <div class="card-body">
                                         <div style="float: right ;">
-<<<<<<< HEAD
                                             <label class="col-form-label">Search:
-=======
-                                            <label>Search:
->>>>>>> cf0da052f53dfbc13f5632682421592692375219
                                                 <input type="text" class="form-control input-sm" placeholder="" onkeyup="myFunction()" id="searchinput" aria-controls="bootstrap-data-table-export">
                                             </label>
                                         </div>
@@ -275,16 +271,10 @@ if (empty($_SESSION['username'])) {
 
                 $(".delete").click(function(e) {
                     e.preventDefault();
-<<<<<<< HEAD
                     var id = $(this).attr('cat_id');
                     $.ajax({
                         type: "POST",
-=======
-                    alert('Delete');
-                    var id = $(this).attr('cat_id');
-                    $.ajax({
-                        type: "GET",
->>>>>>> cf0da052f53dfbc13f5632682421592692375219
+
                         url: "process.php",
                         data: {
                             action: "deleteCategory",

@@ -1,13 +1,8 @@
 <?php
-error_reporting(0);
-
-<<<<<<< HEAD
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-=======
->>>>>>> cf0da052f53dfbc13f5632682421592692375219
 include "classes/Database.php";
 $database = new Database();
 $database = $database->getConnection();
@@ -65,34 +60,14 @@ $database = $database->getConnection();
 					<li><a href="index.php">Home</a></li>
 					<li class="has-children active">
 						<a>Categories</a>
-<<<<<<< HEAD
 						<?php include "cat_sidebar.php"; ?>
-=======
-						<ul class="dropdown">
-							<?php
-							$sql = "SELECT * FROM category WHERE status = 'Active'";
-							$query = $database->prepare($sql);
-							$query->execute();
-							$data = $query->fetchAll(PDO::FETCH_OBJ);
-							$cnt = 1;
-							if ($query->rowCount() > 0) {
-								foreach ($data as $result) {
-							?>
-									<li><a href="categories.php?cat_id=<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->category_name); ?></a></li>
-							<?php $cnt++;
-								}
-							} ?>
-						</ul>
->>>>>>> cf0da052f53dfbc13f5632682421592692375219
 					</li>
-
 				</ul>
 			</div>
 		</div>
 	</nav>
 	<div class="section pt-5 pb-0">
 		<div class="container">
-<<<<<<< HEAD
 			<div class="row mb-5 justify-content-center">
 				<div class="col-lg-9">
 					<span class="fw-normal text-uppercase d-block mb-1">Categories</span>
@@ -155,174 +130,10 @@ $database = $database->getConnection();
 		<?php $cnt++;
 						}
 					} ?>
-		<!-- <div class="col-lg-9">
-			<div class="post-entry d-md-flex small-horizontal mb-5">
-				<div class="me-md-5 thumbnail mb-3 mb-md-0">
-					<img src="images/ximg_3.jpg.pagespeed.ic.MzyTwPvJuu.jpg" alt="Image" class="img-fluid">
-				</div>
-				<div class="content">
-					<div class="post-meta mb-3">
-						<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-						&mdash;
-						<span class="date">July 2, 2020</span>
-=======
-			<?php
-			$cat_id = intval($_GET['cat_id']);
-			$sql = "SELECT * FROM blog WHERE status = 'Active' and cat_id = :cat_id";
-			$query = $database->prepare($sql);
-			$query->bindParam(':cat_id', $cat_id, PDO::PARAM_STR);
-			$query->execute();
-			$data = $query->fetchAll(PDO::FETCH_OBJ);
-			$cnt = 1;
-			if ($query->rowCount() > 0) {
-				foreach ($data as $result) {
-			?>
-					<div class="row mb-5 justify-content-center">
-						<div class="col-lg-9">
-							<span class="fw-normal text-uppercase d-block mb-1">Categories</span>
-							<h2 class="heading">'Business'</h2>
-						</div>
-					</div>
-					<div class="row justify-content-center">
-						<div class="col-lg-9">
-							<div class="post-entry d-md-flex small-horizontal mb-5">
-								<div class="me-md-5 thumbnail mb-3 mb-md-0">
-									<img src="images/ximg_2.jpg.pagespeed.ic.tehDa3FPWy.jpg" alt="Image" class="img-fluid">
-								</div>
-								<div class="content">
-									<div class="post-meta mb-3">
-										<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-										&mdash;
-										<span class="date">July 2, 2020</span>
-									</div>
-									<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest
-											source of learning.</a></h2>
-									<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-										there live the blind texts.</p>
-									<a href="#" class="post-author d-flex align-items-center">
-										<div class="author-pic">
-											<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-										</div>
-										<div class="text">
-											<strong>Sergy Campbell</strong>
-											<span>Author, 26 published post</span>
-										</div>
-									</a>
-								</div>
-							</div>
-						</div>
-				<?php $cnt++;
-				}
-			} ?>
-				<div class="col-lg-9">
-					<div class="post-entry d-md-flex small-horizontal mb-5">
-						<div class="me-md-5 thumbnail mb-3 mb-md-0">
-							<img src="images/ximg_3.jpg.pagespeed.ic.MzyTwPvJuu.jpg" alt="Image" class="img-fluid">
-						</div>
-						<div class="content">
-							<div class="post-meta mb-3">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>Author, 26 published post</span>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-9">
-					<div class="post-entry d-md-flex small-horizontal mb-5">
-						<div class="me-md-5 thumbnail mb-3 mb-md-0">
-							<img src="images/ximg_4.jpg.pagespeed.ic.5BNsTZBCHP.jpg" alt="Image" class="img-fluid">
-						</div>
-						<div class="content">
-							<div class="post-meta mb-3">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>Author, 26 published post</span>
-								</div>
-							</a>
-						</div>
->>>>>>> cf0da052f53dfbc13f5632682421592692375219
-					</div>
-					<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest
-							source of learning.</a></h2>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-						there live the blind texts.</p>
-					<a href="#" class="post-author d-flex align-items-center">
-						<div class="author-pic">
-							<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-						</div>
-						<div class="text">
-							<strong>Sergy Campbell</strong>
-							<span>Author, 26 published post</span>
-						</div>
-					</a>
-				</div>
-<<<<<<< HEAD
+
 			</div>
 		</div>
-		<div class="col-lg-9">
-			<div class="post-entry d-md-flex small-horizontal mb-5">
-				<div class="me-md-5 thumbnail mb-3 mb-md-0">
-					<img src="images/ximg_4.jpg.pagespeed.ic.5BNsTZBCHP.jpg" alt="Image" class="img-fluid">
-				</div>
-				<div class="content">
-					<div class="post-meta mb-3">
-						<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-						&mdash;
-						<span class="date">July 2, 2020</span>
-					</div>
-					<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest
-							source of learning.</a></h2>
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-						there live the blind texts.</p>
-					<a href="#" class="post-author d-flex align-items-center">
-						<div class="author-pic">
-							<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-						</div>
-						<div class="text">
-							<strong>Sergy Campbell</strong>
-							<span>Author, 26 published post</span>
-						</div>
-					</a>
-				</div>
-			</div>
-		</div> -->
-			</div>
-			<div class="row align-items-center justify-content-center py-5">
-				<div class="col-lg-6 text-center">
-					<div class="custom-pagination">
-						<a href="#">1</a>
-						<a href="#" class="active">2</a>
-						<a href="#">3</a>
-						<a href="#">4</a>
-						<a href="#">5</a>
-=======
->>>>>>> cf0da052f53dfbc13f5632682421592692375219
+		
 					</div>
 					<div class="row align-items-center justify-content-center py-5">
 						<div class="col-lg-6 text-center">
