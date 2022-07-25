@@ -72,19 +72,19 @@ $database = $database->getConnection();
 				<div class="col-lg-9">
 					<span class="fw-normal text-uppercase d-block mb-1">Categories</span>
 					<h2 class="heading"><?php echo htmlentities($result->cat_name) ?></h2>
-					</div>
-					<?php
-					$cat_id = intval($_GET['cat_id']);
-					$sql = "SELECT category.id, category.category_name as cat_name, posts.status, posts.id as post_id, title, short_desc, long_desc, author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, users.username as username, users.id as uploaded_by  
+				</div>
+				<?php
+				$cat_id = intval($_GET['cat_id']);
+				$sql = "SELECT category.id, category.category_name as cat_name, posts.status, posts.id as post_id, title, short_desc, long_desc, author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, users.username as username, users.id as uploaded_by  
 			        FROM posts INNER JOIN users ON posts.uploaded_by = users.id INNER JOIN category ON posts.cat_id = category.id WHERE posts.status = 'Active' and category.id = :cat_id";
-					$query = $database->prepare($sql);
-					$query->bindParam(':cat_id', $cat_id, PDO::PARAM_STR);
-					$query->execute();
-					$data = $query->fetchAll(PDO::FETCH_OBJ);
-					$cnt = 1;
-					if ($query->rowCount() > 0) {
-						foreach ($data as $result) {
-					?>
+				$query = $database->prepare($sql);
+				$query->bindParam(':cat_id', $cat_id, PDO::PARAM_STR);
+				$query->execute();
+				$data = $query->fetchAll(PDO::FETCH_OBJ);
+				$cnt = 1;
+				if ($query->rowCount() > 0) {
+					foreach ($data as $result) {
+				?>
 			</div>
 			<div class="row justify-content-center">
 				<div class="col-lg-9">
@@ -101,7 +101,7 @@ $database = $database->getConnection();
 							if ($query->rowCount() > 0) {
 								foreach ($data as $results) {
 							?>
-									<img src="admin/post_images/<?php echo htmlentities($results->image_url)?>" alt="Image" class="img-fluid">
+									<img src="admin/post_images/<?php echo htmlentities($results->image_url) ?>" alt="Image" class="img-fluid">
 						</div>
 				<?php
 								}
@@ -140,8 +140,8 @@ $database = $database->getConnection();
 					</div>
 				</div>
 		<?php $cnt++;
-						}
-					} ?>
+					}
+				} ?>
 
 			</div>
 		</div>
