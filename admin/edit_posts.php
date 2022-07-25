@@ -104,10 +104,18 @@ if (empty($_SESSION['username'])) {
                     <!-- /# row -->
                     <section id="main-content">
                         <div class="row">
+<<<<<<< HEAD
                             <div class="col-lg-10">
                                 <div class="card">
                                     <div class="card-title">
                                         <h4>Edit Post</h4>
+=======
+<<<<<<< HEAD
+                            <div class="col-lg-10">
+                                <div class="card">
+                                    <div class="card-title">
+                                        <h2>Edit Post</h2>
+>>>>>>> 49f7658626357565e00e6a2665e4d382568bd7ed
                                     </div>
                                     <div class="card-body">
                                         <div class="basic-form">
