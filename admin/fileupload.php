@@ -18,7 +18,10 @@ if (isset($_POST['submit'])) {
     $allowed_extensions = array(".jpg", "jpeg", ".png", ".gif");
 
     if (!in_array($extension, $allowed_extensions)) {
-        echo "<script>alert('Invalid format. Only jpg / jpeg/ png /gif format allowed');</script>";
+        echo "<script>
+        alert('Invalid format. Only jpg / jpeg/ png /gif format allowed');
+        window.location.href='post_image_upload.php';
+        </script>";
     } else {
         $imgnewfile = md5($image_url) . $extension;
 
@@ -37,7 +40,7 @@ if (isset($_POST['submit'])) {
             alert('Data inserted successfully');
             window.location.href='post_image.php';
             </script>";
-            header("location: post_image.php");
+            // header("location: post_image.php");
         } else {
             echo "<script>alert('Data not inserted');</script>";
         }

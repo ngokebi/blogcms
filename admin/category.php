@@ -10,7 +10,7 @@ include "classes/Database.php";
 $database = new Database();
 $database = $database->getConnection();
 
-if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 10)) {
+if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 30)) {
     session_unset();
     session_destroy();
     header('Location: logout.php');
@@ -111,7 +111,7 @@ if (empty($_SESSION['username'])) {
                                     </div>
                                     <div class="card-body">
                                         <div style="float: right ;">
-                                            <label>Search:
+                                            <label class="col-form-label">Search:
                                                 <input type="text" class="form-control input-sm" placeholder="" onkeyup="myFunction()" id="searchinput" aria-controls="bootstrap-data-table-export">
                                             </label>
                                         </div>
@@ -144,7 +144,7 @@ if (empty($_SESSION['username'])) {
                                                                 <td class="color-primary">
                                                                     <span class="m-l-10">
                                                                         <a href="edit_category.php?cat_id=<?php echo htmlentities($result->id); ?>" title="Edit" id="edit">
-                                                                            <i class="ti-check color-success"></i>
+                                                                            <i class="ti-pencil color-success"></i>
                                                                         </a>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                                                         <a href="category.php?cat_id=<?php echo htmlentities($result->id); ?>" cat_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
@@ -187,7 +187,7 @@ if (empty($_SESSION['username'])) {
                                         <div class="basic-form">
                                             <form method="POST">
                                                 <div class="form-group col-sm-8">
-                                                    <label>Category Name:</label>
+                                                    <label class="col-form-label">Category Name:</label>
                                                     <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Category Name">
                                                 </div>
 
@@ -202,7 +202,7 @@ if (empty($_SESSION['username'])) {
                         </div>
                         <!-- /# row -->
                         <?php
-                        // include "include/footer.php";
+                        include "include/footer.php";
                         ?>
 
                     </section>
@@ -271,10 +271,10 @@ if (empty($_SESSION['username'])) {
 
                 $(".delete").click(function(e) {
                     e.preventDefault();
-                    alert('Delete');
                     var id = $(this).attr('cat_id');
                     $.ajax({
-                        type: "GET",
+                        type: "POST",
+
                         url: "process.php",
                         data: {
                             action: "deleteCategory",

@@ -60,21 +60,7 @@ $database = $database->getConnection();
 					<li class="active"><a href="index.php">Home</a></li>
 					<li class="has-children">
 						<a href="categories.php">Categories</a>
-						<ul class="dropdown">
-							<?php
-							$sql = "SELECT * FROM category WHERE status = 'Active'";
-							$query = $database->prepare($sql);
-							$query->execute();
-							$data = $query->fetchAll(PDO::FETCH_OBJ);
-							$cnt = 1;
-							if ($query->rowCount() > 0) {
-								foreach ($data as $result) {
-							?>
-									<li><a href="categories.php?cat_id=<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->category_name); ?></a></li>
-							<?php $cnt++;
-								}
-							} ?>
-						</ul>
+						<?php include "cat_sidebar.php"; ?>
 					</li>
 
 				</ul>
@@ -83,7 +69,7 @@ $database = $database->getConnection();
 	</nav>
 	<div class="section pt-5 pb-0">
 		<div class="container">
-			<div class="row justify-content-center mb-5">     
+			<div class="row justify-content-center mb-5">
 				<div class="col-lg-7 text-center">
 					<h2 class="heading">Trending</h2>
 				</div>

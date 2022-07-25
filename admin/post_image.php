@@ -10,7 +10,7 @@ include "classes/Database.php";
 $database = new Database();
 $database = $database->getConnection();
 
-if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 10)) {
+if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 30)) {
     session_unset();
     session_destroy();
     header('Location: logout.php');
@@ -106,7 +106,7 @@ if (empty($_SESSION['username'])) {
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-title">
-                                        <h2>All Images</h2>
+                                        <h4>All Images</h4>
 
                                     </div>
                                     <div class="card-body">
@@ -143,12 +143,12 @@ if (empty($_SESSION['username'])) {
                                                                 <th scope="row"><b><?php echo htmlentities($cnt); ?></b></th>
                                                                 <td><?php echo htmlentities($result->post_id); ?></td>
                                                                 <td><?php echo htmlentities($result->short_desc); ?></td>
-                                                                <td><img src="post_images/<?php echo $result->image_url; ?>" alt="" width="300" height="200"></td>
+                                                                <td><a data-toggle="modal" data-target="#exampleModal"><img src="post_images/<?php echo $result->image_url; ?>" alt="" width="300" height="200"></a></td>
                                                                 <td><?php echo htmlentities($result->created_at); ?></td>
                                                                 <td class="color-primary">
                                                                     <span class="m-l-10">
                                                                         <a href="edit_posts.php?post_id=<?php echo htmlentities($result->id); ?>" title="Edit" id="edit">
-                                                                            <i class="ti-check color-success"></i>
+                                                                            <i class="ti-pencil color-success"></i>
                                                                         </a>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                                                         <a href="posts.php?post_id=<?php echo htmlentities($result->id); ?>" post_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
@@ -157,11 +157,29 @@ if (empty($_SESSION['username'])) {
                                                                     </span>
                                                                 </td>
                                                             </tr>
-                                                    <?php $cnt++;
+
+                                                        </tbody>
+                                                <?php $cnt++;
                                                     }
                                                 } ?>
-                                                        </tbody>
                                             </table>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Image</h5>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <img src="post_images/<?php echo $result->image_url; ?>" alt="" width="400" height="300">
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -170,7 +188,7 @@ if (empty($_SESSION['username'])) {
                         </div>
                         <!-- /# row -->
                         <?php
-                        // include "include/footer.php";
+                        include "include/footer.php";
                         ?>
 
                     </section>
@@ -180,6 +198,10 @@ if (empty($_SESSION['username'])) {
 
         <script>
             $("#year").text(new Date().getFullYear());
+
+            $('#myModal').on('shown.bs.modal', function() {
+                $('#myInput').trigger('focus')
+            })
         </script>
         <!-- Common -->
         <script src="js/lib/jquery.min.js"></script>

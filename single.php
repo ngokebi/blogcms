@@ -8,6 +8,7 @@ $database = $database->getConnection();
 ?>
 <!doctype html>
 <html lang="en">
+
 <head>
 
 	<meta charset="utf-8">
@@ -32,7 +33,7 @@ $database = $database->getConnection();
 			<div class="site-navigation">
 				<div class="row">
 					<div class="col-md-6 text-center order-1 order-md-2 mb-3 mb-md-0">
-						<a href="index.html" class="logo m-0 text-uppercase">Crea8t</a>
+						<a href="index.php" class="logo m-0 text-uppercase">Crea8t</a>
 					</div>
 					<div class="col-md-3 order-3 order-md-1">
 						<form action="#" class="search-form">
@@ -54,24 +55,10 @@ $database = $database->getConnection();
 					</div>
 				</div>
 				<ul class="js-clone-nav d-none d-lg-inline-none text-start site-menu float-end">
-					<li class="active"><a href="index.html">Home</a></li>
+					<li class="active"><a href="index.php">Home</a></li>
 					<li class="has-children">
 						<a href="categories.php">Categories</a>
-						<ul class="dropdown">
-							<?php
-							$sql = "SELECT * FROM category WHERE status = 'Active'";
-							$query = $database->prepare($sql);
-							$query->execute();
-							$data = $query->fetchAll(PDO::FETCH_OBJ);
-							$cnt = 1;
-							if ($query->rowCount() > 0) {
-								foreach ($data as $result) {
-							?>
-									<li><a href="categories.php?cat_id=<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->category_name); ?></a></li>
-							<?php $cnt++;
-								}
-							} ?>
-						</ul>
+						<?php include "cat_sidebar.php"; ?>
 					</li>
 				</ul>
 			</div>
@@ -299,4 +286,5 @@ $database = $database->getConnection();
 		</script>
 		<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"71f592cd69fc7501","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.6.0","si":100}' crossorigin="anonymous"></script>
 </body>
+
 </html>

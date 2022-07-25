@@ -10,7 +10,9 @@ include "classes/Database.php";
 $database = new Database();
 $database = $database->getConnection();
 
-if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 10)) {
+
+if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 30)) {
+
     session_unset();
     session_destroy();
     header('Location: logout.php');
@@ -115,11 +117,11 @@ if (empty($_SESSION['username'])) {
                                                     <label class="col-form-label">Image:</label>
                                                     <input type="file" name="image_url"  class="form-control">
                                                 </div>
-                                                <!-- <div class="form-group col-sm-8">
+                                                <div class="form-group col-sm-8">
                                                     <label class="col-form-label">Uploaded By</label>
                                                     <select class="form-control" name="uploaded_by" autocomplete="off">
                                                         <option value="">Choose..</option>
-                                                        <?php $sql = "SELECT username FROM users INNER JOIN posts ON users.id = posts.uploaded_by";
+                                                        <?php $sql = "SELECT username FROM users";
                                                         $query = $database->prepare($sql);
                                                         $query->execute();
                                                         $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -129,7 +131,7 @@ if (empty($_SESSION['username'])) {
                                                         <?php }
                                                         } ?>
                                                     </select>
-                                                </div> -->
+                                                </div>
                                                 <div class="form-group col-sm-8">
                                                     <label class="col-form-label">Post</label>
                                                     <select class="form-control" name="post_id" autocomplete="off">

@@ -9,8 +9,7 @@ class Post
         $this->conn = $database->getConnection();
     }
 
-
-    public function all_post()
+    public function all_posts()
     {
         $sql = "SELECT * FROM posts";
         $stmt = $this->conn->prepare($sql);
@@ -39,7 +38,8 @@ class Post
         }
     }
 
-    public function delete_post($id)
+
+    public function delete_posts($id)
     {
         $status = "Deleted";
         $sql = "UPDATE posts SET status = :status WHERE id = :id";
@@ -52,10 +52,10 @@ class Post
         return $stmt->rowCount();
     }
 
-    public function update_category($title, $short_desc, $long_desc, $author, $cat_id, $user_id, $id)
-    {
 
-            $sql = "UPDATE category SET title = :title, short_desc = :short_desc, long_desc = :long_desc, author = :author, cat_id = :cat_id, user_id = :user_id WHERE id = :id";
+    public function update_posts($title, $short_desc, $long_desc, $author, $cat_id, $user_id, $id)
+    {
+            $sql = "UPDATE posts SET title = :title, short_desc = :short_desc, long_desc = :long_desc, author = :author, cat_id = :cat_id, uploaded_by = :uploaded_by WHERE id = :id";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindValue(":id", $id, PDO::PARAM_INT);
             $stmt->bindValue(':title', $title, PDO::PARAM_STR);

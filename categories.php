@@ -1,5 +1,7 @@
 <?php
-error_reporting(0);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
 include "classes/Database.php";
 $database = new Database();
@@ -58,144 +60,105 @@ $database = $database->getConnection();
 					<li><a href="index.php">Home</a></li>
 					<li class="has-children active">
 						<a>Categories</a>
-						<ul class="dropdown">
-							<?php
-							$sql = "SELECT * FROM category WHERE status = 'Active'";
-							$query = $database->prepare($sql);
-							$query->execute();
-							$data = $query->fetchAll(PDO::FETCH_OBJ);
-							$cnt = 1;
-							if ($query->rowCount() > 0) {
-								foreach ($data as $result) {
-							?>
-									<li><a href="categories.php?cat_id=<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->category_name); ?></a></li>
-							<?php $cnt++;
-								}
-							} ?>
-						</ul>
+						<?php include "cat_sidebar.php"; ?>
 					</li>
-
 				</ul>
 			</div>
 		</div>
 	</nav>
 	<div class="section pt-5 pb-0">
 		<div class="container">
-			<?php
-			$cat_id = intval($_GET['cat_id']);
-			$sql = "SELECT * FROM blog WHERE status = 'Active' and cat_id = :cat_id";
-			$query = $database->prepare($sql);
-			$query->bindParam(':cat_id', $cat_id, PDO::PARAM_STR);
-			$query->execute();
-			$data = $query->fetchAll(PDO::FETCH_OBJ);
-			$cnt = 1;
-			if ($query->rowCount() > 0) {
-				foreach ($data as $result) {
-			?>
-					<div class="row mb-5 justify-content-center">
-						<div class="col-lg-9">
-							<span class="fw-normal text-uppercase d-block mb-1">Categories</span>
-							<h2 class="heading">'Business'</h2>
-						</div>
+			<div class="row mb-5 justify-content-center">
+				<div class="col-lg-9">
+					<span class="fw-normal text-uppercase d-block mb-1">Categories</span>
+					<h2 class="heading"><?php echo htmlentities($result->cat_name) ?></h2>
 					</div>
-					<div class="row justify-content-center">
-						<div class="col-lg-9">
-							<div class="post-entry d-md-flex small-horizontal mb-5">
-								<div class="me-md-5 thumbnail mb-3 mb-md-0">
-									<img src="images/ximg_2.jpg.pagespeed.ic.tehDa3FPWy.jpg" alt="Image" class="img-fluid">
-								</div>
-								<div class="content">
-									<div class="post-meta mb-3">
-										<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-										&mdash;
-										<span class="date">July 2, 2020</span>
-									</div>
-									<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest
-											source of learning.</a></h2>
-									<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-										there live the blind texts.</p>
-									<a href="#" class="post-author d-flex align-items-center">
-										<div class="author-pic">
-											<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-										</div>
-										<div class="text">
-											<strong>Sergy Campbell</strong>
-											<span>Author, 26 published post</span>
-										</div>
-									</a>
-								</div>
-							</div>
-						</div>
-				<?php $cnt++;
-				}
-			} ?>
+					<?php
+					$cat_id = intval($_GET['cat_id']);
+					$sql = "SELECT category.id, category.category_name as cat_name, posts.status, posts.id as post_id, title, short_desc, long_desc, author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, users.username as username, users.id as uploaded_by  
+			        FROM posts INNER JOIN users ON posts.uploaded_by = users.id INNER JOIN category ON posts.cat_id = category.id WHERE posts.status = 'Active' and category.id = :cat_id";
+					$query = $database->prepare($sql);
+					$query->bindParam(':cat_id', $cat_id, PDO::PARAM_STR);
+					$query->execute();
+					$data = $query->fetchAll(PDO::FETCH_OBJ);
+					$cnt = 1;
+					if ($query->rowCount() > 0) {
+						foreach ($data as $result) {
+					?>
+			</div>
+			<div class="row justify-content-center">
 				<div class="col-lg-9">
 					<div class="post-entry d-md-flex small-horizontal mb-5">
 						<div class="me-md-5 thumbnail mb-3 mb-md-0">
-							<img src="images/ximg_3.jpg.pagespeed.ic.MzyTwPvJuu.jpg" alt="Image" class="img-fluid">
+							<?php
+							$post_id = $result->post_id;
+							$sql = "SELECT * FROM image INNER JOIN posts ON image.post_id = posts.id WHERE post_id = :post_id AND image.short_desc = 'Main Thumb'";
+							$query = $database->prepare($sql);
+							$query->bindParam(':post_id', $post_id, PDO::PARAM_STR);
+							$query->execute();
+							$data = $query->fetchAll(PDO::FETCH_OBJ);
+							$cnt = 1;
+							if ($query->rowCount() > 0) {
+								foreach ($data as $results) {
+							?>
+									<img src="admin/post_images/<?php echo htmlentities($results->image_url)?>" alt="Image" class="img-fluid">
 						</div>
-						<div class="content">
-							<div class="post-meta mb-3">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>Author, 26 published post</span>
-								</div>
-							</a>
-						</div>
+				<?php
+								}
+							} ?>
+				<div class="content">
+					<div class="post-meta mb-3">
+						<a href="#" class="category"><?php echo htmlentities($result->cat_name) ?></a>
+						&mdash;
+						<span class="date"><?php echo htmlentities($result->published_date) ?></span>
 					</div>
-				</div>
-				<div class="col-lg-9">
-					<div class="post-entry d-md-flex small-horizontal mb-5">
-						<div class="me-md-5 thumbnail mb-3 mb-md-0">
-							<img src="images/ximg_4.jpg.pagespeed.ic.5BNsTZBCHP.jpg" alt="Image" class="img-fluid">
+					<h2 class="heading"><a href="single.php?post_id=<?php echo htmlentities($result->post_id) ?>"><?php echo htmlentities($result->title) ?></a></h2>
+					<p><?php echo htmlentities($result->short_desc) ?></p>
+					<a href="#" class="post-author d-flex align-items-center">
+						<!-- <div class="author-pic">
+							<img src="author.png" alt="Image">
+						</div> -->
+						<div class="text">
+							<strong><?php echo htmlentities($result->author) ?></strong>
+							<?php
+							$author = $result->author;
+							$sql = "SELECT COUNT(*) as total FROM posts WHERE author = :author";
+							$stmt = $database->prepare($sql);
+							$stmt->bindParam(':author', $author, PDO::PARAM_STR);
+							$stmt->execute();
+							$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+							if ($stmt->rowCount() > 0) {
+								foreach ($data as $results) {
+							?>
+									<span>Author, <?php echo htmlentities($results->total) ?> published post</span>
+							<?php
+								}
+							} ?>
 						</div>
-						<div class="content">
-							<div class="post-meta mb-3">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading"><a href="single.php">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>Author, 26 published post</span>
-								</div>
-							</a>
-						</div>
-					</div>
+					</a>
 				</div>
 					</div>
-					<div class="row align-items-center justify-content-center py-5">
-						<div class="col-lg-6 text-center">
-							<div class="custom-pagination">
-								<a href="#">1</a>
-								<a href="#" class="active">2</a>
-								<a href="#">3</a>
-								<a href="#">4</a>
-								<a href="#">5</a>
-							</div>
-						</div>
-					</div>
+				</div>
+		<?php $cnt++;
+						}
+					} ?>
+
+			</div>
 		</div>
+
+	</div>
+	<div class="row align-items-center justify-content-center py-5">
+		<div class="col-lg-6 text-center">
+			<div class="custom-pagination">
+				<a href="#">1</a>
+				<a href="#" class="active">2</a>
+				<a href="#">3</a>
+				<a href="#">4</a>
+				<a href="#">5</a>
+			</div>
+		</div>
+	</div>
+	</div>
 	</div>
 	<div class="py-5 bg-light mx-md-3 sec-subscribe">
 		<div class="container">

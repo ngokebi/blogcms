@@ -10,7 +10,8 @@ include "classes/Database.php";
 $database = new Database();
 $database = $database->getConnection();
 
-if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 10)) {
+if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 30)) {
+
     session_unset();
     session_destroy();
     header('Location: logout.php');
@@ -103,97 +104,80 @@ if (empty($_SESSION['username'])) {
                     <!-- /# row -->
                     <section id="main-content">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-10">
                                 <div class="card">
                                     <div class="card-title">
-                                        <h4>All Category</h4>
-
-                                    </div>
-                                    <div class="card-body">
-                                        <div style="float: right ;">
-                                            <label>Search:
-                                                <input type="text" class="form-control input-sm" placeholder="" onkeyup="myFunction()" id="searchinput" aria-controls="bootstrap-data-table-export">
-                                            </label>
-                                        </div>
-                                        <div class="table-responsive">
-
-                                            <table class="table table-hover " id="dataTable">
-                                                <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Name</th>
-                                                        <th>Created Date</th>
-                                                        <th>Action</th>
-
-                                                    </tr>
-                                                </thead>
-                                                <?php
-                                                $sql = "SELECT * FROM category WHERE status = 'Active'";
-                                                $stmt = $database->prepare($sql);
-                                                $stmt->execute();
-                                                $data = $stmt->fetchAll(PDO::FETCH_OBJ);
-                                                $cnt = 1;
-                                                if ($stmt->rowCount() > 0) {
-                                                    foreach ($data as $result) {
-                                                ?>
-                                                        <tbody>
-                                                            <tr>
-                                                                <th scope="row"><b><?php echo htmlentities($cnt); ?></b></th>
-                                                                <td><?php echo htmlentities($result->category_name); ?></td>
-                                                                <td><?php echo htmlentities($result->created_at); ?></td>
-                                                                <td class="color-primary">
-                                                                    <span class="m-l-10">
-                                                                        <a href="edit_category.php?cat_id=<?php echo htmlentities($result->id); ?>" title="Edit" id="edit">
-                                                                            <i class="ti-check color-success"></i>
-                                                                        </a>
-                                                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                                                        <a href="category.php?cat_id=<?php echo htmlentities($result->id); ?>" cat_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
-                                                                            <i class="ti-close color-danger"></i>
-                                                                        </a>
-                                                                    </span>
-                                                                </td>
-                                                            </tr>
-                                                    <?php $cnt++;
-                                                    }
-                                                } ?>
-                                                        </tbody>
-                                            </table>
-
-                                            <!-- <div class="dataTables_paginate paging_simple_numbers" id="row-select_paginate">
-                                                <ul class="pagination justify-content-end">
-                                                    <li class="page-item active" aria-current="page">
-                                                        <span class="page-link">1</span>
-                                                    </li>
-                                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-
-                                                </ul>
-
-                                            </div> -->
-                                            <nav id="pagination">
-                                            </nav>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /# card -->
-                            </div>
-
-                            <div class="col-lg-4">
-                                <div class="card">
-                                    <div class="card-title">
-                                        <h4>Create Categorty</h4>
+                                        <h4>Edit Post</h4>
                                     </div>
                                     <div class="card-body">
                                         <div class="basic-form">
-                                            <form method="POST">
-                                                <div class="form-group col-sm-8">
-                                                    <label>Category Name:</label>
-                                                    <input type="text" class="form-control" name="category_name" id="category_name" placeholder="Category Name">
-                                                </div>
+                                            <?php
+                                            $post_id = intval($_GET['post_id']);
+                                            $sql = "SELECT category.id as cat_id, category.category_name as cat_name, title, posts.id, title, short_desc, long_desc, author, users.username as username, users.id as uploaded_by  
+                                            FROM posts INNER JOIN users ON posts.uploaded_by = users.id INNER JOIN category ON posts.cat_id = category.id WHERE posts.id = :post_id";
+                                            $query = $database->prepare($sql);
+                                            $query->bindParam(':post_id', $post_id, PDO::PARAM_STR);
+                                            $query->execute();
+                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                            $cnt = 1;
+                                            if ($query->rowCount() > 0) {
+                                                foreach ($results as $result_post) {
+                                            ?>
+                                                    <form method="POST">
+                                                        <input type="hidden" name="id" id="post_id" value="<?php echo $post_id ?>">
+                                                        <div class="form-group col-sm-8">
+                                                            <label class="col-form-label">Title:</label>
+                                                            <input type="text" class="form-control" name="title" id="title" value="<?php echo htmlentities($result_post->title); ?>" placeholder="Title">
+                                                        </div>
+                                                        <div class="form-group col-sm-8">
+                                                            <label class="col-form-label">Author:</label>
+                                                            <input type="text" class="form-control" name="author" id="author" value="<?php echo htmlentities($result_post->author); ?>" placeholder="Author">
+                                                        </div>
+                                                        <div class="form-group col-sm-8">
+                                                            <label class="col-form-label">Uploaded By</label>
+                                                            <select class="custom-select" name="uploaded_by" id="uploaded_by" autocomplete="off">
+                                                                <option value="<?php echo htmlentities($result_post->uploaded_by); ?>"><?php echo htmlentities($result_post->username); ?></option>
+                                                                <?php $sql = "SELECT * From users";
+                                                                $query = $database->prepare($sql);
+                                                                $query->execute();
+                                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                                                if ($query->rowCount() > 0) {
+                                                                    foreach ($results as $result) {   ?>
+                                                                        <option value="<?php echo htmlentities($result->uploaded_by); ?>"><?php echo htmlentities($result->username); ?></option>
+                                                                <?php }
+                                                                } ?>
+                                                            </select>
+                                                        </div>
 
-                                                <button type="submit" name="add_cat" id="add_cat" class="btn btn-primary btn-rounded m-b-10">Submit</button>
+                                                        <div class="form-group col-sm-8">
+                                                            <label class="col-form-label">Category</label>
+                                                            <select class="custom-select" name="cat_id" id="cat_id" autocomplete="off">
+                                                                <option value="<?php echo htmlentities($result_post->cat_id); ?>"><?php echo htmlentities($result_post->cat_name); ?></option>
 
-                                            </form>
+                                                                <?php $sql = "SELECT * From category";
+                                                                $query = $database->prepare($sql);
+                                                                $query->execute();
+                                                                $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                                                if ($query->rowCount() > 0) {
+                                                                    foreach ($results as $result) {   ?>
+                                                                        <option value="<?php echo htmlentities($result->cat_id); ?>"><?php echo htmlentities($result->cat_name); ?></option>
+                                                                <?php }
+                                                                } ?>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col-sm-8">
+                                                            <label class="col-form-label">Short Description</label>
+                                                            <textarea class="form-control" rows="5" placeholder="Short Description" name="short_desc" id="short_desc"><?php echo htmlentities($result_post->short_desc); ?></textarea>
+                                                        </div>
+                                                        <div class="form-group col-sm-8">
+                                                            <label class="col-form-label">Long Description</label>
+                                                            <textarea class="form-control" rows="5" placeholder="Long Description" name="long_desc" id="long_desc"><?php echo htmlentities($result_post->long_desc); ?></textarea>
+                                                        </div>
+                                                        <button type="submit" name="edit_post" id="edit_post" class="btn btn-primary btn-rounded m-b-10">Update</button>
+                                                        <a href="posts.php" class="btn btn-secondary btn-rounded m-b-10">Back</a>
+                                                    </form>
+                                            <?php }
+                                            } ?>
                                         </div>
                                     </div>
                                 </div>
@@ -202,7 +186,7 @@ if (empty($_SESSION['username'])) {
                         </div>
                         <!-- /# row -->
                         <?php
-                        // include "include/footer.php";
+                        include "include/footer.php";
                         ?>
 
                     </section>
@@ -222,77 +206,92 @@ if (empty($_SESSION['username'])) {
         <script src="js/scripts.js"></script>
 
         <script type="text/javascript">
-            // Add Category
+
+            // Edit Post
             $(document).ready(function($) {
-                // on submit...
-                $("#add_cat").click(function(e) {
+
+                $("#edit_post").click(function(e) {
 
                     e.preventDefault();
 
-                    //category name required
-                    var category_name = $("#category_name").val();
-                    if (category_name == "") {
-                        alert("category_name is required");
-                        $("input#category_name").focus();
+                    //Title required
+                    var title = $("#title").val();
+                    if (title == "") {
+                        alert("Title is required");
+                        $("input#title").focus();
                         return false;
                     }
+                    //Author required
+                    var author = $("#author").val();
+                    if (author == "") {
+                        alert("Author is required");
+                        $("input#author").focus();
+                        return false;
+                    }
+
+                    //User required
+                    var uploaded_by = $("#uploaded_by").val();
+                    if (uploaded_by == "") {
+                        alert("User is required");
+                        $("input#uploaded_by").focus();
+                        return false;
+                    }
+                    //Category required
+                    var cat_id = $("#cat_id").val();
+                    if (cat_id == "") {
+                        alert("Category is required");
+                        $("input#cat_id").focus();
+                        return false;
+                    }
+                    //Short Description required
+                    var short_desc = $("#short_desc").val();
+                    if (short_desc == "") {
+                        alert("Short Content is required");
+                        $("input#short_desc").focus();
+                        return false;
+                    }
+                    // Long Description required
+                    var long_desc = $("#long_desc").val();
+                    if (long_desc == "") {
+                        alert("Main Content is required");
+                        $("input#long_desc").focus();
+                        return false;
+                    }
+
+                    var id = $("#post_id").val();
 
                     $.ajax({
                         type: "POST",
                         url: "process.php",
                         data: {
-                            action: "createCategory",
-                            category_name: $("#category_name").val(),
 
-                        }, // get all form field value in form
+                            action: "updatePost",
+                            title: title,
+                            author: author,
+                            uploaded_by: uploaded_by,
+                            cat_id: cat_id,
+                            short_desc: short_desc,
+                            long_desc: long_desc,
+                            id: id
+
+                        },
                         beforeSend: function() {
-                            $("#add_cat").val("Processing...");
+                            $("#edit_post").val("Processing...");
                         },
                         success: function(response) {
                             if (response == true) {
-                                alert("Successful. Last Inserted Role is " +
-                                    response);
-                                $(location).attr('href', 'category.php');
-                                $("#add_cat").val("Submit");
-                                $("#category_name").val("");
+                                alert("Post Successfully Updated");
+                                $(location).attr('href', 'posts.php');
 
                             } else if (response == false) {
                                 alert("Error, Incorrect Details" + response);
-                                $("#add_cat").val("Submit");
+                                $("#edit_post").val("Update");
+
                             }
                         },
                     });
                 });
                 return false;
-            });
-
-            // Delete Category
-            $(document).ready(function($) {
-
-                $(".delete").click(function(e) {
-                    e.preventDefault();
-                    alert('Delete');
-                    var id = $(this).attr('cat_id');
-                    $.ajax({
-                        type: "GET",
-                        url: "process.php",
-                        data: {
-                            action: "deleteCategory",
-                            id: id
-                        },
-                        success: function(response) {
-                            if (response == true) {
-                                alert("Deleted Successfully");
-                                $(location).attr('href', 'category.php');
-
-                            } else if (response == false) {
-                                alert("Error, Something went Wrong");
-                                $(location).attr('href', 'category.php');
-
-                            }
-                        },
-                    });
-                });
             });
 
             // Search Table

@@ -10,7 +10,8 @@ include "classes/Database.php";
 $database = new Database();
 $database = $database->getConnection();
 
-if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 10)) {
+if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 30)) {
+
     session_unset();
     session_destroy();
     header('Location: logout.php');
@@ -168,7 +169,7 @@ if (empty($_SESSION['username'])) {
                         </div>
                         <!-- /# row -->
                         <?php
-                        // include "include/footer.php";
+                        include "include/footer.php";
                         ?>
 
                     </section>

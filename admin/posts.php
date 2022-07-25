@@ -10,7 +10,8 @@ include "classes/Database.php";
 $database = new Database();
 $database = $database->getConnection();
 
-if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 10)) {
+if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 30)) {
+
     session_unset();
     session_destroy();
     header('Location: logout.php');
@@ -111,7 +112,7 @@ if (empty($_SESSION['username'])) {
                                     </div>
                                     <div class="card-body">
                                         <div style="float: right;">
-                                            <label>Search:
+                                            <label class="col-form-label">Search:
                                                 <input type="text" class="form-control input-sm" placeholder="" onkeyup="myFunction()" id="searchinput" aria-controls="bootstrap-data-table-export">
                                             </label>
                                         </div>
@@ -124,11 +125,10 @@ if (empty($_SESSION['username'])) {
                                                         <th>Title</th>
                                                         <th>Category</th>
                                                         <th>Author</th>
-                                                        <th width="300">Short Desc.</th>
-                                                        <th width="600">Long Desc.</th>
+                                                        <th>Short Desc.</th>
+                                                        <th width="400">Long Desc.</th>
                                                         <th>Created Date</th>
-                                                        <th width="100">Action</th>
-
+                                                        <th width="200">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <?php
@@ -152,7 +152,7 @@ if (empty($_SESSION['username'])) {
                                                                 <td class="color-primary">
                                                                     <span class="m-l-10">
                                                                         <a href="edit_posts.php?post_id=<?php echo htmlentities($result->id); ?>" title="Edit" id="edit">
-                                                                            <i class="ti-check color-success"></i>
+                                                                            <i class="ti-pencil color-success"></i>
                                                                         </a>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                                                         <a href="posts.php?post_id=<?php echo htmlentities($result->id); ?>" post_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
@@ -188,7 +188,7 @@ if (empty($_SESSION['username'])) {
                         </div>
                         <!-- /# row -->
                         <?php
-                        // include "include/footer.php";
+                        include "include/footer.php";
                         ?>
 
                     </section>
@@ -208,62 +208,17 @@ if (empty($_SESSION['username'])) {
         <script src="js/scripts.js"></script>
 
         <script type="text/javascript">
-            // Add Category
-            $(document).ready(function($) {
-                // on submit...
-                $("#add_cat").click(function(e) {
-
-                    e.preventDefault();
-
-                    //category name required
-                    var category_name = $("#category_name").val();
-                    if (category_name == "") {
-                        alert("category_name is required");
-                        $("input#category_name").focus();
-                        return false;
-                    }
-
-                    $.ajax({
-                        type: "POST",
-                        url: "process.php",
-                        data: {
-                            action: "createCategory",
-                            category_name: $("#category_name").val(),
-
-                        }, // get all form field value in form
-                        beforeSend: function() {
-                            $("#add_cat").val("Processing...");
-                        },
-                        success: function(response) {
-                            if (response == true) {
-                                alert("Successful. Last Inserted Role is " +
-                                    response);
-                                $(location).attr('href', 'category.php');
-                                $("#add_cat").val("Submit");
-                                $("#category_name").val("");
-
-                            } else if (response == false) {
-                                alert("Error, Incorrect Details" + response);
-                                $("#add_cat").val("Submit");
-                            }
-                        },
-                    });
-                });
-                return false;
-            });
-
             // Delete Category
             $(document).ready(function($) {
 
                 $(".delete").click(function(e) {
                     e.preventDefault();
-                    alert('Delete');
-                    var id = $(this).attr('cat_id');
+                    var id = $(this).attr('post_id');
                     $.ajax({
-                        type: "GET",
+                        type: "POST",
                         url: "process.php",
                         data: {
-                            action: "deleteCategory",
+                            action: "deletePost",
                             id: id
                         },
                         success: function(response) {
