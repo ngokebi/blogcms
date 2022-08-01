@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 22, 2022 at 09:00 AM
+-- Generation Time: Aug 01, 2022 at 05:04 PM
 -- Server version: 8.0.29
 -- PHP Version: 7.4.29
 
@@ -66,8 +66,12 @@ CREATE TABLE `image` (
 --
 
 INSERT INTO `image` (`id`, `image_url`, `short_desc`, `created_at`, `post_id`) VALUES
-(1, '2ddd40d5e2cf69248dab690d9065859c.jpg', 'Nice photo', '2022-07-21 18:25:05', 1),
-(2, 'aef6116dc15f2194aa427e8f31cde96a.jpg', 'Nice photo again', '2022-07-21 18:27:43', 1);
+(1, '5f12c9b2dd1510eb46b7748f91cee2c5.jpg', 'Main Thumb', '2022-07-25 11:01:34', 1),
+(2, '7e054cafa00bbb9568d4ffcf9982cda2.jpg', 'Main Thumb', '2022-07-25 11:43:24', 2),
+(4, 'b28f6c1f5983cf951a2f09b148033615.jpg', 'Main Thumb', '2022-08-01 11:41:44', 4),
+(5, 'e5ec42661c55a92b6ff101b60d14a49f.jpg', 'Main Thumb', '2022-08-01 11:42:08', 5),
+(6, '2ddd40d5e2cf69248dab690d9065859c.jpg', 'Main Thumb', '2022-08-01 12:54:11', 6),
+(7, 'd89fd2e7bf74117a5cb6df82b33b8c12.jpg', 'Main Thumb', '2022-08-01 13:20:27', 3);
 
 -- --------------------------------------------------------
 
@@ -118,7 +122,39 @@ INSERT INTO `logs` (`id`, `logdate`, `username`, `activity`, `ipaddress`) VALUES
 (28, '2022-07-21 08:28:02', '11', 'Category NeEYE was Created', '127.0.0.1'),
 (29, '2022-07-21 08:29:36', 'Ngkebi', 'Category with id 6 was Updated', '127.0.0.1'),
 (30, '2022-07-21 08:30:48', 'Ngkebi', 'Category with id 6 was Updated', '127.0.0.1'),
-(31, '2022-07-21 08:31:05', 'Ngkebi', 'Category with id 5 was Updated', '127.0.0.1');
+(31, '2022-07-21 08:31:05', 'Ngkebi', 'Category with id 5 was Updated', '127.0.0.1'),
+(32, '2022-07-25 09:58:22', 'Ngkebi', 'Post with title Cristiano Ronaldo to Atletico? The 10 keys to understanding his future was Published', '127.0.0.1'),
+(33, '2022-07-25 10:41:25', 'Ngkebi', 'Successful Login', '127.0.0.1'),
+(34, '2022-07-25 10:42:31', 'Ngkebi', 'Post with title Courtois after Real Madrid\'s Clasico defeat: Pre-season results don\'t count was Published', '127.0.0.1'),
+(35, '2022-07-25 10:48:50', 'Ngkebi', 'Post with title This is a test for knowledge was Published', '127.0.0.1'),
+(36, '2022-07-25 14:07:12', 'Ngkebi', 'Successful Login', '127.0.0.1'),
+(37, '2022-07-26 10:45:57', 'Ngkebi', 'Successful Login', '127.0.0.1'),
+(38, '2022-07-26 11:17:21', 'Ngkebi', 'Successful Login', '127.0.0.1'),
+(39, '2022-07-26 11:23:25', 'Ngkebi', 'Post with title Cristiano Ronaldo to Atletico? The 10 keys to understanding his future was Updated', '127.0.0.1'),
+(40, '2022-07-26 11:23:47', 'Ngkebi', 'Post with title Cristiano Ronaldo to Atletico? The 10 keys to understanding his future was Updated', '127.0.0.1'),
+(41, '2022-07-26 11:28:47', 'Ngkebi', 'Post with title Cristiano Ronaldo to Atletico? The 10 keys to understanding his future was Updated', '127.0.0.1'),
+(42, '2022-07-26 11:29:08', 'Ngkebi', 'Post with title This is a test for was Updated', '127.0.0.1'),
+(43, '2022-07-26 11:29:17', 'Ngkebi', 'Post with title This is a test for was Updated', '127.0.0.1'),
+(44, '2022-07-26 11:55:59', 'Ngkebi', 'Post  with id 3 was Deleted', '127.0.0.1'),
+(45, '2022-07-26 12:57:42', 'Ngkebi', 'Successful Login', '127.0.0.1'),
+(46, '2022-07-26 12:59:45', 'Ngkebi', 'Image  with id 3 was Deleted', '127.0.0.1'),
+(47, '2022-07-26 14:04:10', 'Ngkebi', 'Successful Login', '127.0.0.1'),
+(48, '2022-08-01 09:22:59', 'Ngkebi', 'Successful Login', '127.0.0.1'),
+(49, '2022-08-01 10:07:24', 'Ngkebi', 'Successful Login', '127.0.0.1'),
+(50, '2022-08-01 10:29:30', 'Ngkebi', 'Post with title Real Madrid\'s \'Bermuda Triangle\' is still challenging opponents and the next generation was Published', '127.0.0.1'),
+(51, '2022-08-01 10:30:06', 'Ngkebi', 'Post with title Another one to Test was Published', '127.0.0.1'),
+(52, '2022-08-01 11:14:23', 'Ngkebi', 'Post with title This is a test for knowledge was Published', '127.0.0.1'),
+(53, '2022-08-01 11:53:24', 'Ngkebi', 'Post with title This is a test for knowledge was Updated', '127.0.0.1'),
+(54, '2022-08-01 12:00:44', 'Ngkebi', 'Post with title Cristiano Ronaldo to Atletico? The 10 keys to understanding his future was Updated', '127.0.0.1'),
+(55, '2022-08-01 12:23:42', 'Ngkebi', 'Post with title Courtois after Real Madrid\'s Clasico defeat: Pre-season results don\'t count was Updated', '127.0.0.1'),
+(56, '2022-08-01 14:17:49', 'Ngkebi', 'Successful Login', '127.0.0.1'),
+(57, '2022-08-01 14:18:34', 'Ngkebi', 'Post with title Real Madrid\'s \'Bermuda Triangle\' is still challenging opponents and the next generation was Updated', '127.0.0.1'),
+(58, '2022-08-01 14:18:53', 'Ngkebi', 'Post with title Another one to Test was Updated', '127.0.0.1'),
+(59, '2022-08-01 14:54:22', 'Ngkebi', 'kebidegozi@gmail.com subscribed to the Newsletter Posts', '127.0.0.1'),
+(60, '2022-08-01 14:54:37', 'Ngkebi', 'abigail@gmail.com subscribed to the Newsletter Posts', '127.0.0.1'),
+(61, '2022-08-01 14:57:45', 'Ngkebi', 'vajayi@pagefinancials.com subscribed to the Newsletter Posts', '127.0.0.1'),
+(62, '2022-08-01 14:58:06', 'Ngkebi', 'nikeaba@pagefinancials.com subscribed to the Newsletter Posts', '127.0.0.1'),
+(63, '2022-08-01 14:59:28', 'Ngkebi', 'Post with title This is a test for knowledge was Updated', '127.0.0.1');
 
 -- --------------------------------------------------------
 
@@ -130,6 +166,16 @@ CREATE TABLE `newsletter` (
   `id` int NOT NULL,
   `email` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `newsletter`
+--
+
+INSERT INTO `newsletter` (`id`, `email`) VALUES
+(1, 'kebidegozi@gmail.com'),
+(2, 'abigail@gmail.com'),
+(3, 'vajayi@pagefinancials.com'),
+(4, 'nikeaba@pagefinancials.com');
 
 -- --------------------------------------------------------
 
@@ -154,7 +200,12 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`id`, `title`, `short_desc`, `long_desc`, `author`, `created_at`, `status`, `cat_id`, `uploaded_by`) VALUES
-(1, 'This is a test for knowledge', 'Real Madrid will finish the tour at the Rose Bowl Stadium in Los Angeles on Sunday, July 31, against Juventus.', 'The tour\n\nReal Madrid\'s first and most important game in the United States will be the El Clasico match against Barcelona in the early hours of Sunday, July 24.\n\nThe Allegiant Stadium in Las Vegas will host the duel between the two Spanish giants in a match that will be a sell-out.\n\nThree days later, on July 27, Real Madrid will head to San Francisco to take on Club America of Mexico in a match that will be played at 04:30 local time at Oracle Park.\n\nReal Madrid will finish the tour at the Rose Bowl Stadium in Los Angeles on Sunday, July 31, against Juventus.\n\nBale\'s debut\n\nLos Angeles FC\'s 2-1 away win over Nashville was Bale\'s first official club match since April 9.', 'Ikeaba Ngozi', '2022-07-21 16:55:26', 'Active', 2, 1);
+(1, 'Cristiano Ronaldo to Atletico? The 10 keys to understanding his future', 'Asked to depart Manchester United this summer', '<p>While Atletico Madrid insists that a move for Cristiano Ronaldo is unfeasible, people close to the Manchester United star are not ruling out anything. The Portugal international has reportedly asked to depart the Red Devils in his bid to participate in the Champions League next season.</p>\n<p>Let\'s take a look at the 10 keys to understanding Ronaldo\'s future. Financially unviable with potentially high revenues Atletico can\'t afford to sign Ronaldo for the time being. Los Rojiblancos have no space in their salary cap and they can\'t meet Manchester United\'s demands.</p>\n<p>However, they are aware that their revenue would skyrocket due to the commercial impact a potential Ronaldo arrival would make. A couple of strikers or two important players must leave To make room for Ronaldo, at least two players would have to leave the club.</p>\n<p>One would be Alvaro Morata and the other could be a midfielder such as Saul Niguez or Thomas Lemar.</p>', 'DAVID G. MEDINA', '2022-07-25 10:58:22', 'Active', 1, 1),
+(2, 'Courtois after Real Madrid\'s Clasico defeat: Pre-season results don\'t count', 'Los Blancos lost 1-0 to Barcelona in Las Vegas', '<p>Thibaut Courtois has made clear that the result in the pre-season Clasico between Barcelona and Real Madrid will not affect the Los Blancos players. Carlo Ancelotti\'s men lost 1-0 to Barcelona in a pre-season friendly duel that took place in Las Vegas on Sunday, with this being Real Madrid\'s first game of the summer. \"Obviously you can\'t draw too many conclusions,\" Courtois said.</p>\n<p>\"Some have been training for two weeks and others have only been training for one week. \"The most important thing is to get into a rhythm, to start with a good intensity, which in other years we didn\'t have. \"For a first game, it was good. The only thing is that we didn\'t have a goal and they scored a great goal. \"We hit the crossbar and they had one that went into the top corner.</p>\n<p>\"In pre-season, the result doesn\'t count. \"I remember when we lost 7-3 against Atletico Madrid and then we beat them twice and won the league that season. \"The results now don\'t say much. Obviously, we\'d prefer to win, especially in front of the fans in the United States, but it\'s the first game and we had to get into a rhythm.</p>\n<p>\"We don\'t like the defeat but we shouldn\'t take it too dramatically.\"</p>', 'MARIO CORTEGANA', '2022-07-25 11:42:31', 'Active', 1, 2),
+(3, 'This is a test for', '\"These are questions for the coach.\n\n\"His injuries are in the past. The other day [Antonio] Rudiger kicked him [in training] and he got up [laughs]\".', '\"These are questions for the coach.\n\n\"His injuries are in the past. The other day [Antonio] Rudiger kicked him [in training] and he got up [laughs]\".', 'Ikeaba Ngo', '2022-07-25 11:48:50', 'Active', 3, 2),
+(4, 'Real Madrid\'s \'Bermuda Triangle\' is still challenging opponents and the next generation', 'Casemiro, Modric, and Kroos are still at the top of their game', '<p>Carlo Ancelotti has provided us with many football and life lessons through his press conferences. Just over a year ago, in Vitoria, he labeled Nacho Fernandez as a pessimistic defender.</p>\n<p>Then, after the match against Juventus in Los Angeles this summer, the Italian coach named Real Madrid\'s midfield trident after an urban legend. \"I call Casemiro, [Toni] Kroos, and [Luka] Modric the Bermuda Triangle, because in their part of the pitch the ball disappears,\" Ancelotti said.</p>\n<p>The Real Madrid coach belongs to a generation who grew up with books and films about the mysterious disappearance of planes and ships in the triangle formed by Bermuda, Puerto Rico, and the coast of Miami.</p>\n<p>He referred to that paranormal case after the 2-0 win over Juventus to highlight a unique midfield. Looking to the past, such nicknames were usually reserved for iconic forward lines, rather than for midfield trios, but Real Madrid\'s midfield is one of the finest in football history. In fact, they have a strong case for being considered the very best, as they led Los Blancos to four Champions League titles between 2016 and 2022.</p>', 'MIGUEL ÁNGEL LARA', '2022-08-01 11:29:30', 'Active', 3, 2),
+(5, 'Another one to Test', 'Casemiro, Modric and Kroos are still at the top of their game', '<p>Carlo Ancelotti has provided us with many football and life lessons through his press conferences. Just over a year ago, in Vitoria, he labelled Nacho Fernandez as a pessimistic defender.</p>\n<p>Then, after the match against Juventus in Los Angeles this summer, the Italian coach named Real Madrid\'s midfield trident after an urban legend. \"I call Casemiro, [Toni] Kroos and [Luka] Modric the Bermuda Triangle, because in their part of the pitch the ball disappears,\" Ancelotti said.</p>\n<p>The Real Madrid coach belongs to a generation who grew up with books and films about the mysterious disappearance of planes and ships in the triangle formed by Bermuda, Puerto Rico and the coast of Miami.</p>\n<p>He referred to that paranormal case after the 2-0 win over Juventus to highlight a unique midfield. Looking to the past, such nicknames were usually reserved for iconic forward lines, rather than for midfield trios, but Real Madrid\'s midfield is one of the finest in football history. In fact, they have a strong case for being considered the very best, as they led Los Blancos to four Champions League titles between 2016 and 2022.</p>', 'Micheal Black', '2022-08-01 11:30:06', 'Active', 4, 1),
+(6, 'This is a test for knowledge', 'Sorted now ooo thank God', '<div class=\"ue-c-article__body\">\n<p><span class=\"capital-letter\">C</span>arlo Ancelotti has provided us with many football and life lessons through his press conferences. Just over a year ago, in Vitoria, he labelled <strong>Nacho Fernandez</strong> as a pessimistic defender.</p>\n<p>Then, after <strong><a href=\"https://www.marca.com/en/football/2022/07/31/62e5eb0b22601da32f8b45be.html\" target=\"_blank\" rel=\"noopener\">the match against Juventus in Los Angeles</a></strong> this summer, the Italian coach named <strong><a href=\"https://www.marca.com/en/football/real-madrid.html\" target=\"_blank\" rel=\"noopener\">Real Madrid</a></strong>\'s midfield trident after an urban legend.</p>\n<p>\"I call <strong>Casemiro</strong>, <strong>[Toni] Kroos </strong>and <strong>[Luka] Modric</strong> the Bermuda Triangle, because in their part of the pitch the ball disappears,\" <strong>Ancelotti </strong>said.</p>\n<p>The <strong>Real Madrid</strong> coach belongs to a generation who grew up with books and films about the mysterious disappearance of planes and ships in the triangle formed by Bermuda, Puerto Rico and the coast of Miami.</p>\n<p>He referred to that paranormal case after the 2-0 win over <strong>Juventus </strong>to highlight a unique midfield.</p>\n<p>Looking to the past, such nicknames were usually reserved for iconic forward lines, rather than for midfield trios, but <strong>Real Madrid</strong>\'s midfield is one of the finest in football history.</p>\n<p>In fact, they have a strong case for being considered the very best, as they led Los Blancos to four Champions League titles between 2016 and 2022.</p>\n<h4 class=\"ue-c-article__subheadline\">Casemiro, Kroos and Modric remain important</h4>\n<p>Beyond the nickname, <strong>Ancelotti </strong>was warning those who are asking for their imminent replacement that this is not his plan, no matter the talent of <strong>Aurelien Tchouameni</strong>,<strong> Eduardo Camavinga </strong>and<strong> Dani Ceballos</strong>.</p>\n<p><strong>Fede Valverde</strong> is a separate case, because the Uruguay international already established himself in the starting line-up in last season\'s final stretch, playing on the right flank ahead of the midfielders in a 4-3-3 formation.</p>\n<div class=\"midwidget-taboola\" style=\"overflow: hidden;\">\n<div id=\"taboola-mid-article-mcaen-oc-1659349692362\" class=\"taboola-mid-article-widget\"></div>\n</div>\n<p>No matter how much energy the new arrivals provide the team with, they won\'t be able to take over the starting line-up if the aforementioned three don\'t show any signs of weakness.</p>\n<p>In the match against <strong>Juventus</strong>, <strong>Modric</strong>, <strong>Kroos </strong>and <strong>Casemiro </strong>showed that they are not in the mood for dropping to the bench.</p>\n</div>', 'Micheal Black', '2022-08-01 12:14:23', 'Active', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -179,7 +230,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `name`, `email`, `password`, `LastAuthenticatedToken`, `LastLoginDate`, `DateCreated`, `LPasswordCDate`) VALUES
-(1, 'Ngkebi', 'Ikeaba Ngozichukwuka I', 'kebidegozi@gmail.com', '359328345545daae46ed061ebe16f6b5', 'WS1yDaoGCGZ5wTvbheYF', '2022-07-21 07:39:21', '2022-06-23', '2022-06-23 14:37:54'),
+(1, 'Ngkebi', 'Ikeaba Ngozichukwuka I', 'kebidegozi@gmail.com', '359328345545daae46ed061ebe16f6b5', 'SWOeRSB8hz2eGz9It9Hm', '2022-08-01 14:17:49', '2022-06-23', '2022-06-23 14:37:54'),
 (2, 'vajayi', 'Victor Ajayi', 'Vajayi@gmail.com', '86067c9f2f4e24838d70bf1e00714a84', 'YqP1M47M870dmar2uqqz', '2022-06-23 14:38:57', '2022-06-23', '2022-06-23 14:38:50');
 
 --
@@ -239,25 +290,25 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `newsletter`
 --
 ALTER TABLE `newsletter`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
