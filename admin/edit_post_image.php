@@ -10,7 +10,6 @@ include "classes/Database.php";
 $database = new Database();
 $database = $database->getConnection();
 
-
 if (isset($_SESSION['last_acted_on']) && (time() - $_SESSION['last_acted_on'] > 60 * 30)) {
 
     session_unset();
@@ -105,40 +104,50 @@ if (empty($_SESSION['username'])) {
                     <!-- /# row -->
                     <section id="main-content">
                         <div class="row">
-                            <div class="col-lg-8">
+                            <div class="col-lg-10">
                                 <div class="card">
                                     <div class="card-title">
-                                        <h4>Upload Image</h4>
+                                        <h4>Edit Image</h4>
+
                                     </div>
                                     <div class="card-body">
                                         <div class="basic-form">
-                                            <form method="POST" action="fileupload.php" enctype="multipart/form-data">
-                                                <div class="form-group col-sm-8">
-                                                    <label class="col-form-label">Image:</label>
-                                                    <input type="file" name="image_url"  class="form-control">
-                                                </div>
-                                                <div class="form-group col-sm-8">
-                                                    <label class="col-form-label">Post</label>
-                                                    <select class="form-control" name="post_id" autocomplete="off">
-                                                        <option value="">Choose..</option>
-                                                        <?php $sql = "SELECT posts.title, posts.id, posts.status, image.image_url From posts LEFT JOIN image ON posts.id = image.post_id WHERE image.image_url IS NULL AND posts.status = 'Active'";
-                                                        $query = $database->prepare($sql);
-                                                        $query->execute();
-                                                        $results = $query->fetchAll(PDO::FETCH_OBJ);
-                                                        if ($query->rowCount() > 0) {
-                                                            foreach ($results as $result) {   ?>
-                                                                <option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->title); ?></option>
-                                                        <?php }
-                                                        } ?>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group col-sm-8">
-                                                    <label class="col-form-label">Short Description</label>
-                                                    <textarea class="form-control" rows="5" placeholder="Short Description" name="short_desc"></textarea>
-                                                </div>
-                                                <button type="submit" name="submit" id="add_image" class="btn btn-primary btn-rounded m-b-10">Submit</button>
-                                                <a href="post_image.php" class="btn btn-secondary btn-rounded m-b-10">Back</a>
-                                            </form>
+                                            <?php
+                                            $post_image_id = intval($_GET['post_image_id']);
+                                            $sql = "SELECT posts.title as title, image.short_desc as short_desc, image.image_url as image_url, image.id, image.created_at as created_at 
+                                            FROM image INNER JOIN posts ON image.post_id = posts.id WHERE posts.id = :post_id";
+                                            $query = $database->prepare($sql);
+                                            $query->bindParam(':post_id', $post_image_id, PDO::PARAM_STR);
+                                            $query->execute();
+                                            $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                            $cnt = 1;
+                                            if ($query->rowCount() > 0) {
+                                                foreach ($results as $result_post) {
+                                            ?>
+                                                    <form method="POST">
+                                                        <input type="hidden" name="id" id="post_image_id" value="<?php echo $post_image_id ?>">
+                                                        <div class="form-group col-sm-8">
+                                                            <label class="col-form-label">Image:</label>
+                                                            <input type="file" class="form-control" name="image_url" id="image" value="<?php echo htmlentities($result_post->image_url) ?>" placeholder="image">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <img src="post_images/<?php echo htmlentities($result_post->image_url) ?>" style="width: 40%; height:40%;" id="showImage">
+                                                        </div>
+                                                        <div class="form-group col-sm-8">
+                                                            <label class="col-form-label">Post</label>
+                                                            <select class="custom-select" name="post_id" id="post_id" autocomplete="off" disabled>
+                                                                <option value="<?php echo htmlentities($result_post->post_id); ?>"><?php echo htmlentities($result_post->title); ?></option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group col-sm-8">
+                                                            <label class="col-form-label">Short Description</label>
+                                                            <textarea class="form-control" rows="5" placeholder="Short Description" name="short_desc" id="short_desc" disabled><?php echo htmlentities($result_post->short_desc); ?></textarea>
+                                                        </div>
+                                                        <button type="submit" name="edit_post" id="edit_post" class="btn btn-primary btn-rounded m-b-10">Update</button>
+                                                        <a href="post_image.php" class="btn btn-secondary btn-rounded m-b-10">Back</a>
+                                                    </form>
+                                            <?php }
+                                            } ?>
                                         </div>
                                     </div>
                                 </div>
@@ -147,7 +156,7 @@ if (empty($_SESSION['username'])) {
                         </div>
                         <!-- /# row -->
                         <?php
-                        // include "include/footer.php";
+                        include "include/footer.php";
                         ?>
 
                     </section>
@@ -165,6 +174,17 @@ if (empty($_SESSION['username'])) {
         <script src="js/lib/preloader/pace.min.js"></script>
         <script src="js/lib/bootstrap.min.js"></script>
         <script src="js/scripts.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(e) {
+                $('#update_brandimage').change(function(e) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#showImage').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(e.target.files['0']);
+                });
+            });
+        </script>
     </body>
 
     </html>

@@ -132,7 +132,7 @@ if (empty($_SESSION['username'])) {
                                                     </tr>
                                                 </thead>
                                                 <?php
-                                                $sql = "SELECT * FROM posts WHERE status = 'Active'";
+                                                $sql = "SELECT posts.id as post_id, posts.title as title, posts.author as author, category.category_name as category_name, posts.short_desc as short_desc, posts.long_desc as long_desc, posts.created_at as created_at FROM posts INNER JOIN category ON posts.cat_id = category.id WHERE posts.status = 'Active'";
                                                 $stmt = $database->prepare($sql);
                                                 $stmt->execute();
                                                 $data = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -144,18 +144,18 @@ if (empty($_SESSION['username'])) {
                                                             <tr>
                                                                 <th scope="row"><b><?php echo htmlentities($cnt); ?></b></th>
                                                                 <td><?php echo htmlentities($result->title); ?></td>
-                                                                <td><?php echo htmlentities($result->cat_id); ?></td>
+                                                                <td><?php echo htmlentities($result->category_name); ?></td>
                                                                 <td><?php echo htmlentities($result->author); ?></td>
                                                                 <td><?php echo htmlentities($result->short_desc); ?></td>
-                                                                <td><?php echo htmlentities(substr($result->long_desc, 0, 400) . '...'); ?></td>
+                                                                <td><?php echo (substr($result->long_desc, 0, 250) . '...'); ?></td>
                                                                 <td><?php echo htmlentities($result->created_at); ?></td>
                                                                 <td class="color-primary">
                                                                     <span class="m-l-10">
-                                                                        <a href="edit_posts.php?post_id=<?php echo htmlentities($result->id); ?>" title="Edit" id="edit">
+                                                                        <a href="edit_posts.php?post_id=<?php echo htmlentities($result->post_id); ?>" title="Edit" id="edit">
                                                                             <i class="ti-pencil color-success"></i>
                                                                         </a>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                                                        <a href="posts.php?post_id=<?php echo htmlentities($result->id); ?>" post_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
+                                                                        <a href="posts.php?post_id=<?php echo htmlentities($result->post_id); ?>" post_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
                                                                             <i class="ti-close color-danger"></i>
                                                                         </a>
                                                                     </span>
@@ -208,7 +208,7 @@ if (empty($_SESSION['username'])) {
         <script src="js/scripts.js"></script>
 
         <script type="text/javascript">
-            // Delete Category
+            // Delete Posts
             $(document).ready(function($) {
 
                 $(".delete").click(function(e) {
@@ -224,11 +224,11 @@ if (empty($_SESSION['username'])) {
                         success: function(response) {
                             if (response == true) {
                                 alert("Deleted Successfully");
-                                $(location).attr('href', 'category.php');
+                                $(location).attr('href', 'posts.php');
 
                             } else if (response == false) {
                                 alert("Error, Something went Wrong");
-                                $(location).attr('href', 'category.php');
+                                $(location).attr('href', 'posts.php');
 
                             }
                         },
@@ -243,14 +243,17 @@ if (empty($_SESSION['username'])) {
                 filter = input.value.toUpperCase();
                 table = document.getElementById("dataTable");
                 tr = table.getElementsByTagName("tr");
-                for (i = 0; i < tr.length; i++) {
-                    td = tr[i].getElementsByTagName("td")[0];
-                    if (td) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[i].style.display = "";
-                        } else {
-                            tr[i].style.display = "none";
+                th = table.getElementsByTagName("th");
+
+                for (i = 1; i < tr.length; i++) {
+                    tr[i].style.display = "none";
+                    for (var j = 0; j < th.length; j++) {
+                        td = tr[i].getElementsByTagName("td")[j];
+                        if (td) {
+                            if (td.innerHTML.toUpperCase().indexOf(filter.toUpperCase()) > -1) {
+                                tr[i].style.display = "";
+                                break;
+                            }
                         }
                     }
                 }

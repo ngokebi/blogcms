@@ -1,7 +1,7 @@
 <ul class="dropdown">
     <?php
-    $sql = "SELECT category.id as cat_id, category.category_name as cat_name, category.status, posts.cat_id
-							FROM posts INNER JOIN category ON category.id = posts.cat_id  GROUP BY category.id";
+    $sql = "SELECT category.id as cat_id, category.category_name as cat_name, category.status, posts.cat_id, posts.status
+							FROM posts INNER JOIN category ON category.id = posts.cat_id WHERE posts.status = 'Active' GROUP BY category.id";
     $query = $database->prepare($sql);
     $query->execute();
     $data = $query->fetchAll(PDO::FETCH_OBJ);
@@ -13,4 +13,4 @@
     <?php $cnt++;
         }
     } ?>
-</ul>
+</ul> 

@@ -1,5 +1,7 @@
 <?php
-error_reporting(0);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
 include "classes/Database.php";
 $database = new Database();
@@ -16,8 +18,8 @@ $database = $database->getConnection();
 	<link rel="preconnect" href="https://fonts.gstatic.com/">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet">
 	<!-- <link rel="stylesheet" href="css/main.css"> -->
-	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 	<link rel="stylesheet" href="A.fonts%2c%2c_icomoon%2c%2c_style.css%2bfonts%2c%2c_flaticon%2c%2c_font%2c%2c_flaticon.css%2bcss%2c%2c_tiny-slider.css%2bcss%2c%2c_glightbox.min.css%2bcss%2c%2c_aos.css%2bcss%2c%2c_style.css%2cMcc.CgyIJPOVwv.css.pagespeed.cf.0" />
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 	<title>Crea8t </title>
 </head>
 
@@ -78,129 +80,46 @@ $database = $database->getConnection();
 				<div class="col-lg-12">
 					<div class="posts-slide-wrap">
 						<div class="posts-slide" id="posts-slide">
-							<div class="item">
-								<div class="post-entry d-lg-flex">
-									<div class="me-lg-5 thumbnail mb-4 mb-lg-0">
-										<a href="single.php">
-											<img src="images/xpost_lg_1.jpg.pagespeed.ic.vC5886c_pL.jpg" alt="Image" class="img-fluid">
-										</a>
-									</div>
-									<div class="content align-self-center">
-										<div class="post-meta mb-3">
-											<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
-											<span class="date">July 2, 2020</span>
-										</div>
-										<h2 class="heading"><a href="single.php">Your most unhappy customers are your
-												greatest source of learning.</a></h2>
-										<p>Far far away, behind the word mountains, far from the countries Vokalia and
-											Consonantia, there live the blind texts. Separated they live in
-											Bookmarksgrove right at the coast of the Semantics, a large language ocean.
-										</p>
-										<a href="#" class="post-author d-flex align-items-center">
-											<div class="author-pic">
-												<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-											</div>
-											<div class="text">
-												<strong>Sergy Campbell</strong>
-												<span>CEO and Founder</span>
-											</div>
-										</a>
-									</div>
-								</div>
-							</div>
+							<?php
 
-							<div class="item">
-								<div class="post-entry d-lg-flex">
-									<div class="me-lg-5 thumbnail mb-4 mb-lg-0">
-										<a href="single.php">
-											<img src="images/xpost_lg_2.jpg.pagespeed.ic.YbC8FwTKmr.jpg" alt="Image" class="img-fluid">
-										</a>
-									</div>
-									<div class="content align-self-center">
-										<div class="post-meta mb-3">
-											<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
-											<span class="date">July 2, 2020</span>
+							$sql = "SELECT posts.id as posts_id, posts.title as title, posts.short_desc as short_desc, posts.long_desc as long_desc, posts.author as author, category.category_name as category_name,
+									DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, image.image_url as image_url FROM posts 
+									INNER JOIN image ON posts.id = image.post_id
+									INNER JOIN category ON posts.cat_id = category.id
+									ORDER BY posts_id DESC
+									LIMIT 4 ";
+							$stmt = $database->prepare($sql);
+							$stmt->execute();
+							$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+							if ($stmt->rowCount() > 0) {
+								foreach ($data as $results) {
+							?>
+									<div class="item">
+										<div class="post-entry d-lg-flex">
+											<div class="me-lg-5 thumbnail mb-4 mb-lg-0">
+												<a href="single.php?post_id=<?php echo htmlentities($results->posts_id) ?>">
+													<img src="admin/post_images/<?php echo htmlentities($results->image_url) ?>" alt="Image" class="img-fluid" width="900" height="700">
+												</a>
+											</div>
+											<div class="content align-self-center">
+												<div class="post-meta mb-3">
+													<a href="#" class="category"><?php echo htmlentities($results->category_name) ?></a> &mdash;
+													<span class="date"><?php echo htmlentities($results->published_date) ?></span>
+												</div>
+												<h2 class="heading"><a href="single.php?post_id=<?php echo htmlentities($results->posts_id) ?>"><?php echo htmlentities($results->title) ?></a></h2>
+												<p><?php echo htmlentities($results->short_desc) ?>
+												</p>
+												<a href="#" class="post-author d-flex align-items-center">
+													<div class="text">
+														<strong><?php echo htmlentities($results->author) ?></strong>
+													</div>
+												</a>
+											</div>
 										</div>
-										<h2 class="heading"><a href="single.php">Your most unhappy customers are your
-												greatest source of learning.</a></h2>
-										<p>Far far away, behind the word mountains, far from the countries Vokalia and
-											Consonantia, there live the blind texts. Separated they live in
-											Bookmarksgrove right at the coast of the Semantics, a large language ocean.
-										</p>
-										<a href="#" class="post-author d-flex align-items-center">
-											<div class="author-pic">
-												<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-											</div>
-											<div class="text">
-												<strong>Sergy Campbell</strong>
-												<span>CEO and Founder</span>
-											</div>
-										</a>
 									</div>
-								</div>
-							</div>
-
-							<div class="item">
-								<div class="post-entry d-lg-flex">
-									<div class="me-lg-5 thumbnail mb-4 mb-lg-0">
-										<a href="single.php">
-											<img src="images/xpost_lg_3.jpg.pagespeed.ic.qhXWgmNnIn.jpg" alt="Image" class="img-fluid">
-										</a>
-									</div>
-									<div class="content align-self-center">
-										<div class="post-meta mb-3">
-											<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
-											<span class="date">July 2, 2020</span>
-										</div>
-										<h2 class="heading"><a href="single.php">Your most unhappy customers are your
-												greatest source of learning.</a></h2>
-										<p>Far far away, behind the word mountains, far from the countries Vokalia and
-											Consonantia, there live the blind texts. Separated they live in
-											Bookmarksgrove right at the coast of the Semantics, a large language ocean.
-										</p>
-										<a href="#" class="post-author d-flex align-items-center">
-											<div class="author-pic">
-												<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-											</div>
-											<div class="text">
-												<strong>Sergy Campbell</strong>
-												<span>CEO and Founder</span>
-											</div>
-										</a>
-									</div>
-								</div>
-							</div>
-
-							<div class="item">
-								<div class="post-entry d-lg-flex">
-									<div class="me-lg-5 thumbnail mb-4 mb-lg-0">
-										<a href="single.php">
-											<img src="images/xpost_lg_4.jpg.pagespeed.ic.oJIp7wddWl.jpg" alt="Image" class="img-fluid">
-										</a>
-									</div>
-									<div class="content align-self-center">
-										<div class="post-meta mb-3">
-											<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
-											<span class="date">July 2, 2020</span>
-										</div>
-										<h2 class="heading"><a href="single.php">Your most unhappy customers are your
-												greatest source of learning.</a></h2>
-										<p>Far far away, behind the word mountains, far from the countries Vokalia and
-											Consonantia, there live the blind texts. Separated they live in
-											Bookmarksgrove right at the coast of the Semantics, a large language ocean.
-										</p>
-										<a href="#" class="post-author d-flex align-items-center">
-											<div class="author-pic">
-												<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-											</div>
-											<div class="text">
-												<strong>Sergy Campbell</strong>
-												<span>CEO and Founder</span>
-											</div>
-										</a>
-									</div>
-								</div>
-							</div>
+							<?php
+								}
+							} ?>
 
 						</div>
 					</div>
@@ -754,14 +673,14 @@ $database = $database->getConnection();
 					<h2 class="h4 fw-bold">Subscribe to newsletter</h2>
 				</div>
 			</div>
-			<form action="#" class="row">
+			<form method="POST" class="row">
 				<div class="col-md-8">
 					<div class="mb-3 mb-md-0">
-						<input type="email" class="form-control" placeholder="Enter your email">
+						<input type="email" class="form-control" name="email" id="email" placeholder="Enter your email">
 					</div>
 				</div>
 				<div class="col-md-4 d-grid">
-					<input type="submit" class="btn btn-primary" value="Subscribe">
+					<button type="submit" name="add_email" id="add_email" class="btn btn-primary" value="Subscribe">Subscribe</button>
 				</div>
 			</form>
 		</div>
@@ -781,7 +700,7 @@ $database = $database->getConnection();
 					<div class="widget">
 						<p>Copyright &copy;<script>
 								document.write(new Date().getFullYear());
-							</script> All rights reserved | <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="#" target="_blank" rel="nofollow noopener">Crea8t</a>
+							</script> All rights reserved |
 						</p>
 					</div>
 				</div>
@@ -826,10 +745,47 @@ $database = $database->getConnection();
 			gtag('config', 'UA-23581568-13');
 		</script>
 		<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"71f592d729c17501","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.6.0","si":100}' crossorigin="anonymous"></script>
-		<script>
-			let n = sessionStorage.setItem('email', $('#email').val());
-			sessionStorage.setItem('name', $('#name').val());
-			console.log(n);
+		<script type="text/javascript">
+			// Add Email                                                        
+			$(document).ready(function($) {
+
+				$("#add_email").click(function(e) {
+
+					e.preventDefault();
+
+					// Email required
+					var email = $("#email").val();
+					if (email == "") {
+						alert("Email is required");
+						$("input#email").focus();
+						return false;
+					}
+
+					$.ajax({
+						type: "POST",
+						url: "admin/process.php",
+						data: {
+							action: "newsletter_subscription",
+							email: email,
+						},
+						beforeSend: function() {
+							$("#add_email").val("Processing...");
+						},
+						success: function(response) {
+							if (response == true) {
+								alert("Email Successfully Subscribed");
+								location.reload();
+								$("#email").val("");
+
+							} else if (response == false) {
+								alert("Error, Incorrect Details");
+								$("#add_email").val("Subscribe");
+							}
+						},
+					});
+				});
+				return false;
+			});
 		</script>
 </body>
 

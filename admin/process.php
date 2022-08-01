@@ -5,12 +5,16 @@ include 'classes/User.php';
 include 'classes/Log.php';
 include 'classes/Category.php';
 include 'classes/Post.php';
+include 'classes/Image.php';
+include 'classes/NewsLetter.php';
 
 $database = new Database();
 $user = new User($database);
 $log = new Log($database);
 $category = new Category($database);
 $post = new Post($database);
+$image = new Image($database);
+$newsletter = new NewsLetter($database);
 
 
 function registerUser($username, $name, $email, $password)
@@ -80,8 +84,24 @@ function updatePost($title, $short_desc, $long_desc, $author,  $cat_id, $user_id
 function deletePost($id, $username)
 {
   global $post, $log;
-  $log->logActivity($username, 'Post  with id ' . $id . ' was Deleted');
+  $log->logActivity($username, 'Post with id ' . $id . ' was Deleted');
   $myResp = $post->delete_posts($id);
+  return $myResp;
+}
+
+function deleteImage($id, $username)
+{
+  global $image, $log;
+  $log->logActivity($username, 'Image with id ' . $id . ' was Deleted');
+  $myResp = $image->delete_image($id);
+  return $myResp;
+}
+
+function newsletter_subscription($email, $username)
+{
+  global $newsletter, $log;
+  $log->logActivity($username,  $email . ' subscribed to the Newsletter Posts');
+  $myResp = $newsletter->add_email($email);
   return $myResp;
 }
 
@@ -131,6 +151,16 @@ switch ($_POST['action']) {
 
   case "deletePost": {
       echo deletePost($_POST['id'], $_SESSION['username']);
+      break;
+    }
+
+    case "deleteImage": {
+      echo deleteImage($_POST['id'], $_SESSION['username']);
+      break;
+    }
+
+    case "newsletter_subscription": {
+      echo newsletter_subscription($_POST['email'], $_SESSION['username']);
       break;
     }
 }

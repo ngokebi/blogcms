@@ -297,22 +297,27 @@ if (empty($_SESSION['username'])) {
 
             // Search Table
             function myFunction() {
+                function myFunction() {
                 var input, filter, table, tr, td, i, txtValue;
                 input = document.getElementById("searchinput");
                 filter = input.value.toUpperCase();
                 table = document.getElementById("dataTable");
                 tr = table.getElementsByTagName("tr");
-                for (i = 0; i < tr.length; i++) {
-                    td = tr[i].getElementsByTagName("td")[0];
-                    if (td) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[i].style.display = "";
-                        } else {
-                            tr[i].style.display = "none";
+                th = table.getElementsByTagName("th");
+                
+                for (i = 1; i < tr.length; i++) {
+                    tr[i].style.display = "none";
+                    for (var j = 0; j < th.length; j++) {
+                        td = tr[i].getElementsByTagName("td")[j];
+                        if (td) {
+                            if (td.innerHTML.toUpperCase().indexOf(filter.toUpperCase()) > -1) {
+                                tr[i].style.display = "";
+                                break;
+                            }
                         }
                     }
                 }
+            }
             }
         </script>
     </body>

@@ -121,16 +121,17 @@ if (empty($_SESSION['username'])) {
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
-                                                        <th>Post</th>
+                                                        <th>Post Title</th>
                                                         <th>Short Desc.</th>
-                                                        <th width="600">Image</th>
+                                                        <th>Image</th>
                                                         <th>Created Date</th>
                                                         <th width="100">Action</th>
 
                                                     </tr>
                                                 </thead>
                                                 <?php
-                                                $sql = "SELECT * FROM image GROUP BY post_id";
+                                                $sql = "SELECT posts.title as title, image.short_desc as short_desc, image.image_url as image_url, image.id, image.created_at as created_at 
+                                                        FROM image INNER JOIN posts ON image.post_id = posts.id GROUP BY post_id";
                                                 $stmt = $database->prepare($sql);
                                                 $stmt->execute();
                                                 $data = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -141,45 +142,28 @@ if (empty($_SESSION['username'])) {
                                                         <tbody>
                                                             <tr>
                                                                 <th scope="row"><b><?php echo htmlentities($cnt); ?></b></th>
-                                                                <td><?php echo htmlentities($result->post_id); ?></td>
+                                                                <td><?php echo htmlentities($result->title); ?></td>
                                                                 <td><?php echo htmlentities($result->short_desc); ?></td>
-                                                                <td><a data-toggle="modal" data-target="#exampleModal"><img src="post_images/<?php echo $result->image_url; ?>" alt="" width="300" height="200"></a></td>
+                                                                <td><img src="post_images/<?php echo $result->image_url; ?>" alt="" width="100" height="50"></td>
                                                                 <td><?php echo htmlentities($result->created_at); ?></td>
                                                                 <td class="color-primary">
                                                                     <span class="m-l-10">
-                                                                        <a href="edit_posts.php?post_id=<?php echo htmlentities($result->id); ?>" title="Edit" id="edit">
+                                                                        <a href="edit_post_image.php?post_image_id=<?php echo htmlentities($result->id); ?>" title="Edit" id="edit">
                                                                             <i class="ti-pencil color-success"></i>
                                                                         </a>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                                                        <a href="posts.php?post_id=<?php echo htmlentities($result->id); ?>" post_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
+                                                                        <a href="post_image.php?post_image_id=<?php echo htmlentities($result->id); ?>" post_image_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
                                                                             <i class="ti-close color-danger"></i>
                                                                         </a>
                                                                     </span>
                                                                 </td>
                                                             </tr>
-
                                                         </tbody>
                                                 <?php $cnt++;
                                                     }
                                                 } ?>
                                             </table>
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Image</h5>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <img src="post_images/<?php echo $result->image_url; ?>" alt="" width="400" height="300">
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -210,6 +194,58 @@ if (empty($_SESSION['username'])) {
         <script src="js/lib/preloader/pace.min.js"></script>
         <script src="js/lib/bootstrap.min.js"></script>
         <script src="js/scripts.js"></script>
+        <script type="text/javascript">
+            // Delete Posts
+            $(document).ready(function($) {
+
+                $(".delete").click(function(e) {
+                    e.preventDefault();
+                    var id = $(this).attr('post_image_id');
+                    $.ajax({
+                        type: "POST",
+                        url: "process.php",
+                        data: {
+                            action: "deleteImage",
+                            id: id
+                        },
+                        success: function(response) {
+                            if (response == true) {
+                                alert("Deleted Successfully");
+                                $(location).attr('href', 'post_image.php');
+
+                            } else if (response == false) {
+                                alert("Error, Something went Wrong");
+                                $(location).attr('href', 'post_image.php');
+
+                            }
+                        },
+                    });
+                });
+            });
+
+            // Search Table
+            function myFunction() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("searchinput");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("dataTable");
+                tr = table.getElementsByTagName("tr");
+                th = table.getElementsByTagName("th");
+
+                for (i = 1; i < tr.length; i++) {
+                    tr[i].style.display = "none";
+                    for (var j = 0; j < th.length; j++) {
+                        td = tr[i].getElementsByTagName("td")[j];
+                        if (td) {
+                            if (td.innerHTML.toUpperCase().indexOf(filter.toUpperCase()) > -1) {
+                                tr[i].style.display = "";
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
 
     </body>
 

@@ -18,6 +18,7 @@ $database = $database->getConnection();
 	<link rel="preconnect" href="https://fonts.gstatic.com/">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="A.fonts%2c%2c_icomoon%2c%2c_style.css%2bfonts%2c%2c_flaticon%2c%2c_font%2c%2c_flaticon.css%2bcss%2c%2c_tiny-slider.css%2bcss%2c%2c_glightbox.min.css%2bcss%2c%2c_aos.css%2bcss%2c%2c_style.css%2cMcc.CgyIJPOVwv.css.pagespeed.cf.0" />
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 	<title>Crea8t</title>
 </head>
 
@@ -71,12 +72,27 @@ $database = $database->getConnection();
 			<div class="row mb-5 justify-content-center">
 				<div class="col-lg-9">
 					<span class="fw-normal text-uppercase d-block mb-1">Categories</span>
-					<h2 class="heading"><?php echo htmlentities($result->cat_name) ?></h2>
+					<?php
+					$cat_id = intval($_GET['cat_id']);
+					$sql = "SELECT category_name from CATEGORY WHERE id = :cat_id";
+					$query = $database->prepare($sql);
+					$query->bindParam(':cat_id', $cat_id, PDO::PARAM_STR);
+					$query->execute();
+					$data = $query->fetch();
+					if ($query->rowCount() > 0) {
+					?>
+						<h2 class="heading"><?php echo htmlentities($data['category_name']) ?></h2>
+					<?php
+					} ?>
 				</div>
 				<?php
 				$cat_id = intval($_GET['cat_id']);
 				$sql = "SELECT category.id, category.category_name as cat_name, posts.status, posts.id as post_id, title, short_desc, long_desc, author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, users.username as username, users.id as uploaded_by  
-			        FROM posts INNER JOIN users ON posts.uploaded_by = users.id INNER JOIN category ON posts.cat_id = category.id WHERE posts.status = 'Active' and category.id = :cat_id";
+			        FROM posts 
+					INNER JOIN users ON posts.uploaded_by = users.id 
+					INNER JOIN category ON posts.cat_id = category.id 
+					WHERE posts.status = 'Active' AND category.id = :cat_id 
+					ORDER BY posts.id DESC";
 				$query = $database->prepare($sql);
 				$query->bindParam(':cat_id', $cat_id, PDO::PARAM_STR);
 				$query->execute();
@@ -108,13 +124,13 @@ $database = $database->getConnection();
 							} ?>
 				<div class="content">
 					<div class="post-meta mb-3">
-						<a href="#" class="category"><?php echo htmlentities($result->cat_name) ?></a>
+						<i class="category"><?php echo htmlentities($result->cat_name) ?></i>
 						&mdash;
 						<span class="date"><?php echo htmlentities($result->published_date) ?></span>
 					</div>
 					<h2 class="heading"><a href="single.php?post_id=<?php echo htmlentities($result->post_id) ?>"><?php echo htmlentities($result->title) ?></a></h2>
 					<p><?php echo htmlentities($result->short_desc) ?></p>
-					<a href="#" class="post-author d-flex align-items-center">
+					<i class="post-author d-flex align-items-center">
 						<!-- <div class="author-pic">
 							<img src="author.png" alt="Image">
 						</div> -->
@@ -135,7 +151,7 @@ $database = $database->getConnection();
 								}
 							} ?>
 						</div>
-					</a>
+					</i>
 				</div>
 					</div>
 				</div>
@@ -167,14 +183,14 @@ $database = $database->getConnection();
 					<h2 class="h4 fw-bold">Subscribe to newsletter</h2>
 				</div>
 			</div>
-			<form action="#" class="row">
+			<form method="POST" class="row">
 				<div class="col-md-8">
 					<div class="mb-3 mb-md-0">
-						<input type="email" class="form-control" placeholder="Enter your email">
+						<input type="email" class="form-control" name="email" id="email" placeholder="Enter your email">
 					</div>
 				</div>
 				<div class="col-md-4 d-grid">
-					<input type="submit" class="btn btn-primary" value="Subscribe">
+					<button type="submit" name="add_email" id="add_email" class="btn btn-primary" value="Subscribe">Subscribe</button>
 				</div>
 			</form>
 		</div>
@@ -194,7 +210,7 @@ $database = $database->getConnection();
 					<div class="widget">
 						<p>Copyright &copy;<script>
 								document.write(new Date().getFullYear());
-							</script> All rights reserved | <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="#" target="_blank" rel="nofollow noopener">Crea8t</a>
+							</script> All rights reserved |
 						</p>
 					</div>
 				</div>
@@ -239,6 +255,48 @@ $database = $database->getConnection();
 			gtag('config', 'UA-23581568-13');
 		</script>
 		<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"71f592dacf89407e","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.6.0","si":100}' crossorigin="anonymous"></script>
+		<script type="text/javascript">
+			// Add Email                                                        
+			$(document).ready(function($) {
+
+				$("#add_email").click(function(e) {
+
+					e.preventDefault();
+
+					// Email required
+					var email = $("#email").val();
+					if (email == "") {
+						alert("Email is required");
+						$("input#email").focus();
+						return false;
+					}
+
+					$.ajax({
+						type: "POST",
+						url: "admin/process.php",
+						data: {
+							action: "newsletter_subscription",
+							email: email,
+						},
+						beforeSend: function() {
+							$("#add_email").val("Processing...");
+						},
+						success: function(response) {
+							if (response == true) {
+								alert("Email Successfully Subscribed");
+								location.reload();
+								$("#email").val("");
+
+							} else if (response == false) {
+								alert("Error, Incorrect Details");
+								$("#add_email").val("Subscribe");
+							}
+						},
+					});
+				});
+				return false;
+			});
+		</script>
 </body>
 
 </html>

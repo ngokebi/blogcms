@@ -85,6 +85,7 @@ if (empty($_SESSION['username'])) {
         <link href="css/lib/helper.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+        <script src="https://cdn.tiny.cloud/1/96mnsk10pkg2eoqov5j9uvwckxdsvqkplraribk3dkypc1fi/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     </head>
 
     <body>
@@ -104,18 +105,11 @@ if (empty($_SESSION['username'])) {
                     <!-- /# row -->
                     <section id="main-content">
                         <div class="row">
-<<<<<<< HEAD
                             <div class="col-lg-10">
                                 <div class="card">
                                     <div class="card-title">
                                         <h4>Edit Post</h4>
-=======
-<<<<<<< HEAD
-                            <div class="col-lg-10">
-                                <div class="card">
-                                    <div class="card-title">
-                                        <h2>Edit Post</h2>
->>>>>>> 49f7658626357565e00e6a2665e4d382568bd7ed
+
                                     </div>
                                     <div class="card-body">
                                         <div class="basic-form">
@@ -175,7 +169,7 @@ if (empty($_SESSION['username'])) {
                                                         </div>
                                                         <div class="form-group col-sm-8">
                                                             <label class="col-form-label">Short Description</label>
-                                                            <textarea class="form-control" rows="5" placeholder="Short Description" name="short_desc" id="short_desc"><?php echo htmlentities($result_post->short_desc); ?></textarea>
+                                                            <input type="text" class="form-control" name="short_desc" id="short_desc" value="<?php echo htmlentities($result_post->short_desc); ?>" placeholder="Short Description">
                                                         </div>
                                                         <div class="form-group col-sm-8">
                                                             <label class="col-form-label">Long Description</label>
@@ -214,13 +208,13 @@ if (empty($_SESSION['username'])) {
         <script src="js/scripts.js"></script>
 
         <script type="text/javascript">
-
             // Edit Post
             $(document).ready(function($) {
 
                 $("#edit_post").click(function(e) {
 
                     e.preventDefault();
+                    tinyMCE.triggerSave();
 
                     //Title required
                     var title = $("#title").val();
@@ -272,7 +266,6 @@ if (empty($_SESSION['username'])) {
                         type: "POST",
                         url: "process.php",
                         data: {
-
                             action: "updatePost",
                             title: title,
                             author: author,
@@ -292,7 +285,7 @@ if (empty($_SESSION['username'])) {
                                 $(location).attr('href', 'posts.php');
 
                             } else if (response == false) {
-                                alert("Error, Incorrect Details" + response);
+                                alert("Error, Incorrect Details");
                                 $("#edit_post").val("Update");
 
                             }
@@ -301,26 +294,14 @@ if (empty($_SESSION['username'])) {
                 });
                 return false;
             });
-
-            // Search Table
-            function myFunction() {
-                var input, filter, table, tr, td, i, txtValue;
-                input = document.getElementById("searchinput");
-                filter = input.value.toUpperCase();
-                table = document.getElementById("dataTable");
-                tr = table.getElementsByTagName("tr");
-                for (i = 0; i < tr.length; i++) {
-                    td = tr[i].getElementsByTagName("td")[0];
-                    if (td) {
-                        txtValue = td.textContent || td.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[i].style.display = "";
-                        } else {
-                            tr[i].style.display = "none";
-                        }
-                    }
-                }
-            }
+        </script>
+        <script>
+            tinymce.init({
+                selector: 'textarea',
+                plugins: 'advlist autolink lists link image charmap preview anchor pagebreak',
+                toolbar_mode: 'floating',
+            });
+            tinymce.triggerSave();
         </script>
     </body>
 

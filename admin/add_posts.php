@@ -85,6 +85,7 @@ if (empty($_SESSION['username'])) {
         <link href="css/lib/helper.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+        <script src="https://cdn.tiny.cloud/1/96mnsk10pkg2eoqov5j9uvwckxdsvqkplraribk3dkypc1fi/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     </head>
 
     <body>
@@ -152,7 +153,7 @@ if (empty($_SESSION['username'])) {
                                                 </div>
                                                 <div class="form-group col-sm-8">
                                                     <label class="col-form-label">Short Description</label>
-                                                    <textarea class="form-control" rows="5" placeholder="Short Description" name="short_desc" id="short_desc"></textarea>
+                                                    <input type="text" class="form-control" name="short_desc" id="short_desc" placeholder="Short Description">
                                                 </div>
                                                 <div class="form-group col-sm-8">
                                                     <label class="col-form-label">Long Description</label>
@@ -195,15 +196,16 @@ if (empty($_SESSION['username'])) {
                 $("#add_post").click(function(e) {
 
                     e.preventDefault();
+                    tinyMCE.triggerSave();
 
-                    //Title required
+                    // Title required
                     var title = $("#title").val();
                     if (title == "") {
                         alert("Title is required");
                         $("input#title").focus();
                         return false;
                     }
-                    //Author required
+                    // Author required
                     var author = $("#author").val();
                     if (author == "") {
                         alert("Author is required");
@@ -211,21 +213,21 @@ if (empty($_SESSION['username'])) {
                         return false;
                     }
 
-                    //User required
+                    // User required
                     var uploaded_by = $("#uploaded_by").val();
                     if (uploaded_by == "") {
                         alert("User is required");
                         $("input#uploaded_by").focus();
                         return false;
                     }
-                    //Category required
+                    // Category required
                     var cat_id = $("#cat_id").val();
                     if (cat_id == "") {
                         alert("Category is required");
                         $("input#cat_id").focus();
                         return false;
                     }
-                    //Short Description required
+                    // Short Description required
                     var short_desc = $("#short_desc").val();
                     if (short_desc == "") {
                         alert("Short Content is required");
@@ -271,6 +273,14 @@ if (empty($_SESSION['username'])) {
                 return false;
             });
         </script>
+          <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'advlist autolink lists link image charmap preview anchor pagebreak',
+      toolbar_mode: 'floating',
+    });
+    tinymce.triggerSave();
+  </script>
     </body>
 
     </html>
