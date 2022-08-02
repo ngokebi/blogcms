@@ -89,6 +89,20 @@ function deletePost($id, $username)
   return $myResp;
 }
 
+function viewPost($id)
+{
+  global $post;
+  $myResp = $post->get_views($id);
+  return $myResp;
+}
+
+function addView($views, $id)
+{
+  global $post;
+  $myResp = $post->add_views($views, $id);
+  return $myResp;
+}
+
 function deleteImage($id, $username)
 {
   global $image, $log;
@@ -161,6 +175,16 @@ switch ($_POST['action']) {
 
     case "newsletter_subscription": {
       echo newsletter_subscription($_POST['email'], $_SESSION['username']);
+      break;
+    }
+
+    case "viewPost": {
+      echo viewPost($_POST['id'], );
+      break;
+    }
+
+    case "addView": {
+      echo addView($_POST['views'], $_POST['id']);
       break;
     }
 }

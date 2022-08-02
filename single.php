@@ -1,5 +1,7 @@
 <?php
-error_reporting(0);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
 
 include "classes/Database.php";
 $database = new Database();
@@ -74,8 +76,7 @@ $database = $database->getConnection();
 					</div> -->
 					<?php
 					$post_id = intval($_GET['post_id']);
-					$sql = "SELECT posts.id, posts.title as title, posts.short_desc as short_desc, posts.long_desc as long_desc, posts.author as author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, image.image_url as image_url FROM posts 
-					
+					$sql = "SELECT posts.id, posts.title as title, posts.short_desc as short_desc, posts.views as views, posts.long_desc as long_desc, posts.author as author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, posts.cat_id as cat_id, image.image_url as image_url FROM posts 
 					INNER JOIN image ON posts.id = image.post_id WHERE posts.id = :post_id";
 					$stmt = $database->prepare($sql);
 					$stmt->bindParam(':post_id', $post_id, PDO::PARAM_STR);
@@ -84,9 +85,10 @@ $database = $database->getConnection();
 					if ($stmt->rowCount() > 0) {
 						foreach ($data as $results) {
 					?>
+							<input type="hidden" name="views" id="views" value="<?php echo htmlentities($results->views) ?>">
 							<span class="d-block text-center"><?php echo htmlentities($results->author) ?></span>
 							<span class="date d-block text-center small text-uppercase text-black-50 mb-5"><?php echo htmlentities($results->published_date) ?></span>
-							<h2 class="heading text-center"><?php echo htmlentities($results->title) ?></h2>
+							<h2 class="heading text-center" id="see"><?php echo htmlentities($results->title) ?></h2>
 							<p class="lead mb-4 text-center"><?php echo $results->short_desc ?></p>
 							<img src="admin/post_images/<?php echo htmlentities($results->image_url) ?>" alt="Image" class="img-fluid rounded mb-4" width="800" height="700">
 							<p><?php echo $results->long_desc ?></p>
@@ -119,6 +121,7 @@ $database = $database->getConnection();
 							</p> -->
 					<?php }
 					} ?>
+
 					<div class="row mt-5 pt-5 border-top">
 						<div class="col-12">
 							<span class="fw-bold text-black small mb-1">Share</span>
@@ -144,15 +147,18 @@ $database = $database->getConnection();
 			<div class="row justify-content-center">
 				<?php
 				$post_id = intval($_GET['post_id']);
+				$cat_id = $results->cat_id;
+				// echo "<script>alert('$cat_id')</script>";
 				$sql = "SELECT posts.id as posts_id, posts.title as title, posts.short_desc as short_desc, posts.long_desc as long_desc, posts.author as author, category.category_name as category_name,
 				DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, image.image_url as image_url FROM posts 
 				INNER JOIN image ON posts.id = image.post_id
 				INNER JOIN category ON posts.cat_id = category.id
-				WHERE posts.id != :post_id
+				WHERE posts.id != :post_id AND posts.cat_id = :cat_id
 				ORDER BY posts_id DESC
 				LIMIT 4 ";
 				$stmt = $database->prepare($sql);
 				$stmt->bindParam(':post_id', $post_id, PDO::PARAM_STR);
+				$stmt->bindParam(':cat_id', $cat_id, PDO::PARAM_STR);
 				$stmt->execute();
 				$data = $stmt->fetchAll(PDO::FETCH_OBJ);
 				if ($stmt->rowCount() > 0) {
@@ -161,6 +167,7 @@ $database = $database->getConnection();
 						<div class="col-lg-12">
 							<div class="post-entry d-md-flex small-horizontal mb-5">
 								<div class="me-md-5 thumbnail mb-3 mb-md-0">
+									<input type="hidden" name="id" id="post_id" value="<?php echo intval($_GET['post_id']) ?>">
 									<img src="admin/post_images/<?php echo htmlentities($results->image_url) ?>" alt="Image" class="img-fluid">
 								</div>
 								<div class="content">
@@ -317,7 +324,47 @@ $database = $database->getConnection();
 				});
 				return false;
 			});
+
+			$(document).ready(function() {
+
+				var id = $("#post_id").val();
+				$.ajax({
+					type: "POST",
+					url: "admin/process.php",
+					data: {
+						action: "viewPost",
+						id: id,
+					},
+					success: function(response) {
+						// alert(response);
+						return true;
+					}
+				});
+			});
+
+				$(document).ready(function() {
+
+				var id = $("#post_id").val();
+				var views = $("#views").val();
+				$.ajax({
+					type: "POST",
+					url: "admin/process.php",
+					data: {
+						action: "addView",
+						id: id,
+						views: views
+					},
+					success: function(response) {
+						if (response == true) {
+							return true;
+						} else {
+							return false;
+						}
+						// alert(response);
+					}
+				});
+			});
 		</script>
-	</body>
+</body>
 
 </html>

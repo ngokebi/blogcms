@@ -87,7 +87,7 @@ $database = $database->getConnection();
 				</div>
 				<?php
 				$cat_id = intval($_GET['cat_id']);
-				$sql = "SELECT category.id, category.category_name as cat_name, posts.status, posts.id as post_id, title, short_desc, long_desc, author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, users.username as username, users.id as uploaded_by  
+				$sql = "SELECT category.id, category.category_name as cat_name, posts.status, posts.id as post_id, title, short_desc, long_desc, author, posts.views as views, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, users.username as username, users.id as uploaded_by  
 			        FROM posts 
 					INNER JOIN users ON posts.uploaded_by = users.id 
 					INNER JOIN category ON posts.cat_id = category.id 

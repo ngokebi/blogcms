@@ -297,14 +297,13 @@ if (empty($_SESSION['username'])) {
 
             // Search Table
             function myFunction() {
-                function myFunction() {
                 var input, filter, table, tr, td, i, txtValue;
                 input = document.getElementById("searchinput");
                 filter = input.value.toUpperCase();
                 table = document.getElementById("dataTable");
                 tr = table.getElementsByTagName("tr");
                 th = table.getElementsByTagName("th");
-                
+
                 for (i = 1; i < tr.length; i++) {
                     tr[i].style.display = "none";
                     for (var j = 0; j < th.length; j++) {
@@ -318,7 +317,7 @@ if (empty($_SESSION['username'])) {
                     }
                 }
             }
-            }
+            
         </script>
     </body>
 

@@ -112,6 +112,7 @@ $database = $database->getConnection();
 												<a href="#" class="post-author d-flex align-items-center">
 													<div class="text">
 														<strong><?php echo htmlentities($results->author) ?></strong>
+														<span>Author</span>
 													</div>
 												</a>
 											</div>
@@ -130,371 +131,116 @@ $database = $database->getConnection();
 	<div class="section">
 		<div class="container">
 			<div class="row g-5">
-				<div class="col-lg-4">
-					<div class="post-entry d-block small-post-entry-v">
-						<div class="thumbnail">
-							<a href="single.php">
-								<img src="images/ximg_2.jpg.pagespeed.ic.tehDa3FPWy.jpg" alt="Image" class="img-fluid">
-							</a>
-						</div>
-						<div class="content">
-							<div class="post-meta mb-1">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
+				<?php
+				$sql = "SELECT posts.id, posts.title as title, posts.short_desc as short_desc, posts.author as author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, category.category_name as category_name, image.image_url as image_url FROM posts 
+					INNER JOIN image ON posts.id = image.post_id 
+					INNER JOIN category ON posts.cat_id = category.id
+					ORDER BY posts.id LIMIT 4, 10";
+				$stmt = $database->prepare($sql);
+
+				$stmt->execute();
+				$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+				if ($stmt->rowCount() > 0) {
+					foreach ($data as $results) {
+				?>
+						<div class="col-lg-4">
+							<div class="post-entry d-block small-post-entry-v">
+								<div class="thumbnail">
+									<a href="single.php">
+										<img src="admin/post_images/<?php echo htmlentities($results->image_url) ?>" alt="Image" class="img-fluid">
+									</a>
+								</div>
+								<div class="content">
+									<div class="post-meta mb-1">
+										<a href="#" class="category"><?php echo htmlentities($results->category_name) ?></a>
+										&mdash;
+										<span class="date"><?php echo htmlentities($results->published_date) ?></span>
+									</div>
+									<h2 class="heading mb-3"><a href="single.php"><?php echo htmlentities($results->title) ?></a></h2>
+									<p><?php echo htmlentities($results->short_desc) ?></p>
+									<i class="post-author d-flex align-items-center">
+										<div class="text">
+											<strong><?php echo htmlentities($results->author) ?></strong>
+											<span>Author</span>
+
+										</div>
+									</i>
+								</div>
 							</div>
-							<h2 class="heading mb-3"><a href="single.php">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>CEO and Founder</span>
-								</div>
-							</a>
 						</div>
-					</div>
-				</div>
-				<div class="col-lg-4">
-					<div class="post-entry d-block small-post-entry-v">
-						<div class="thumbnail">
-							<a href="single.php">
-								<img src="images/ximg_3.jpg.pagespeed.ic.MzyTwPvJuu.jpg" alt="Image" class="img-fluid">
-							</a>
-						</div>
-						<div class="content">
-							<div class="post-meta mb-1">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading mb-3"><a href="single.php">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>CEO and Founder</span>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4">
-					<div class="post-entry d-block small-post-entry-v">
-						<div class="thumbnail">
-							<a href="single.php">
-								<img src="images/ximg_4.jpg.pagespeed.ic.5BNsTZBCHP.jpg" alt="Image" class="img-fluid">
-							</a>
-						</div>
-						<div class="content">
-							<div class="post-meta mb-1">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading mb-3"><a href="#">Your most unhappy customers are your greatest source of
-									learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>CEO and Founder</span>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4">
-					<div class="post-entry d-block small-post-entry-v">
-						<div class="thumbnail">
-							<a href="single.php">
-								<img src="images/ximg_4.jpg.pagespeed.ic.5BNsTZBCHP.jpg" alt="Image" class="img-fluid">
-							</a>
-						</div>
-						<div class="content">
-							<div class="post-meta mb-1">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading mb-3"><a href="#">Your most unhappy customers are your greatest source of
-									learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>CEO and Founder</span>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4">
-					<div class="post-entry d-block small-post-entry-v">
-						<div class="thumbnail">
-							<a href="single.php">
-								<img src="images/ximg_5.jpg.pagespeed.ic.aehNfINE2q.jpg" alt="Image" class="img-fluid">
-							</a>
-						</div>
-						<div class="content">
-							<div class="post-meta mb-1">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading mb-3"><a href="#">Your most unhappy customers are your greatest source of
-									learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>CEO and Founder</span>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-4">
-					<div class="post-entry d-block small-post-entry-v">
-						<div class="thumbnail">
-							<a href="single.php">
-								<img src="images/ximg_6.jpg.pagespeed.ic.Kuzv9hw150.jpg" alt="Image" class="img-fluid">
-							</a>
-						</div>
-						<div class="content">
-							<div class="post-meta mb-1">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading mb-3"><a href="#">Your most unhappy customers are your greatest source of
-									learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>CEO and Founder</span>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
+				<?php
+					}
+				} ?>
 			</div>
 		</div>
 	</div>
-	<div class="section">
+	<div class="section" id="popular">
 		<div class="container">
 			<div class="row justify-content-center mb-5">
 				<div class="col-lg-7 text-center">
 					<h2 class="heading">Most Popular Posts</h2>
+					<?php
+					$sql = "SELECT COUNT(*) as total from posts WHERE views >= 10";
+					$query = $database->prepare($sql);
+					$query->execute();
+					$data = $query->fetch();
+					if ($query->rowCount() > 0) {
+					?>
+						<input type="hidden" value="<?php echo htmlentities($data['total']) ?>" id="count">
+					<?php
+					} ?>
 				</div>
 			</div>
 		</div>
 		<div class="most-popular-slider-wrap px-3 px-md-0">
 			<div id="most-popular-nav">
+
 				<span class="prev" data-controls="prev">Prev</span>
 				<span class="next" data-controls="next">Next</span>
 			</div>
 			<div class="most-popular-slider" id="most-popular-center">
-				<div class="item">
-					<div class="post-entry d-block small-post-entry-v">
-						<div class="thumbnail">
-							<a href="single.php">
-								<img src="images/ximg_7.jpg.pagespeed.ic.w5W5PuCxbQ.jpg" alt="Image" class="img-fluid">
-							</a>
-						</div>
-						<div class="content">
-							<div class="post-meta mb-1">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
+				<?php
+				$sql = "SELECT posts.id, posts.title as title, posts.views as views, posts.short_desc as short_desc, posts.author as author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, category.category_name as category_name, image.image_url as image_url FROM posts 
+					INNER JOIN image ON posts.id = image.post_id 
+					INNER JOIN category ON posts.cat_id = category.id
+					WHERE views >= 10
+					ORDER BY posts.id LIMIT 5";
+				$stmt = $database->prepare($sql);
+				$stmt->bindParam(':post_id', $post_id, PDO::PARAM_STR);
+				$stmt->execute();
+				$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+				if ($stmt->rowCount() > 0) {
+					foreach ($data as $results) {
+				?>
+						<div class="item">
+							<div class="post-entry d-block small-post-entry-v">
+								<div class="thumbnail">
+									<input type="hidden" name="views" id="views" value="<?php echo htmlentities($results->views) ?>">
+									<a href="single.php">
+										<img src="admin/post_images/<?php echo htmlentities($results->image_url) ?>" alt="Image" width="700" height="800" class="img-fluid">
+									</a>
+								</div>
+								<div class="content">
+									<div class="post-meta mb-1">
+										<a href="#" class="category"><?php echo htmlentities($results->category_name) ?></a>
+										&mdash;
+										<span class="date"><?php echo htmlentities($results->published_date) ?></span>
+									</div>
+									<h2 class="heading mb-3"><a href="single.php"><?php echo htmlentities($results->title) ?></a></h2>
+									<p><?php echo htmlentities($results->short_desc) ?></p>
+									<a href="#" class="post-author d-flex align-items-center">
+
+										<div class="text">
+											<strong><?php echo htmlentities($results->author) ?></strong>
+											<span>Author</span>
+										</div>
+									</a>
+								</div>
 							</div>
-							<h2 class="heading mb-3"><a href="single.php">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>CEO and Founder</span>
-								</div>
-							</a>
 						</div>
-					</div>
-				</div>
-				<div class="item">
-					<div class="post-entry d-block small-post-entry-v">
-						<div class="thumbnail">
-							<a href="single.php">
-								<img src="images/ximg_2.jpg.pagespeed.ic.tehDa3FPWy.jpg" alt="Image" class="img-fluid">
-							</a>
-						</div>
-						<div class="content">
-							<div class="post-meta mb-1">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading mb-3"><a href="single.php">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>CEO and Founder</span>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="item">
-					<div class="post-entry d-block small-post-entry-v">
-						<div class="thumbnail">
-							<a href="single.php">
-								<img src="images/ximg_3.jpg.pagespeed.ic.MzyTwPvJuu.jpg" alt="Image" class="img-fluid">
-							</a>
-						</div>
-						<div class="content">
-							<div class="post-meta mb-1">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading mb-3"><a href="single.php">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>CEO and Founder</span>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="item">
-					<div class="post-entry d-block small-post-entry-v">
-						<div class="thumbnail">
-							<a href="single.php">
-								<img src="images/ximg_4.jpg.pagespeed.ic.5BNsTZBCHP.jpg" alt="Image" class="img-fluid">
-							</a>
-						</div>
-						<div class="content">
-							<div class="post-meta mb-1">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading mb-3"><a href="single.php">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>CEO and Founder</span>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="item">
-					<div class="post-entry d-block small-post-entry-v">
-						<div class="thumbnail">
-							<a href="single.php">
-								<img src="images/ximg_5.jpg.pagespeed.ic.aehNfINE2q.jpg" alt="Image" class="img-fluid">
-							</a>
-						</div>
-						<div class="content">
-							<div class="post-meta mb-1">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading mb-3"><a href="single.php">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>CEO and Founder</span>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
-				<div class="item">
-					<div class="post-entry d-block small-post-entry-v">
-						<div class="thumbnail">
-							<a href="single.php">
-								<img src="images/ximg_6.jpg.pagespeed.ic.Kuzv9hw150.jpg" alt="Image" class="img-fluid">
-							</a>
-						</div>
-						<div class="content">
-							<div class="post-meta mb-1">
-								<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a>
-								&mdash;
-								<span class="date">July 2, 2020</span>
-							</div>
-							<h2 class="heading mb-3"><a href="single.php">Your most unhappy customers are your greatest
-									source of learning.</a></h2>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
-								there live the blind texts.</p>
-							<a href="#" class="post-author d-flex align-items-center">
-								<div class="author-pic">
-									<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-								</div>
-								<div class="text">
-									<strong>Sergy Campbell</strong>
-									<span>CEO and Founder</span>
-								</div>
-							</a>
-						</div>
-					</div>
-				</div>
+				<?php
+					}
+				} ?>
 			</div>
 		</div>
 	</div>
@@ -785,6 +531,12 @@ $database = $database->getConnection();
 					});
 				});
 				return false;
+			});
+			$(document).ready(function($) {
+				var count = $('#count').val();
+				if (count < 2) {
+					$("#popular").hide();
+				}
 			});
 		</script>
 </body>
