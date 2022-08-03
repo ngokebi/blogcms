@@ -149,7 +149,7 @@ $database = $database->getConnection();
 				$post_id = intval($_GET['post_id']);
 				$cat_id = $results->cat_id;
 				// echo "<script>alert('$cat_id')</script>";
-				$sql = "SELECT posts.id as posts_id, posts.title as title, posts.short_desc as short_desc, posts.long_desc as long_desc, posts.author as author, category.category_name as category_name,
+				$sql = "SELECT posts.id as posts_id, posts.title as title, posts.short_desc as short_desc, posts.long_desc as long_desc, posts.author as author, category.id as cat_id, category.category_name as category_name,
 				DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, image.image_url as image_url FROM posts 
 				INNER JOIN image ON posts.id = image.post_id
 				INNER JOIN category ON posts.cat_id = category.id
@@ -172,12 +172,12 @@ $database = $database->getConnection();
 								</div>
 								<div class="content">
 									<div class="post-meta mb-3">
-										<a href="#" class="category"><?php echo htmlentities($results->category_name) ?></a> &mdash;
+										<a href="categories.php?cat_id=<?php echo htmlentities($results->cat_id)?>" class="category"><?php echo htmlentities($results->category_name) ?></a> &mdash;
 										<span class="date"><?php echo htmlentities($results->published_date) ?></span>
 									</div>
 									<h2 class="heading"><a href="single.php?post_id=<?php echo htmlentities($results->posts_id) ?>"><?php echo htmlentities($results->title) ?></a></h2>
 									<p><?php echo htmlentities($results->short_desc) ?></p>
-									<a href="#" class="post-author d-flex align-items-center">
+									<i class="post-author d-flex align-items-center">
 										<div class="text">
 											<strong><?php echo htmlentities($results->author) ?></strong>
 											<?php
@@ -195,7 +195,7 @@ $database = $database->getConnection();
 												}
 											} ?>
 										</div>
-									</a>
+									</i>
 								</div>
 							</div>
 						</div>

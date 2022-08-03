@@ -82,7 +82,7 @@ $database = $database->getConnection();
 						<div class="posts-slide" id="posts-slide">
 							<?php
 
-							$sql = "SELECT posts.id as posts_id, posts.title as title, posts.short_desc as short_desc, posts.long_desc as long_desc, posts.author as author, category.category_name as category_name,
+							$sql = "SELECT posts.id as posts_id, posts.title as title, posts.short_desc as short_desc, posts.long_desc as long_desc, posts.author as author, category.id as cat_id, category.category_name as category_name,
 									DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, image.image_url as image_url FROM posts 
 									INNER JOIN image ON posts.id = image.post_id
 									INNER JOIN category ON posts.cat_id = category.id
@@ -103,18 +103,18 @@ $database = $database->getConnection();
 											</div>
 											<div class="content align-self-center">
 												<div class="post-meta mb-3">
-													<a href="#" class="category"><?php echo htmlentities($results->category_name) ?></a> &mdash;
+													<a href="categories.php?cat_id=<?php echo htmlentities($results->cat_id) ?>" class="category"><?php echo htmlentities($results->category_name) ?></a> &mdash;
 													<span class="date"><?php echo htmlentities($results->published_date) ?></span>
 												</div>
 												<h2 class="heading"><a href="single.php?post_id=<?php echo htmlentities($results->posts_id) ?>"><?php echo htmlentities($results->title) ?></a></h2>
 												<p><?php echo htmlentities($results->short_desc) ?>
 												</p>
-												<a href="#" class="post-author d-flex align-items-center">
+												<i class="post-author d-flex align-items-center">
 													<div class="text">
 														<strong><?php echo htmlentities($results->author) ?></strong>
 														<span>Author</span>
 													</div>
-												</a>
+												</i>
 											</div>
 										</div>
 									</div>
@@ -132,10 +132,10 @@ $database = $database->getConnection();
 		<div class="container">
 			<div class="row g-5">
 				<?php
-				$sql = "SELECT posts.id, posts.title as title, posts.short_desc as short_desc, posts.author as author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, category.category_name as category_name, image.image_url as image_url FROM posts 
+				$sql = "SELECT posts.id as posts_id, posts.title as title, posts.short_desc as short_desc, posts.author as author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, category.id as cat_id, category.category_name as category_name, image.image_url as image_url FROM posts 
 					INNER JOIN image ON posts.id = image.post_id 
 					INNER JOIN category ON posts.cat_id = category.id
-					ORDER BY posts.id LIMIT 4, 10";
+					ORDER BY posts.id DESC LIMIT 4, 10";
 				$stmt = $database->prepare($sql);
 
 				$stmt->execute();
@@ -146,17 +146,17 @@ $database = $database->getConnection();
 						<div class="col-lg-4">
 							<div class="post-entry d-block small-post-entry-v">
 								<div class="thumbnail">
-									<a href="single.php">
-										<img src="admin/post_images/<?php echo htmlentities($results->image_url) ?>" alt="Image" class="img-fluid">
+									<a href="single.php?post_id=<?php echo htmlentities($results->posts_id) ?>">
+										<img src="admin/post_images/<?php echo htmlentities($results->image_url) ?>" alt="Image" width="280" height="190" class="img-fluid">
 									</a>
 								</div>
 								<div class="content">
 									<div class="post-meta mb-1">
-										<a href="#" class="category"><?php echo htmlentities($results->category_name) ?></a>
+										<a href="categories.php?cat_id=<?php echo htmlentities($results->cat_id) ?>" class="category"><?php echo htmlentities($results->category_name) ?></a>
 										&mdash;
 										<span class="date"><?php echo htmlentities($results->published_date) ?></span>
 									</div>
-									<h2 class="heading mb-3"><a href="single.php"><?php echo htmlentities($results->title) ?></a></h2>
+									<h2 class="heading mb-3"><a href="single.php?post_id=<?php echo htmlentities($results->posts_id) ?>"><?php echo htmlentities($results->title) ?></a></h2>
 									<p><?php echo htmlentities($results->short_desc) ?></p>
 									<i class="post-author d-flex align-items-center">
 										<div class="text">
@@ -200,7 +200,7 @@ $database = $database->getConnection();
 			</div>
 			<div class="most-popular-slider" id="most-popular-center">
 				<?php
-				$sql = "SELECT posts.id, posts.title as title, posts.views as views, posts.short_desc as short_desc, posts.author as author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, category.category_name as category_name, image.image_url as image_url FROM posts 
+				$sql = "SELECT posts.id as posts_id, posts.title as title, posts.views as views, posts.short_desc as short_desc, posts.author as author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, category.id as cat_id, category.category_name as category_name, image.image_url as image_url FROM posts 
 					INNER JOIN image ON posts.id = image.post_id 
 					INNER JOIN category ON posts.cat_id = category.id
 					WHERE views >= 10
@@ -216,25 +216,25 @@ $database = $database->getConnection();
 							<div class="post-entry d-block small-post-entry-v">
 								<div class="thumbnail">
 									<input type="hidden" name="views" id="views" value="<?php echo htmlentities($results->views) ?>">
-									<a href="single.php">
-										<img src="admin/post_images/<?php echo htmlentities($results->image_url) ?>" alt="Image" width="700" height="800" class="img-fluid">
+									<a href="single.php?post_id=<?php echo htmlentities($results->posts_id) ?>">
+										<img src="admin/post_images/<?php echo htmlentities($results->image_url) ?>" alt="Image" width="600" height="400" class="img-fluid">
 									</a>
 								</div>
 								<div class="content">
 									<div class="post-meta mb-1">
-										<a href="#" class="category"><?php echo htmlentities($results->category_name) ?></a>
+										<a href="categories.php?cat_id=<?php echo htmlentities($results->cat_id) ?>" class="category"><?php echo htmlentities($results->category_name) ?></a>
 										&mdash;
 										<span class="date"><?php echo htmlentities($results->published_date) ?></span>
 									</div>
-									<h2 class="heading mb-3"><a href="single.php"><?php echo htmlentities($results->title) ?></a></h2>
+									<h2 class="heading mb-3"><a href="single.php?post_id=<?php echo htmlentities($results->posts_id) ?>"><?php echo htmlentities($results->title) ?></a></h2>
 									<p><?php echo htmlentities($results->short_desc) ?></p>
-									<a href="#" class="post-author d-flex align-items-center">
+									<i class="post-author d-flex align-items-center">
 
 										<div class="text">
 											<strong><?php echo htmlentities($results->author) ?></strong>
 											<span>Author</span>
 										</div>
-									</a>
+									</i>
 								</div>
 							</div>
 						</div>
@@ -244,169 +244,149 @@ $database = $database->getConnection();
 			</div>
 		</div>
 	</div>
-	<div class="section">
+	<div class="section" id="cat_id">
 		<div class="container">
+			<?php
+			$sql = "SELECT count(posts.cat_id) as total FROM posts 
+					INNER JOIN category ON category.id = posts.cat_id
+					WHERE posts.cat_id > 0
+					GROUP BY posts.cat_id";
+			$query = $database->prepare($sql);
+			$query->execute();
+			$data = $query->fetch();
+			if ($query->rowCount() > 0) {
+			?>
+				<input type="hidden" value="<?php echo htmlentities($data['total']) ?>" id="count_cat">
+			<?php
+			} ?>
 			<div class="row g-5">
 				<div class="col-lg-6">
 					<div class="row mb-4">
 						<div class="col-12">
-							<h2 class="h4 fw-bold">Sports</h2>
+							<?php
+							$sql = "SELECT count(posts.cat_id) as total, posts.id as posts_id, posts.cat_id as cat_id, category.category_name as category_name FROM posts 
+							INNER JOIN category ON category.id = posts.cat_id
+							GROUP BY posts.cat_id
+							ORDER BY total DESC
+							LIMIT 1";
+							$stmt = $database->prepare($sql);
+							$stmt->execute();
+							$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+							if ($stmt->rowCount() > 0) {
+								foreach ($data as $results) {
+							?>
+									<h2 class="h4 fw-bold"><?php echo htmlentities($results->category_name) ?></h2>
+							<?php
+								}
+							} ?>
 						</div>
 					</div>
+
 					<div class="row justify-content-center">
-						<div class="col-lg-12">
-							<div class="post-entry d-md-flex xsmall-horizontal mb-5">
-								<div class="me-md-3 thumbnail mb-3 mb-md-0">
-									<img src="images/ximg_2.jpg.pagespeed.ic.tehDa3FPWy.jpg" alt="Image" class="img-fluid">
-								</div>
-								<div class="content">
-									<div class="post-meta mb-1">
-										<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
-										<span class="date">July 2, 2020</span>
+						<?php
+						$cat_id = $results->category_name;
+						$sql = "SELECT posts.id as posts_id, posts.title as title, posts.short_desc as short_desc, posts.long_desc as long_desc, posts.author as author, category.id as cat_id, category.category_name as category_name,
+						DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, image.image_url as image_url FROM posts 
+						INNER JOIN image ON posts.id = image.post_id
+						INNER JOIN category ON posts.cat_id = category.id
+						WHERE category_name = :category_name
+							LIMIT 3";
+						$stmt = $database->prepare($sql);
+						$stmt->bindParam(':category_name', $cat_id, PDO::PARAM_STR);
+						$stmt->execute();
+						$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+						if ($stmt->rowCount() > 0) {
+							foreach ($data as $result_1) {
+						?>
+								<div class="col-lg-12">
+									<div class="post-entry d-md-flex xsmall-horizontal mb-5">
+										<div class="me-md-3 thumbnail mb-3 mb-md-0">
+											<img src="admin/post_images/<?php echo htmlentities($result_1->image_url) ?>" alt="Image" class="img-fluid">
+										</div>
+										<div class="content">
+											<div class="post-meta mb-1">
+												<a href="categories.php?cat_id=<?php echo htmlentities($results->cat_id) ?>" class="category"><?php echo htmlentities($result_1->category_name) ?></a>&mdash;
+												<span class="date"><?php echo htmlentities($result_1->published_date) ?></span>
+											</div>
+											<h2 class="heading"><a href="single.php?post_id=<?php echo htmlentities($results->posts_id) ?>"><?php echo htmlentities($result_1->title) ?></a></h2>
+											<i class="post-author d-flex align-items-center">
+												<div class="text">
+													<strong><?php echo htmlentities($result_1->author) ?></strong>
+													<span>Author</span>
+												</div>
+											</i>
+										</div>
 									</div>
-									<h2 class="heading"><a href="single.php">Your most unhappy customers are your
-											greatest source of learning.</a></h2>
-									<a href="#" class="post-author d-flex align-items-center">
-										<div class="author-pic">
-											<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-										</div>
-										<div class="text">
-											<strong>Sergy Campbell</strong>
-											<span>Author, 26 published post</span>
-										</div>
-									</a>
 								</div>
-							</div>
-						</div>
-						<div class="col-lg-12">
-							<div class="post-entry d-md-flex xsmall-horizontal mb-5">
-								<div class="me-md-3 thumbnail mb-3 mb-md-0">
-									<img src="images/ximg_3.jpg.pagespeed.ic.MzyTwPvJuu.jpg" alt="Image" class="img-fluid">
-								</div>
-								<div class="content">
-									<div class="post-meta mb-1">
-										<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
-										<span class="date">July 2, 2020</span>
-									</div>
-									<h2 class="heading"><a href="single.php">Your most unhappy customers are your
-											greatest source of learning.</a></h2>
-									<a href="#" class="post-author d-flex align-items-center">
-										<div class="author-pic">
-											<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-										</div>
-										<div class="text">
-											<strong>Sergy Campbell</strong>
-											<span>Author, 26 published post</span>
-										</div>
-									</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-12">
-							<div class="post-entry d-md-flex xsmall-horizontal mb-5">
-								<div class="me-md-3 thumbnail mb-3 mb-md-0">
-									<img src="images/ximg_4.jpg.pagespeed.ic.5BNsTZBCHP.jpg" alt="Image" class="img-fluid">
-								</div>
-								<div class="content">
-									<div class="post-meta mb-1">
-										<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
-										<span class="date">July 2, 2020</span>
-									</div>
-									<h2 class="heading"><a href="single.php">Your most unhappy customers are your
-											greatest source of learning.</a></h2>
-									<a href="#" class="post-author d-flex align-items-center">
-										<div class="author-pic">
-											<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-										</div>
-										<div class="text">
-											<strong>Sergy Campbell</strong>
-											<span>Author, 26 published post</span>
-										</div>
-									</a>
-								</div>
-							</div>
-						</div>
+						<?php
+							}
+						} ?>
 					</div>
 				</div>
 				<div class="col-lg-6">
 					<div class="row mb-4">
 						<div class="col-12">
-							<h2 class="h4 fw-bold">Business</h2>
+							<?php
+							$cat_id = $results->category_name;
+							$sql = "SELECT count(posts.cat_id) as total, posts.id as posts_id, posts.cat_id as cat_id, category.category_name as category_name FROM posts 
+							INNER JOIN category ON category.id = posts.cat_id
+							WHERE category_name != :category_name
+							GROUP BY posts.cat_id
+							ORDER BY total DESC
+							LIMIT 1";
+							$stmt = $database->prepare($sql);
+							$stmt->bindParam(':category_name', $cat_id, PDO::PARAM_STR);
+							$stmt->execute();
+							$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+							if ($stmt->rowCount() > 0) {
+								foreach ($data as $result) {
+							?>
+									<h2 class="h4 fw-bold"><?php echo htmlentities($result->category_name) ?></h2>
+							<?php
+								}
+							} ?>
 						</div>
 					</div>
 					<div class="row justify-content-center">
-						<div class="col-lg-12">
-							<div class="post-entry d-md-flex xsmall-horizontal mb-5">
-								<div class="me-md-3 thumbnail mb-3 mb-md-0">
-									<img src="images/ximg_2.jpg.pagespeed.ic.tehDa3FPWy.jpg" alt="Image" class="img-fluid">
-								</div>
-								<div class="content">
-									<div class="post-meta mb-1">
-										<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
-										<span class="date">July 2, 2020</span>
+						<?php
+						$cat_id = $result->category_name;
+						// echo "<script>alert('$cat_id')</script>";
+						$sql = "SELECT posts.id as posts_id, posts.title as title, posts.short_desc as short_desc, posts.long_desc as long_desc, posts.author as author, category.id as cat_id, category.category_name as category_name,
+						DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, image.image_url as image_url FROM posts 
+						INNER JOIN image ON posts.id = image.post_id
+						INNER JOIN category ON posts.cat_id = category.id
+						WHERE category_name = :category_name
+							LIMIT 3";
+						$stmt = $database->prepare($sql);
+						$stmt->bindParam(':category_name', $cat_id, PDO::PARAM_STR);
+						$stmt->execute();
+						$data = $stmt->fetchAll(PDO::FETCH_OBJ);
+						if ($stmt->rowCount() > 0) {
+							foreach ($data as $result_2) {
+						?>
+								<div class="col-lg-12">
+									<div class="post-entry d-md-flex xsmall-horizontal mb-5">
+										<div class="me-md-3 thumbnail mb-3 mb-md-0">
+											<img src="admin/post_images/<?php echo htmlentities($result_2->image_url) ?>" alt="Image" class="img-fluid">
+										</div>
+										<div class="content">
+											<div class="post-meta mb-1">
+												<a href="categories.php?cat_id=<?php echo htmlentities($results->cat_id) ?>" class="category"><?php echo htmlentities($result_2->category_name) ?></a>&mdash;
+												<span class="date"><?php echo htmlentities($result_2->published_date) ?></span>
+											</div>
+											<h2 class="heading"><a href="single.php?post_id=<?php echo htmlentities($results->posts_id) ?>"><?php echo htmlentities($result_2->title) ?></a></h2>
+											<i class="post-author d-flex align-items-center">
+												<div class="text">
+													<strong><?php echo htmlentities($result_2->author) ?></strong>
+													<span>Author</span>
+												</div>
+											</i>
+										</div>
 									</div>
-									<h2 class="heading"><a href="single.php">Your most unhappy customers are your
-											greatest source of learning.</a></h2>
-									<a href="#" class="post-author d-flex align-items-center">
-										<div class="author-pic">
-											<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-										</div>
-										<div class="text">
-											<strong>Sergy Campbell</strong>
-											<span>Author, 26 published post</span>
-										</div>
-									</a>
 								</div>
-							</div>
-						</div>
-						<div class="col-lg-12">
-							<div class="post-entry d-md-flex xsmall-horizontal mb-5">
-								<div class="me-md-3 thumbnail mb-3 mb-md-0">
-									<img src="images/ximg_3.jpg.pagespeed.ic.MzyTwPvJuu.jpg" alt="Image" class="img-fluid">
-								</div>
-								<div class="content">
-									<div class="post-meta mb-1">
-										<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
-										<span class="date">July 2, 2020</span>
-									</div>
-									<h2 class="heading"><a href="single.php">Your most unhappy customers are your
-											greatest source of learning.</a></h2>
-									<a href="#" class="post-author d-flex align-items-center">
-										<div class="author-pic">
-											<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-										</div>
-										<div class="text">
-											<strong>Sergy Campbell</strong>
-											<span>Author, 26 published post</span>
-										</div>
-									</a>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-12">
-							<div class="post-entry d-md-flex xsmall-horizontal mb-5">
-								<div class="me-md-3 thumbnail mb-3 mb-md-0">
-									<img src="images/ximg_4.jpg.pagespeed.ic.5BNsTZBCHP.jpg" alt="Image" class="img-fluid">
-								</div>
-								<div class="content">
-									<div class="post-meta mb-1">
-										<a href="#" class="category">Business</a>, <a href="#" class="category">Travel</a> &mdash;
-										<span class="date">July 2, 2020</span>
-									</div>
-									<h2 class="heading"><a href="single.php">Your most unhappy customers are your
-											greatest source of learning.</a></h2>
-									<a href="#" class="post-author d-flex align-items-center">
-										<div class="author-pic">
-											<img src="images/xperson_1.jpg.pagespeed.ic.ku-D0yMWz5.jpg" alt="Image">
-										</div>
-										<div class="text">
-											<strong>Sergy Campbell</strong>
-											<span>Author, 26 published post</span>
-										</div>
-									</a>
-								</div>
-							</div>
-						</div>
+						<?php
+							}
+						} ?>
 					</div>
 				</div>
 			</div>
@@ -532,10 +512,18 @@ $database = $database->getConnection();
 				});
 				return false;
 			});
+
 			$(document).ready(function($) {
 				var count = $('#count').val();
 				if (count < 2) {
 					$("#popular").hide();
+				}
+			});
+
+			$(document).ready(function($) {
+				var count = $('#count_cat').val();
+				if (count < 1) {
+					$("#cat_id").hide();
 				}
 			});
 		</script>
