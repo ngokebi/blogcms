@@ -39,10 +39,10 @@ $database = $database->getConnection();
 						<a href="index.php" class="logo m-0 text-uppercase">Crea8t</a>
 					</div>
 					<div class="col-md-3 order-3 order-md-1">
-						<form action="#" class="search-form">
+						<!-- <form action="#" class="search-form">
 							<span class="icon-search2"></span>
 							<input type="search" class="form-control" placeholder="Search...">
-						</form>
+						</form> -->
 					</div>
 					<div class="col-md-3 text-end order-2 order-md-3 mb-3 mb-md-0">
 						<div class="d-flex">
@@ -60,7 +60,7 @@ $database = $database->getConnection();
 				<ul class="js-clone-nav d-none d-lg-inline-none text-start site-menu float-end">
 					<li><a href="index.php">Home</a></li>
 					<li class="has-children active">
-						<a>Categories</a>
+						<a href="#">Categories</a>
 						<?php include "cat_sidebar.php"; ?>
 					</li>
 				</ul>
