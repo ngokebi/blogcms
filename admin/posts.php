@@ -132,7 +132,9 @@ if (empty($_SESSION['username'])) {
                                                     </tr>
                                                 </thead>
                                                 <?php
-                                                $sql = "SELECT posts.id as post_id, posts.title as title, posts.author as author, category.category_name as category_name, posts.short_desc as short_desc, posts.long_desc as long_desc, posts.created_at as created_at FROM posts INNER JOIN category ON posts.cat_id = category.id WHERE posts.status = 'Active'";
+                                                $sql = "SELECT posts.id as post_id, posts.title as title, posts.author as author, category.category_name as category_name, posts.short_desc as short_desc, posts.long_desc as long_desc, posts.created_at as created_at 
+                                                FROM posts 
+                                                INNER JOIN category ON posts.cat_id = category.id WHERE posts.status = 'Active' ORDER BY post_id DESC";
                                                 $stmt = $database->prepare($sql);
                                                 $stmt->execute();
                                                 $data = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -147,7 +149,7 @@ if (empty($_SESSION['username'])) {
                                                                 <td><?php echo htmlentities($result->category_name); ?></td>
                                                                 <td><?php echo htmlentities($result->author); ?></td>
                                                                 <td><?php echo htmlentities($result->short_desc); ?></td>
-                                                                <td><?php echo (substr($result->long_desc, 0, 250) . '...'); ?></td>
+                                                                <td><?php echo htmlentities(substr($result->long_desc, 0, 250) . '...'); ?></td>
                                                                 <td><?php echo htmlentities($result->created_at); ?></td>
                                                                 <td class="color-primary">
                                                                     <span class="m-l-10">
@@ -155,7 +157,7 @@ if (empty($_SESSION['username'])) {
                                                                             <i class="ti-pencil color-success"></i>
                                                                         </a>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                                                        <a href="posts.php?post_id=<?php echo htmlentities($result->post_id); ?>" post_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
+                                                                        <a href="posts.php?post_id=<?php echo htmlentities($result->post_id); ?>" post_id="<?php echo htmlentities($result->post_id); ?>" title="Delete" class="delete">
                                                                             <i class="ti-close color-danger"></i>
                                                                         </a>
                                                                     </span>

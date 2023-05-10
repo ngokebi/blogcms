@@ -279,7 +279,6 @@ if (empty($_SESSION['username'])) {
       plugins: 'advlist autolink lists link image charmap preview anchor pagebreak',
       toolbar_mode: 'floating',
     });
-    tinymce.triggerSave();
   </script>
     </body>
 

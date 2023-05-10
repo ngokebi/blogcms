@@ -130,8 +130,8 @@ if (empty($_SESSION['username'])) {
                                                     </tr>
                                                 </thead>
                                                 <?php
-                                                $sql = "SELECT posts.title as title, image.short_desc as short_desc, image.image_url as image_url, image.id, image.created_at as created_at 
-                                                        FROM image INNER JOIN posts ON image.post_id = posts.id GROUP BY post_id";
+                                                $sql = "SELECT posts.title as title, image.short_desc as short_desc, posts.id as post_id, image.image_url as image_url, image.id as image_id, image.created_at as created_at 
+                                                        FROM image INNER JOIN posts ON image.post_id = posts.id ORDER BY post_id DESC";
                                                 $stmt = $database->prepare($sql);
                                                 $stmt->execute();
                                                 $data = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -148,11 +148,11 @@ if (empty($_SESSION['username'])) {
                                                                 <td><?php echo htmlentities($result->created_at); ?></td>
                                                                 <td class="color-primary">
                                                                     <span class="m-l-10">
-                                                                        <a href="edit_post_image.php?post_image_id=<?php echo htmlentities($result->id); ?>" title="Edit" id="edit">
+                                                                        <a href="edit_post_image.php?post_image_id=<?php echo htmlentities($result->image_id); ?>" title="Edit" id="edit">
                                                                             <i class="ti-pencil color-success"></i>
                                                                         </a>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                                                        <a href="post_image.php?post_image_id=<?php echo htmlentities($result->id); ?>" post_image_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
+                                                                        <a href="post_image.php?post_image_id=<?php echo htmlentities($result->image_id); ?>" post_image_id="<?php echo htmlentities($result->image_id); ?>" title="Delete" class="delete">
                                                                             <i class="ti-close color-danger"></i>
                                                                         </a>
                                                                     </span>

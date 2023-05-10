@@ -132,6 +132,7 @@ class User
             return false;
         }
     }
+
     // function changePassword($username,$password,$oldpassword) {
     // 	if (self::authenticateUsers($username, $oldpassword))  {
     // 		if (self::validatePassword($password)) {

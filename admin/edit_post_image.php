@@ -114,17 +114,18 @@ if (empty($_SESSION['username'])) {
                                         <div class="basic-form">
                                             <?php
                                             $post_image_id = intval($_GET['post_image_id']);
-                                            $sql = "SELECT posts.title as title, image.short_desc as short_desc, image.image_url as image_url, image.id, image.created_at as created_at 
-                                            FROM image INNER JOIN posts ON image.post_id = posts.id WHERE posts.id = :post_id";
+                                            // echo "<script> alert('$post_image_id')</script>";
+                                            $sql = "SELECT posts.title as title, image.short_desc as short_desc, image.image_url as image_url, posts.id as post_id, image.id, image.created_at as created_at 
+                                            FROM image INNER JOIN posts ON image.post_id = posts.id WHERE image.id = :post_image_id";
                                             $query = $database->prepare($sql);
-                                            $query->bindParam(':post_id', $post_image_id, PDO::PARAM_STR);
+                                            $query->bindParam(':post_image_id', $post_image_id, PDO::PARAM_STR);
                                             $query->execute();
                                             $results = $query->fetchAll(PDO::FETCH_OBJ);
                                             $cnt = 1;
                                             if ($query->rowCount() > 0) {
                                                 foreach ($results as $result_post) {
                                             ?>
-                                                    <form method="POST">
+                                            <form method="POST" action="update_image.php" enctype="multipart/form-data">
                                                         <input type="hidden" name="id" id="post_image_id" value="<?php echo $post_image_id ?>">
                                                         <div class="form-group col-sm-8">
                                                             <label class="col-form-label">Image:</label>
@@ -143,7 +144,7 @@ if (empty($_SESSION['username'])) {
                                                             <label class="col-form-label">Short Description</label>
                                                             <textarea class="form-control" rows="5" placeholder="Short Description" name="short_desc" id="short_desc" disabled><?php echo htmlentities($result_post->short_desc); ?></textarea>
                                                         </div>
-                                                        <button type="submit" name="edit_post" id="edit_post" class="btn btn-primary btn-rounded m-b-10">Update</button>
+                                                        <button type="submit" name="submit" class="btn btn-primary btn-rounded m-b-10">Update</button>
                                                         <a href="post_image.php" class="btn btn-secondary btn-rounded m-b-10">Back</a>
                                                     </form>
                                             <?php }

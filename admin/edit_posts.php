@@ -144,8 +144,8 @@ if (empty($_SESSION['username'])) {
                                                                 $query->execute();
                                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                                                                 if ($query->rowCount() > 0) {
-                                                                    foreach ($results as $result) {   ?>
-                                                                        <option value="<?php echo htmlentities($result->uploaded_by); ?>"><?php echo htmlentities($result->username); ?></option>
+                                                                    foreach ($results as $result_1) {   ?>
+                                                                        <option value="<?php echo htmlentities($result_1->id); ?>"><?php echo htmlentities($result_1->username); ?></option>
                                                                 <?php }
                                                                 } ?>
                                                             </select>
@@ -161,8 +161,8 @@ if (empty($_SESSION['username'])) {
                                                                 $query->execute();
                                                                 $results = $query->fetchAll(PDO::FETCH_OBJ);
                                                                 if ($query->rowCount() > 0) {
-                                                                    foreach ($results as $result) {   ?>
-                                                                        <option value="<?php echo htmlentities($result->cat_id); ?>"><?php echo htmlentities($result->cat_name); ?></option>
+                                                                    foreach ($results as $result_2) {   ?>
+                                                                        <option value="<?php echo htmlentities($result_2->id); ?>"><?php echo htmlentities($result_2->category_name); ?></option>
                                                                 <?php }
                                                                 } ?>
                                                             </select>

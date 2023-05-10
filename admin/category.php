@@ -147,7 +147,7 @@ if (empty($_SESSION['username'])) {
                                                                             <i class="ti-pencil color-success"></i>
                                                                         </a>
                                                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                                                        <a href="category.php?cat_id=<?php echo htmlentities($result->id); ?>" cat_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete">
+                                                                        <a href="category.php?cat_id=<?php echo htmlentities($result->id); ?>" cat_id="<?php echo htmlentities($result->id); ?>" title="Delete" class="delete" onclick="return confirm('Are you sure you want to delete')">
                                                                             <i class="ti-close color-danger"></i>
                                                                         </a>
                                                                     </span>

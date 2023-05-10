@@ -8,10 +8,9 @@ include "classes/Database.php";
 $database = new Database();
 $database = $database->getConnection();
 
+if (isset($_POST['submit'])) {
 
-if (isset($_POST["submit"])) {
-    $short_desc = $_POST['short_desc'];
-    $post_id = $_POST['post_id'];
+    $post_image_id = $_POST['id'];
     $image_url = $_FILES["image_url"]["name"];
 
     $extension = substr($image_url, strlen($image_url) - 4, strlen($image_url));
@@ -20,24 +19,21 @@ if (isset($_POST["submit"])) {
     if (!in_array($extension, $allowed_extensions)) {
         echo "<script>
         alert('Invalid format. Only jpg / jpeg/ png /gif format allowed');
-        window.location.href='post_image_upload.php';
+        window.location.href='edit_post_image.php';
         </script>";
     } else {
         $imgnewfile = md5($image_url) . $extension;
 
         move_uploaded_file($_FILES["image_url"]["tmp_name"], "post_images/" . $imgnewfile);
 
-        $sql = "INSERT INTO image (image_url, short_desc, post_id) 
-        VALUES (:image_url, :short_desc, :post_id)";
+        $sql = "UPDATE image SET image_url = :image_url WHERE id = :id";
         $stmt = $database->prepare($sql);
         $stmt->bindValue(':image_url', $imgnewfile);
-        $stmt->bindValue(':short_desc', $short_desc, PDO::PARAM_STR);
-        $stmt->bindValue(':post_id', $post_id, PDO::PARAM_INT);
-        $stmt->execute();
-        $lastInsertId = $database->lastInsertId();
-        if ($lastInsertId) {
+        $stmt->bindValue(':id', $post_image_id, PDO::PARAM_INT);
+        $result = $stmt->execute();
+        if ($result) {
             echo "<script>
-            alert('Data inserted successfully');
+            alert('Data Updated successfully');
             window.location.href='post_image.php';
             </script>";
             // header("location: post_image.php");

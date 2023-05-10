@@ -172,7 +172,7 @@ $database = $database->getConnection();
 								</div>
 								<div class="content">
 									<div class="post-meta mb-3">
-										<a href="categories.php?cat_id=<?php echo htmlentities($results->cat_id)?>" class="category"><?php echo htmlentities($results->category_name) ?></a> &mdash;
+										<a href="categories.php?cat_id=<?php echo htmlentities($results->cat_id) ?>" class="category"><?php echo htmlentities($results->category_name) ?></a> &mdash;
 										<span class="date"><?php echo htmlentities($results->published_date) ?></span>
 									</div>
 									<h2 class="heading"><a href="single.php?post_id=<?php echo htmlentities($results->posts_id) ?>"><?php echo htmlentities($results->title) ?></a></h2>
@@ -342,7 +342,7 @@ $database = $database->getConnection();
 				});
 			});
 
-				$(document).ready(function() {
+			$(document).ready(function() {
 
 				var id = $("#post_id").val();
 				var views = $("#views").val();

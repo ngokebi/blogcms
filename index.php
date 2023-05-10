@@ -135,7 +135,8 @@ $database = $database->getConnection();
 				$sql = "SELECT posts.id as posts_id, posts.title as title, posts.short_desc as short_desc, posts.author as author, DATE_FORMAT(posts.created_at, '%M %d, %Y') as published_date, category.id as cat_id, category.category_name as category_name, image.image_url as image_url FROM posts 
 					INNER JOIN image ON posts.id = image.post_id 
 					INNER JOIN category ON posts.cat_id = category.id
-					ORDER BY posts.id DESC LIMIT 4, 10";
+					WHERE post_id BETWEEN 5 AND 10
+					ORDER BY posts.id DESC";
 				$stmt = $database->prepare($sql);
 
 				$stmt->execute();
@@ -180,7 +181,7 @@ $database = $database->getConnection();
 				<div class="col-lg-7 text-center">
 					<h2 class="heading">Most Popular Posts</h2>
 					<?php
-					$sql = "SELECT COUNT(*) as total from posts WHERE views >= 10";
+					$sql = "SELECT COUNT(*) as total from posts LEFT JOIN image ON posts.id = image.post_id WHERE image.image_url IS NULL AND posts.status = 'Active' AND views >= 10";
 					$query = $database->prepare($sql);
 					$query->execute();
 					$data = $query->fetch();
@@ -276,6 +277,7 @@ $database = $database->getConnection();
 								foreach ($data as $results) {
 							?>
 									<h2 class="h4 fw-bold"><?php echo htmlentities($results->category_name) ?></h2>
+									<input type="hidden" name="" id="" value="">
 							<?php
 								}
 							} ?>
@@ -305,10 +307,10 @@ $database = $database->getConnection();
 										</div>
 										<div class="content">
 											<div class="post-meta mb-1">
-												<a href="categories.php?cat_id=<?php echo htmlentities($results->cat_id) ?>" class="category"><?php echo htmlentities($result_1->category_name) ?></a>&mdash;
+												<a href="categories.php?cat_id=<?php echo htmlentities($result_1->cat_id) ?>" class="category"><?php echo htmlentities($result_1->category_name) ?></a>&mdash;
 												<span class="date"><?php echo htmlentities($result_1->published_date) ?></span>
 											</div>
-											<h2 class="heading"><a href="single.php?post_id=<?php echo htmlentities($results->posts_id) ?>"><?php echo htmlentities($result_1->title) ?></a></h2>
+											<h2 class="heading"><a href="single.php?post_id=<?php echo htmlentities($result_1->posts_id) ?>"><?php echo htmlentities($result_1->title) ?></a></h2>
 											<i class="post-author d-flex align-items-center">
 												<div class="text">
 													<strong><?php echo htmlentities($result_1->author) ?></strong>
@@ -371,10 +373,10 @@ $database = $database->getConnection();
 										</div>
 										<div class="content">
 											<div class="post-meta mb-1">
-												<a href="categories.php?cat_id=<?php echo htmlentities($results->cat_id) ?>" class="category"><?php echo htmlentities($result_2->category_name) ?></a>&mdash;
+												<a href="categories.php?cat_id=<?php echo htmlentities($result_2->cat_id) ?>" class="category"><?php echo htmlentities($result_2->category_name) ?></a>&mdash;
 												<span class="date"><?php echo htmlentities($result_2->published_date) ?></span>
 											</div>
-											<h2 class="heading"><a href="single.php?post_id=<?php echo htmlentities($results->posts_id) ?>"><?php echo htmlentities($result_2->title) ?></a></h2>
+											<h2 class="heading"><a href="single.php?post_id=<?php echo htmlentities($result_2->posts_id) ?>"><?php echo htmlentities($result_2->title) ?></a></h2>
 											<i class="post-author d-flex align-items-center">
 												<div class="text">
 													<strong><?php echo htmlentities($result_2->author) ?></strong>
@@ -501,7 +503,6 @@ $database = $database->getConnection();
 							if (response == true) {
 								alert("Email Successfully Subscribed");
 								location.reload();
-								$("#email").val("");
 
 							} else if (response == false) {
 								alert("Error, Incorrect Details");
@@ -515,7 +516,7 @@ $database = $database->getConnection();
 
 			$(document).ready(function($) {
 				var count = $('#count').val();
-				if (count < 2) {
+				if (count > 0) {
 					$("#popular").hide();
 				}
 			});

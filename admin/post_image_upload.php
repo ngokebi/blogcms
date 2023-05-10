@@ -121,13 +121,13 @@ if (empty($_SESSION['username'])) {
                                                     <label class="col-form-label">Post</label>
                                                     <select class="form-control" name="post_id" autocomplete="off">
                                                         <option value="">Choose..</option>
-                                                        <?php $sql = "SELECT posts.title, posts.id, posts.status, image.image_url From posts LEFT JOIN image ON posts.id = image.post_id WHERE image.image_url IS NULL AND posts.status = 'Active'";
+                                                        <?php $sql = "SELECT posts.title, posts.id as post_id, posts.status, image.image_url From posts LEFT JOIN image ON posts.id = image.post_id WHERE image.image_url IS NULL AND posts.status = 'Active'";
                                                         $query = $database->prepare($sql);
                                                         $query->execute();
                                                         $results = $query->fetchAll(PDO::FETCH_OBJ);
                                                         if ($query->rowCount() > 0) {
                                                             foreach ($results as $result) {   ?>
-                                                                <option value="<?php echo htmlentities($result->id); ?>"><?php echo htmlentities($result->title); ?></option>
+                                                                <option value="<?php echo htmlentities($result->post_id); ?>"><?php echo htmlentities($result->title); ?></option>
                                                         <?php }
                                                         } ?>
                                                     </select>

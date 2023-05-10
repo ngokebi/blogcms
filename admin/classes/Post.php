@@ -63,7 +63,7 @@ class Post
         $stmt->bindValue(':long_desc', $long_desc, PDO::PARAM_STR);
         $stmt->bindValue(':author', $author, PDO::PARAM_STR);
         $stmt->bindValue(':cat_id', $cat_id, PDO::PARAM_INT);
-        $stmt->bindValue(':uploaded_by', $user_id, PDO::PARAM_STR);
+        $stmt->bindValue(':uploaded_by', $user_id, PDO::PARAM_INT);
         $stmt->execute();
 
         return $stmt->rowCount();
